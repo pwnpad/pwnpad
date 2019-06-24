@@ -38,7 +38,7 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
     /home/$USER/.config/nvim/init.vim
 
 RUN yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost \
-    python-pyexiftool python-gmpy2 hashpump msieve pkcrack xortool dirsearch mitmproxy \
+    python-gmpy2 hashpump msieve pkcrack xortool dirsearch mitmproxy \
     sqlmap z3 jad hashcat john-git patator metasploit nmap termshark-git gef-git --noconfirm
 
 # Cleanup
