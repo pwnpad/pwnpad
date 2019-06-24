@@ -12,7 +12,7 @@ docker run -it -d \
     -h ${box_name} \
     --name ${box_name} \
     --privileged \
-    pwnbox
+    platypew/pwnbox-v2
 
 if [ $? -ne 0 ]; then
     echo "Attempting to start container"

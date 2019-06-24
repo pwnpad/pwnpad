@@ -75,8 +75,6 @@ highlight clear Comment
 highlight Comment cterm=italic guifg=#7c7c7c
 " Set colours for colour column
 highlight ColorColumn guifg=#ff5555 guibg=#231833
-" Set transparent colouring
-highlight Normal guibg=NONE
 """" End Of Vanilla Colouring --------------------------------------------------
 
 
