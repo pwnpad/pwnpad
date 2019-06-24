@@ -37,6 +37,10 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
     /home/$USER/.oh-my-zsh/custom/themes/agnoster-dracula.zsh-theme \
     /home/$USER/.config/nvim/init.vim
 
+RUN yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost \
+    python-pyexiftool python-gmpy2 hashpump msieve pkcrack xortool dirsearch mitmproxy \
+    sqlmap z3 jad hashcat john-git patator metasploit nmap termshark-git gef-git --noconfirm
+
 # Cleanup
 RUN yay -Scc --noconfirm && \
     rm -rvf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
