@@ -22,8 +22,8 @@ COPY ./zshrc /home/$USER/.zshrc
 COPY ./agnoster-dracula.zsh-theme /home/$USER/.oh-my-zsh/custom/themes/agnoster-dracula.zsh-theme
 
 # Installing QoL stuff
-RUN yay -S neovim exa wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace \
-    python-pip python-virtualenv unzip unrar pigz p7zip --noconfirm && \
+RUN yay -S neovim exa wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace mlocate \
+    python-pip python-virtualenv pypy3 unzip unrar pigz p7zip nodejs yarn ruby rubygems openssh ngrok --noconfirm && \
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs\
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
     mkdir -p /home/$USER/.config/nvim
@@ -38,14 +38,21 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
     /home/$USER/.config/nvim/init.vim
 
 RUN yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost \
-    python-gmpy2 hashpump msieve pkcrack xortool dirsearch mitmproxy \
-    sqlmap z3 jad hashcat john-git patator metasploit nmap termshark-git gef-git --noconfirm
+    python-gmpy2 hashpump msieve pkcrack xortool dirsearch mitmproxy john \
+    sqlmap z3 jad hashcat patator metasploit nmap wireshark-cli perl-image-exiftool --noconfirm && \
+    pip install --user --upgrade pycrypto factordb-pycli featherduster && \
+    gem install zsteg one_gadget && \
+    mkdir -p /home/$USER/.local/bin /home/$USER/.local/share && \
+    ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
+    r2pm init && r2pm install r2dec && \
+    git clone https://github.com/niklasb/libc-database.git ~/.local/share/libc-database
 
 # Cleanup
 RUN yay -Scc --noconfirm && \
     rm -rvf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
-           /home/$USER/.zsh_history /home/$USER/.bash_profile \
-           /home/$USER/.bash_logout /home/$USER/.cache
+    /home/$USER/.zsh_history /home/$USER/.bash_profile \
+    /home/$USER/.bash_logout /home/$USER/.cache && \
+    sudo updatedb
 
 # Start in zsh
 ENTRYPOINT ["/usr/bin/zsh"]

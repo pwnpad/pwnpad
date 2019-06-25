@@ -175,3 +175,4 @@ _fix_cursor() {
 precmd_functions+=(_fix_cursor)
 
 export FZF_DEFAULT_COMMAND='rg $(pwd) --files --hidden --no-ignore-vcs -g "!.git/*" 2> /dev/null'
+export PATH="$PATH:/home/$USER/.local/bin:$(gem env GEM_PATHS | cut -d ':' -f 1)/bin"
