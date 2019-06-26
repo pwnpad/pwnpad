@@ -27,7 +27,7 @@ RUN yay -S neovim exa wget bat fzf ripgrep tmux autojump strace net-tools iputil
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs\
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
     mkdir -p ~/.config/nvim
-COPY ./init.vim ~/.config/nvim
+COPY ./init.vim ~/.config/nvim/init.vim
 RUN sed '/call plug#end/q' ~/.config/nvim/init.vim > ~/.config/nvim/temp.vim && \
     nvim -u ~/.config/nvim/temp.vim -c ':PlugInstall' -c ':qall' && \
     rm -f ~/.config/nvim/temp.vim
