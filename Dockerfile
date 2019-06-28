@@ -20,6 +20,7 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 COPY ./zshrc /home/$USER/.zshrc
 COPY ./agnoster-dracula.zsh-theme /home/$USER/.oh-my-zsh/custom/themes/agnoster-dracula.zsh-theme
+COPY ./tmux.conf /home/$USER/.tmux.conf
 
 # Installing QoL stuff
 RUN yay -S neovim exa wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace mlocate python2-pip \
@@ -35,7 +36,8 @@ RUN sed '/call plug#end/q' /home/$USER/.config/nvim/init.vim > /home/$USER/.conf
 # Change permissions
 RUN sudo chown $USER:users /home/$USER/.zshrc \
     /home/$USER/.oh-my-zsh/custom/themes/agnoster-dracula.zsh-theme \
-    /home/$USER/.config/nvim/init.vim
+    /home/$USER/.config/nvim/init.vim \
+    /home/$USER/.tmux.conf
 
 RUN yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost gnu-netcat \
     python-gmpy2 hashpump msieve pkcrack xortool dirsearch mitmproxy john gdb exploitdb \
@@ -58,7 +60,7 @@ RUN yay -Scc --noconfirm && \
     rm -rvf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
     /home/$USER/.zsh_history /home/$USER/.bash_profile \
     /home/$USER/.bash_logout /home/$USER/.cache /home/$USER/bin && \
-    yay -R $(yay -Qtdq) && \
+    yay -R $(yay -Qtdq) --noconfirm && \
     sudo updatedb
 
 # Start in zsh
