@@ -1,6 +1,6 @@
 FROM archlinux/base:latest
 
-ENV USER pwn
+ENV USER pwnbox
 
 # Installing yay
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf && \
@@ -38,7 +38,7 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
     /home/$USER/.config/nvim/init.vim
 
 RUN yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost gnu-netcat \
-    python-gmpy2 hashpump msieve pkcrack xortool dirsearch mitmproxy john gdb \
+    python-gmpy2 hashpump msieve pkcrack xortool dirsearch mitmproxy john gdb exploitdb \
     sqlmap z3 jad hashcat patator metasploit nmap wireshark-cli perl-image-exiftool --noconfirm && \
     pip install --user --upgrade pycrypto factordb-pycli flake8 sagemath && \
     pip2 install --user --upgrade pwntools featherduster && \
@@ -50,11 +50,15 @@ RUN yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost gnu-netcat
     git clone https://github.com/Ganapati/RsaCtfTool.git /home/$USER/.local/share/RsaCtfTool && cd /home/$USER/.local/share/RsaCtfTool && \
     pip install -r requirements.txt --user && cd -
 
+# Create shared directories
+RUN sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
+
 # Cleanup
 RUN yay -Scc --noconfirm && \
     rm -rvf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
     /home/$USER/.zsh_history /home/$USER/.bash_profile \
-    /home/$USER/.bash_logout /home/$USER/.cache && \
+    /home/$USER/.bash_logout /home/$USER/.cache /home/$USER/bin && \
+    yay -R $(yay -Qtdq) && \
     sudo updatedb
 
 # Start in zsh

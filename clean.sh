@@ -7,5 +7,8 @@ fi
 
 box_name=${1}
 
+echo "Cleaning directory"
+rmdir $(pwd)/${box_name}
+
 echo "Attempting to remove container"
 docker rm ${box_name} -f

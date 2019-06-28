@@ -7,11 +7,15 @@ fi
 
 box_name=${1}
 
+echo "Making directory"
+mkdir $(pwd)/${box_name} 2> /dev/null
+
 echo "Attempting to run container"
 docker run -it -d \
     -h ${box_name} \
     --name ${box_name} \
     --privileged \
+    --mount type=bind,source="$(pwd)/${box_name}",target=/mnt/shared \
     platypew/pwnbox-v2
 
 if [ $? -ne 0 ]; then
