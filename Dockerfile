@@ -24,7 +24,7 @@ COPY ./tmux.conf /home/$USER/.tmux.conf
 
 # Installing QoL stuff
 RUN yay -S neovim exa wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace mlocate python2-pip \
-    python-pip python-virtualenv pypy3 unzip unrar pigz p7zip nodejs yarn ruby rubygems openssh ngrok --noconfirm && \
+    python-pip python-virtualenv pypy3 unzip unrar pigz p7zip nodejs yarn ruby rubygems openssh ngrok reflector --noconfirm && \
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs\
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
     mkdir -p /home/$USER/.config/nvim
@@ -41,7 +41,7 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
 
 RUN yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost gnu-netcat \
     python-gmpy2 hashpump msieve pkcrack xortool dirsearch mitmproxy john gdb exploitdb \
-    sqlmap z3 jad hashcat patator metasploit nmap wireshark-cli perl-image-exiftool --noconfirm && \
+    sqlmap z3 jad hashcat patator metasploit nmap termshark-git perl-image-exiftool --noconfirm && \
     pip install --user --upgrade pycrypto factordb-pycli flake8 sagemath && \
     pip2 install --user --upgrade pwntools featherduster && \
     gem install zsteg one_gadget && \
