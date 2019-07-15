@@ -18,9 +18,9 @@ RUN git clone https://aur.archlinux.org/yay.git && \
 # Installing oh my zsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-COPY ./zshrc /home/$USER/.zshrc
-COPY ./agnoster-dracula.zsh-theme /home/$USER/.oh-my-zsh/custom/themes/agnoster-dracula.zsh-theme
-COPY ./tmux.conf /home/$USER/.tmux.conf
+COPY ./config/zshrc /home/$USER/.zshrc
+COPY ./config/agnoster-dracula.zsh-theme /home/$USER/.oh-my-zsh/custom/themes/agnoster-dracula.zsh-theme
+COPY ./config/tmux.conf /home/$USER/.tmux.conf
 
 # Installing QoL stuff
 RUN yay -S neovim exa wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace mlocate python2-pip \
@@ -28,7 +28,7 @@ RUN yay -S neovim exa wget bat fzf ripgrep tmux autojump strace net-tools iputil
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs\
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
     mkdir -p /home/$USER/.config/nvim
-COPY ./init.vim /home/$USER/.config/nvim
+COPY ./config/init.vim /home/$USER/.config/nvim
 RUN sed '/call plug#end/q' /home/$USER/.config/nvim/init.vim > /home/$USER/.config/nvim/temp.vim && \
     nvim -u /home/$USER/.config/nvim/temp.vim -c ':PlugInstall' -c ':qall' && \
     rm -f /home/$USER/.config/nvim/temp.vim
