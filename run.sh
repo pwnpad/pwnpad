@@ -13,6 +13,8 @@ mkdir $(pwd)/${box_name} 2> /dev/null
 echo "Attempting to run container"
 docker run -it -d \
     -h ${box_name} \
+    -e DISPLAY=host.docker.internal:0 \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
     --name ${box_name} \
     --privileged \
     --mount type=bind,source="$(pwd)/${box_name}",target=/mnt/shared \

@@ -26,6 +26,7 @@ COPY ./config/tmux.conf /home/$USER/.tmux.conf
 # Installing QoL stuff
 RUN yay -S neovim exa-git wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace mlocate python2-pip \
     python-pip python-virtualenv pypy3 unzip unrar pigz p7zip nodejs yarn ruby rubygems openssh ngrok reflector --noconfirm && \
+    pip install --user --upgrade neovim && \
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs\
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
     mkdir -p /home/$USER/.config/nvim
