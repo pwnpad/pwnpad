@@ -42,7 +42,7 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
     /home/$USER/.tmux.conf
 
 RUN yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost gnu-netcat \
-    python-gmpy2 hashpump msieve xortool dirsearch mitmproxy john gdb exploitdb \
+    python-gmpy2 hashpump msieve xortool dirsearch mitmproxy john gdb exploitdb hexedit \
     sqlmap z3 jad hashcat patator metasploit nmap termshark-git perl-image-exiftool --noconfirm && \
     pip install --user --upgrade pycrypto factordb-pycli flake8 sagemath && \
     pip2 install --user --upgrade pwntools featherduster && \
