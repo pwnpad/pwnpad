@@ -7,10 +7,10 @@ fi
 
 box_name=${1}
 
-echo "Making directory"
+echo "Making directory..."
 mkdir $(pwd)/${box_name} 2> /dev/null
+echo "Directory located at: $(pwd)/${box_name}"
 
-echo "Attempting to run container"
 docker run -it -d \
     -h ${box_name} \
     -e DISPLAY=host.docker.internal:0 \
@@ -18,11 +18,11 @@ docker run -it -d \
     --name ${box_name} \
     --privileged \
     --mount type=bind,source="$(pwd)/${box_name}",target=/mnt/shared \
-    platypew/pwnbox2
+    platypew/pwnbox2 &> /dev/null
 
 if [ $? -ne 0 ]; then
-    echo "Attempting to start container"
-    docker start ${box_name}
+    echo "Container exists, reattaching..."
+    docker start ${box_name} > /dev/null
 fi
 
 # Get a shell
