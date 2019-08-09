@@ -1,4 +1,4 @@
-# PlatyPew's PwnBox-v2
+# PlatyPew's PwnBox2
 Because who needs a virtual machine?
 
 ## Installation
@@ -12,7 +12,7 @@ Build yourself
 
 Pull from docker hub (It's faster, but packages may be outdated)
 ```bash
-docker pull platypew/pwnbox-v2
+docker pull platypew/pwnbox2
 ./run.sh <container name>
 ```
 

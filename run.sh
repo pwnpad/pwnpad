@@ -18,7 +18,7 @@ docker run -it -d \
     --name ${box_name} \
     --privileged \
     --mount type=bind,source="$(pwd)/${box_name}",target=/mnt/shared \
-    platypew/pwnbox-v2
+    platypew/pwnbox2
 
 if [ $? -ne 0 ]; then
     echo "Attempting to start container"
