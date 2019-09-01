@@ -76,6 +76,7 @@ Package manager `yay` are installed.
 - fzf - A fuzzy finder
 - gmpy2
 - mlocate
+- neovim - Best code editor ever (Not an opinion)
 - netcat
 - ngrok
 - nodejs
