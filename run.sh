@@ -18,7 +18,7 @@ docker run -it -d \
     --name ${box_name} \
     --privileged \
     --mount type=bind,source="$(pwd)/${box_name}",target=/mnt/shared \
-    platypew/pwnbox2:devel &> /dev/null
+    platypew/pwnbox2 &> /dev/null
 
 if [ $? -ne 0 ]; then
     echo "Container exists, reattaching..."
