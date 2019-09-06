@@ -41,10 +41,10 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
     /home/$USER/.config/nvim/init.vim \
     /home/$USER/.tmux.conf
 
-RUN yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost gnu-netcat \
+RUN yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost gnu-netcat pkcrack \
     python-gmpy2 hashpump msieve xortool dirsearch john gdb exploitdb hexedit wuzz \
     sqlmap z3 jad hashcat patator metasploit nmap termshark-git perl-image-exiftool --noconfirm && \
-    pip install --user --upgrade pycrypto factordb-pycli flake8 sagemath pkcrack && \
+    pip install --user --upgrade pycrypto factordb-pycli flake8 sagemath && \
     pip2 install --user --upgrade pwntools featherduster && \
     gem install zsteg one_gadget && \
     mkdir -p /home/$USER/.local/bin /home/$USER/.local/share && \
