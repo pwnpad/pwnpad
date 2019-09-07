@@ -59,7 +59,7 @@ RUN sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
 
 # Cleanup
 RUN yay -Scc --noconfirm && \
-    rm -rvf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
+    sudo rm -rvf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
     /home/$USER/.zsh_history /home/$USER/.bash_profile \
     /home/$USER/.bash_logout /home/$USER/.cache /home/$USER/bin && \
     yay -R $(yay -Qtdq) --noconfirm && \
