@@ -5,7 +5,7 @@ ENV USER pwnbox
 # Installing yay
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf && \
     pacman -Syyu --noconfirm && \
-    pacman -S base-devel lib32-glibc git zsh reflector --noconfirm && \
+    pacman -S base-devel lib32-glibc git zsh reflector cmake --noconfirm && \
     reflector -c "Singapore" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
@@ -49,7 +49,7 @@ RUN yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost gnu-netcat
     gem install zsteg one_gadget && \
     mkdir -p /home/$USER/.local/bin /home/$USER/.local/share && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
-    r2pm init && r2pm install r2dec && \
+    r2pm init && r2pm install r2ghidra-dec && \
     git clone https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
     git clone https://github.com/Ganapati/RsaCtfTool.git /home/$USER/.local/share/RsaCtfTool && cd /home/$USER/.local/share/RsaCtfTool && \
     pip install -r requirements.txt --user && cd -
