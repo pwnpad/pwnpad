@@ -1,0 +1,16 @@
+image: docker:19.03.1
+
+variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+    - docker:19.03.1-dind
+
+before_script:
+  - docker info
+
+build:
+    stage: build
+    script:
+        - sh build.sh

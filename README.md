@@ -74,19 +74,22 @@ Package manager `yay` are installed.
 ## General Software
 - autojump - A cd command that learns
 - fzf - A fuzzy finder
-- gmpy2
-- mlocate
+- gmpy2 - A C-coded Python extension module that supports multiple-precision arithmetic
+- mlocate - A Unix utility which serves to find files on filesystems
 - neovim - Best code editor ever (Not an opinion)
-- netcat
-- ngrok
-- nodejs
+- netcat - TCP/IP swiss army knife
+- ngrok - Secure introspectable tunnels to localhost webhook development tool and debugging tool
+- nodejs - A JavaScript runtime built on Chrome's V8 JavaScript engine
 - oh-my-zsh - Beautiful zsh shell with agnoster theme
-- python
+- python - An interpreted, high-level, general-purpose programming language
 - ripgrep - Grep but fasstttt
-- ruby
-- sagemath
-- tmux
-- zsh-syntax-highlighting
+- ruby - Another interpreted, high-level, general-purpose programming language.
+- sagemath - A computer algebra system with includes algebra, combinatorics, graph theory, numerical analysis, number theory, calculus and statistics
+- tmux - Allows multiple terminal sessions to be accessed simultaneously in a single window
+- zsh-autopair - Automatically pairs quotations marks and brackets when typing commands
+- zsh-autosuggestions - Suggests commands that you've used before
+- zsh-syntax-highlighting - Beautiful highlighting while typing commands
+- zsh-vimode-visual - Allow vim visual mode to work within the prompt
 
 ## Other stuffu
 Good luck for your CTFs, and hack harder.
