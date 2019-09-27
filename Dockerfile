@@ -18,7 +18,12 @@ RUN git clone https://aur.archlinux.org/yay.git && \
 
 # Installing oh my zsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    git clone https://github.com/zsh-users/zsh-autosuggestions.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-autosuggestions && \
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting && \
+    git clone https://github.com/b4b4r07/zsh-vimode-visual.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-vimode-visual && \
+    git clone https://github.com/DarrinTisdale/zsh-aliases-exa.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-aliases-exa && \
+    git clone https://github.com/hlissner/zsh-autopair.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-autopair
+
 COPY ./config/zshrc /home/$USER/.zshrc
 COPY ./config/agnoster-dracula.zsh-theme /home/$USER/.oh-my-zsh/custom/themes/agnoster-dracula.zsh-theme
 COPY ./config/tmux.conf /home/$USER/.tmux.conf

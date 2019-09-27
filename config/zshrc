@@ -10,14 +10,20 @@ ZSH_THEME="agnoster-dracula"
 
 # Plugins
 plugins=(
-    git
-    vi-mode
-    zsh-syntax-highlighting
-    extract
-    tmux
-    sudo
-    colored-man-pages
     autojump
+    colored-man-pages
+    extract
+    git
+    sudo
+    tmux
+    vi-mode
+
+    zsh-aliases-exa
+    zsh-autopair
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    zsh-syntax-highlighting
+    zsh-vimode-visual
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -134,6 +140,10 @@ ft(){
     fi
 }
 
+chpwd() {
+    ls -a
+}
+
 ## Aliases
 alias vi="nvim -O 2> /dev/null"
 alias :q='exit'
@@ -144,6 +154,7 @@ alias cat='bat'
 ## Vi-Mode
 bindkey -M vicmd '?' history-incremental-search-backward
 bindkey -M vicmd '/' history-incremental-search-forward
+
 bindkey "^[OA" up-line-or-beginning-search
 bindkey "^[OB" down-line-or-beginning-search
 bindkey -M vicmd "k" up-line-or-beginning-search
@@ -163,7 +174,6 @@ function zle-keymap-select {
     echo -ne '\e[5 q'
   fi
 }
-
 zle -N zle-keymap-select
 
 echo -ne '\e[5 q'
@@ -173,6 +183,19 @@ _fix_cursor() {
 }
 
 precmd_functions+=(_fix_cursor)
+
+autoload -U select-bracketed select-quoted
+zle -N select-bracketed
+zle -N select-quoted
+for km in viopp visual; do
+    bindkey -M $km -- '-' vi-up-line-or-history
+    for c in {a,i}{\',\",\`}; do
+        bindkey -M $km $c select-quoted
+    done
+    for c in {a,i}${(s..):-'()[]{}<>bB'}; do
+        bindkey -M $km $c select-bracketed
+    done
+done
 
 export FZF_DEFAULT_COMMAND='rg $(pwd) --files --hidden --no-ignore-vcs -g "!.git/*" 2> /dev/null'
 export PATH="$PATH:/home/$USER/.local/bin:$(gem env GEM_PATHS | cut -d ':' -f 1)/bin"
