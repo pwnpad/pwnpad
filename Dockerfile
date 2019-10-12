@@ -5,7 +5,7 @@ ENV USER pwnbox
 # Installing yay
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf && \
     pacman -Syyu --noconfirm && \
-    pacman -S base-devel lib32-glibc git zsh reflector cmake vi --noconfirm && \
+    pacman -S base-devel lib32-glibc git zsh reflector cmake vi man-db man-pages npm --noconfirm && \
     reflector -c "Singapore" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
@@ -32,6 +32,7 @@ COPY ./config/tmux.conf /home/$USER/.tmux.conf
 RUN yay -S neovim exa-git wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace mlocate python2-pip \
     python-pip python-virtualenv pypy3 unzip unrar pigz p7zip nodejs yarn ruby rubygems openssh ngrok reflector --noconfirm && \
     pip install --user --upgrade neovim && \
+    sudo npm install -g arch-wiki-man && \
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs\
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
     mkdir -p /home/$USER/.config/nvim
@@ -67,7 +68,7 @@ RUN yay -Scc --noconfirm && \
     sudo rm -rvf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
     /home/$USER/.zsh_history /home/$USER/.bash_profile \
     /home/$USER/.bash_logout /home/$USER/.cache /home/$USER/bin && \
-    yay -R $(yay -Qtdq) --noconfirm && \
+    yay -R $(yay -Qtdq) npm --noconfirm && \
     sudo updatedb
 
 # Start in zsh

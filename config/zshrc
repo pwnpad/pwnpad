@@ -146,6 +146,10 @@ chpwd() {
     ls -a
 }
 
+awman() {
+    colored awman "$@"
+}
+
 ## Aliases
 alias vi="nvim -O 2> /dev/null"
 alias :q='exit'
