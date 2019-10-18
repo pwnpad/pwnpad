@@ -39,7 +39,8 @@ RUN yay -S neovim exa-git wget bat fzf ripgrep tmux autojump strace net-tools ip
 COPY ./config/init.vim /home/$USER/.config/nvim
 RUN sed '/call plug#end/q' /home/$USER/.config/nvim/init.vim > /home/$USER/.config/nvim/temp.vim && \
     nvim -u /home/$USER/.config/nvim/temp.vim -c ':PlugInstall' -c ':qall' && \
-    rm -f /home/$USER/.config/nvim/temp.vim
+    rm -f /home/$USER/.config/nvim/temp.vim && \
+    sudo touch /usr/include/stropts.h
 
 # Change permissions
 RUN sudo chown $USER:users /home/$USER/.zshrc \
