@@ -7,6 +7,7 @@ Plug 'dracula/vim'                                                      " Colour
 " User Interface
 Plug 'vim-airline/vim-airline'                                          " Plugin that gives blocks on the top and bottom neovim
 Plug 'vim-airline/vim-airline-themes'                                   " Imports a library of themes for vim-arline
+Plug 'ryanoasis/vim-devicons'                                           " Allows for nerdfont icons to be displayed
 Plug 'junegunn/limelight.vim', {'on': 'Limelight!!'}                    " Grey-out paragraphs the cursor is not on
 Plug 'junegunn/rainbow_parentheses.vim', {'on': 'RainbowParentheses!!'} " Adds rainbow colouring for nested parenthesis
 Plug 'junegunn/goyo.vim', {'on': 'Goyo'}                                " Distraction-free setting
