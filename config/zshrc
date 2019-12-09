@@ -156,6 +156,7 @@ alias :q='exit'
 alias cls='clear'
 alias ls='exa --git'
 alias cat='bat'
+alias pdb='python3 -m pdb'
 
 ## Vi-Mode
 bindkey -M vicmd '?' history-incremental-search-backward
