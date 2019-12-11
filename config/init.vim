@@ -313,7 +313,9 @@ nmap <leader>a :ALEToggle<CR>
 "" Settings
 let g:ale_enabled = 0
 let g:ale_echo_msg_format = '[%linter%] %s'
-let g:ale_c_clang_options = '-std=c11 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wshadow'
+let g:ale_c_clang_options = '-std=c18 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable'
+let g:ale_c_flawfinder_minlevel = 3
+let g:ale_cpp_clang_options = '-std=c++17 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable'
 """ End Of ALE Configurations -------------------------------------------------
 
 
