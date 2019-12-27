@@ -54,6 +54,7 @@ Package manager `yay` are installed.
 - libc-database - Build a database of libc offsets to simplify exploitation.
 - metasploit - Platform for developing, testing, and executing exploits.
 - msieve - Msieve is a C library implementing a suite of algorithms to factor large integers.
+- ngrok - Secure introspectable tunnels to localhost webhook development tool and debugging tool
 - nmap - Nmap free security scanner, port scanner, & network exploration tool.
 - one_gadget - Magic gadget search for libc.
 - patator - Multi-purpose brute-forcer
@@ -78,7 +79,6 @@ Package manager `yay` are installed.
 - mlocate - A Unix utility which serves to find files on filesystems
 - neovim - Best code editor ever (Not an opinion)
 - netcat - TCP/IP swiss army knife
-- ngrok - Secure introspectable tunnels to localhost webhook development tool and debugging tool
 - nodejs - A JavaScript runtime built on Chrome's V8 JavaScript engine
 - oh-my-zsh - Beautiful zsh shell with agnoster theme
 - python - An interpreted, high-level, general-purpose programming language
