@@ -30,8 +30,8 @@ COPY ./config/tmux.conf /home/$USER/.tmux.conf
 
 # Installing QoL stuff
 RUN yay -S neovim exa-git wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace mlocate python2-pip \
-    python-pip python-virtualenv pypy3 unzip unrar pigz p7zip nodejs yarn ruby rubygems openssh ngrok reflector --noconfirm && \
-    pip install --user --upgrade neovim && \
+    python-pip python-virtualenv pypy3 unzip unrar pigz p7zip nodejs yarn ruby rubygems openssh reflector --noconfirm && \
+    pip install --user --upgrade neovim flake8 && \
     sudo npm install -g arch-wiki-man && \
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs\
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
@@ -48,18 +48,18 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
     /home/$USER/.config/nvim/init.vim \
     /home/$USER/.tmux.conf
 
-RUN yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost gnu-netcat pkcrack \
+# Install blackarch repo and tools
+RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
+    yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost gnu-netcat pkcrack \
     python-gmpy2 hashpump msieve xortool dirsearch john gdb exploitdb hexedit wuzz \
-    sqlmap z3 jad hashcat patator metasploit nmap termshark-git perl-image-exiftool --noconfirm && \
-    pip install --user --upgrade pycrypto factordb-pycli flake8 sagemath && \
-    pip2 install --user --upgrade pwntools featherduster && \
+    sqlmap z3 jad hashcat patator metasploit nmap termshark-git perl-image-exiftool \
+    factordb-pycli pwntools featherduster rsactftool --noconfirm && \
+    pip install --user --upgrade pycrypto sagemath && \
     gem install zsteg one_gadget && \
     mkdir -p /home/$USER/.local/bin /home/$USER/.local/share && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     r2pm init && r2pm install r2ghidra-dec && \
-    git clone https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
-    git clone https://github.com/Ganapati/RsaCtfTool.git /home/$USER/.local/share/RsaCtfTool && cd /home/$USER/.local/share/RsaCtfTool && \
-    pip install -r requirements.txt --user && cd -
+    git clone https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database
 
 # Create shared directories
 RUN sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
