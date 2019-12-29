@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker build -t platypew/pwnbox2 .
+docker image build --squash --compress -t platypew/pwnbox2 .
