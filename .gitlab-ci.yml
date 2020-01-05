@@ -5,12 +5,26 @@ variables:
     DOCKER_TLS_CERTDIR: "/certs"
 
 services:
-    - docker:19.03.1-dind
+    - name: docker:19.03.1-dind
+      command: ["--experimental"]
 
 before_script:
   - docker info
 
-build:
+stages:
+    - build
+    - deploy
+
+building:
     stage: build
     script:
         - sh build.sh
+
+pushing:
+    stage: deploy
+    script:
+        - docker login -p $DOCKERHUB_PWD -u $DOCKERHUB_USER
+        - docker login registry.gitlab.com -p $GITLAB_PWD -u $GITLAB_USER
+        - docker push platypew/pwnbox2:latest
+        - docker tag platypew/pwnbox2:latest registry.gitlab.com/platypew/pwnbox2:latest
+        - docker push registry.gitlab.com/platypew/pwnbox2
