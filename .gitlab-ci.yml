@@ -10,19 +10,12 @@ services:
 
 before_script:
   - docker info
-
-stages:
-    - build
-    - deploy
+  - docker version
 
 building:
     stage: build
     script:
         - sh build.sh
-
-pushing:
-    stage: deploy
-    script:
         - docker login -p $DOCKERHUB_PWD -u $DOCKERHUB_USER
         - docker login registry.gitlab.com -p $GITLAB_PWD -u $GITLAB_USER
         - docker push platypew/pwnbox2:latest
