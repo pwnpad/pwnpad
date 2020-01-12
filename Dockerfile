@@ -51,10 +51,11 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
 # Install blackarch repo and tools
 RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
     yay -S afl checksec radare2 ropper shellnoob wcc binwalk foremost gnu-netcat pkcrack \
-    python-gmpy2 hashpump msieve xortool dirsearch john gdb exploitdb hexedit wuzz \
+    python-gmpy2 hashpump msieve xortool dirsearch john exploitdb hexedit wuzz pwndbg \
     sqlmap z3 jad hashcat patator metasploit nmap termshark-git perl-image-exiftool \
-    factordb-pycli pwntools featherduster rsactftool --noconfirm && \
-    pip install --user --upgrade pycrypto sagemath && \
+    factordb-pycli featherduster rsactftool --noconfirm && \
+    echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
+    pip install --user --upgrade pycrypto sagemath git+https://github.com/Gallopsled/pwntools.git@dev3 && \
     gem install zsteg one_gadget && \
     mkdir -p /home/$USER/.local/bin /home/$USER/.local/share && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
@@ -68,7 +69,8 @@ RUN sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
 RUN yay -Scc --noconfirm && \
     sudo rm -rvf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
     /home/$USER/.zsh_history /home/$USER/.bash_profile \
-    /home/$USER/.bash_logout /home/$USER/.cache /home/$USER/bin && \
+    /home/$USER/.bash_logout /home/$USER/.cache /home/$USER/bin \
+    /tmp/* && \
     yay -R $(yay -Qtdq) npm --noconfirm && \
     sudo updatedb
 
