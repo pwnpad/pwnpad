@@ -28,12 +28,55 @@ How to use this
 By executing `run.sh`, you will effectively start the container and attach to it.
 Upon exiting the container, the container will be stopped. To re-attach to it, do `docker start <container name>` and `docker attach <container name>`
 
+You can add this to your zshrc file
+```bash
+pwn() {
+    if [ -z ${1} ];then
+        echo "Usage: ${0} <start|clean|list|enter> (container name)"
+        return 1
+    fi
+
+    if [ -z "$(docker stats --no-stream 2> /dev/null)" ]; then
+        echo "Docker daemon is not running!"
+        return 1
+    fi
+
+    if [ ${1} != "list" ] && ([ -z ${1} ] || [ -z ${2} ]); then
+        echo "Usage: ${0} <start|clean|list|enter> (container name)"
+        return 1
+    fi
+
+    cd ~/PwnBox2 > /dev/null
+    case ${1} in
+        start)
+            ./run.sh ${2}
+            cd - > /dev/null
+            ;;
+        clean)
+            ./clean.sh ${2}
+            cd - > /dev/null
+            ;;
+        list)
+            docker container ls -a --filter "ancestor=platypew/pwnbox2" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}"
+            cd - > /dev/null
+            ;;
+        enter)
+            cd ~/PwnBox2/${2}
+            ;;
+        *)
+            echo "Usage: ${0} <start,clean,list,enter> (container name)"
+            return 1
+            ;;
+    esac
+}
+```
+
 ### Installing tools
 It comes pre-installed with every single tool you possibly need
 
 PwnBox2 uses Arch Linux
 
-Package manager `yay` are installed.
+Package manager `yay` (AUR), and blacharch repositories are installed
 
 ## Included CTF Tools
 - afl - State-of-the-art fuzzer.
@@ -58,6 +101,7 @@ Package manager `yay` are installed.
 - nmap - Nmap free security scanner, port scanner, & network exploration tool.
 - one_gadget - Magic gadget search for libc.
 - patator - Multi-purpose brute-forcer
+- pwndbg -  Makes debugging with GDB suck less
 - pwntools - Useful CTF utilities.
 - pycrypto - Python cryptography toolkit.
 - radare2 - The best disassembler (Not an opinion)
