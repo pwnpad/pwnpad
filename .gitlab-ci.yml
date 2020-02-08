@@ -9,15 +9,15 @@ services:
       command: ["--experimental"]
 
 before_script:
-  - docker info
-  - docker version
+    - docker info
+    - docker version
+    - docker login -p $DOCKERHUB_PWD -u $DOCKERHUB_USER
+    - docker login registry.gitlab.com -p $GITLAB_PWD -u $GITLAB_USER
 
 building:
     stage: build
     script:
         - sh build.sh
-        - docker login -p $DOCKERHUB_PWD -u $DOCKERHUB_USER
-        - docker login registry.gitlab.com -p $GITLAB_PWD -u $GITLAB_USER
         - docker push platypew/pwnbox2:latest
         - docker tag platypew/pwnbox2:latest registry.gitlab.com/platypew/pwnbox2:latest
         - docker push registry.gitlab.com/platypew/pwnbox2

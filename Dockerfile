@@ -67,12 +67,11 @@ RUN sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
 
 # Cleanup
 RUN yay -Scc --noconfirm && \
-    sudo rm -rvf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
+    yay -R $(yay -Qtdq) npm --noconfirm && \
+    sudo rm -rf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
     /home/$USER/.zsh_history /home/$USER/.bash_profile \
     /home/$USER/.bash_logout /home/$USER/.cache /home/$USER/bin \
-    /tmp/* && \
-    yay -R $(yay -Qtdq) npm --noconfirm && \
-    sudo updatedb
+    /tmp/* && sudo updatedb
 
 # Start in zsh
 ENTRYPOINT ["/usr/bin/zsh"]
