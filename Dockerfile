@@ -68,10 +68,11 @@ RUN sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
 # Cleanup
 RUN yay -Scc --noconfirm && \
     yay -R $(yay -Qtdq) npm --noconfirm && \
+    r2pm -c r2ghidra-dec r2ghidra-dec.git radare2-pm || : && \
     sudo rm -rf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
     /home/$USER/.zsh_history /home/$USER/.bash_profile \
     /home/$USER/.bash_logout /home/$USER/.cache /home/$USER/bin \
-    /tmp/* && sudo updatedb
+    /home/$USER/.cargo /home/$USER/.gem/ruby/2.7.0/cache /tmp/* && sudo updatedb
 
 # Start in zsh
 ENTRYPOINT ["/usr/bin/zsh"]
