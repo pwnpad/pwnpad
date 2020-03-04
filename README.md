@@ -19,7 +19,7 @@
 4. [License](#license)
 
 <div align="center">
-    <h1>Installation</h1>
+    <h1>Download</h1>
 </div>
 
 **You can either build it yourself using `./build.sh`, or pull it from docker hub.**
@@ -153,8 +153,8 @@ pwn() {
 | tmux                                                                   | Allows multiple terminal sessions to be accessed simultaneously in a single window                                                       |
 | zsh-autopair                                                           | Automatically pairs quotations marks and brackets when typing commands                                                                   |
 | zsh-autosuggestions                                                    | Suggests commands that you've used before                                                                                                |
-| zsh-syntax-highlighting - Beautiful highlighting while typing commands |                                                                                                                                          |
-| zsh-vimode-visual - Allow vim visual mode to work within the prompt    |                                                                                                                                          |
+| zsh-syntax-highlighting                                                | Beautiful highlighting while typing commands                                                                                             |
+| zsh-vimode-visual                                                      | Allow vim visual mode to work within the prompt                                                                                          |
 
 <div align="center">
     <h1>License</h1>
