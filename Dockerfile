@@ -1,15 +1,18 @@
 FROM archlinux/base:latest
 
 ENV USER pwnbox
+ENV ZONE Asia
+ENV SUBZONE Singapore
 
 # Installing yay
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf && \
     pacman -Syyu --noconfirm && \
     pacman -S base-devel lib32-glibc git zsh reflector cmake vi man-db man-pages npm --noconfirm && \
-    reflector -c "Singapore" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
+    reflector -c $SUBZONE -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
-    touch /home/$USER/.zshrc
+    touch /home/$USER/.zshrc && \
+    ln -sf /usr/share/zoneinfo/$ZONE/$SUBZONE /etc/localtime
 USER $USER
 WORKDIR /home/$USER
 RUN git clone https://aur.archlinux.org/yay.git && \
