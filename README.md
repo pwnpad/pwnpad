@@ -2,10 +2,10 @@
     <img width="640" height="259" src="images/logo-rectangle.png"/>
     <br/>
     <br/>
-    ![Pipeline](https://gitlab.com/PlatyPew/Pwnbox2/badges/master/pipeline.svg)
+    <img src="https://gitlab.com/PlatyPew/Pwnbox2/badges/master/pipeline.svg">
     <br/>
-    ![License](https://img.shields.io/badge/license-MIT-green.svg)
-    ![Docker](https://img.shields.io/badge/docker-19.03.1-blue.svg)
+    <img src="https://img.shields.io/badge/license-MIT-green.svg">
+    <img src="https://img.shields.io/badge/docker-19.03.1-blue.svg">
     <br/>
     <h1>PwnBox2</h1>
     <p>Perfect for doing Capture-The-Flag challenges on MacOS, without needing a clunky, fat, resource hungry virtual machine. PwnBox2 provides a wide array of tools at your very own fingertips, powered by Arch Linux!</p>
@@ -70,7 +70,7 @@ p2() {
             ./run.sh ${2}
             cd - > /dev/null
             ;;
-        clean)
+        rm)
             ./clean.sh ${2}
             cd - > /dev/null
             ;;
