@@ -1,11 +1,11 @@
-image: docker:19.03.1
+image: docker:19.03.8
 
 variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: "/certs"
 
 services:
-    - name: docker:19.03.1-dind
+    - name: docker:19.03.8-dind
       command: ["--experimental"]
 
 before_script:

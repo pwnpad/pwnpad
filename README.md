@@ -2,10 +2,10 @@
     <img width="640" height="259" src="images/logo-rectangle.png"/>
     <br/>
     <br/>
-    <img src="https://gitlab.com/PlatyPew/Pwnbox2/badges/master/pipeline.svg">
+    <a href="https://gitlab.com/PlatyPew/PwnBox2/pipelines/latest"><img src="https://gitlab.com/PlatyPew/Pwnbox2/badges/master/pipeline.svg"></a>
     <br/>
-    <img src="https://img.shields.io/badge/license-MIT-green.svg">
-    <img src="https://img.shields.io/badge/docker-19.03.1-blue.svg">
+    <a href="https://gitlab.com/PlatyPew/PwnBox2/-/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg"></a>
+    <a href="https://hub.docker.com/_/docker"><img src="https://img.shields.io/badge/docker-19.03.8-blue.svg"></a>
     <br/>
     <h1>PwnBox2</h1>
     <p>Perfect for doing Capture-The-Flag challenges on MacOS, without needing a clunky, fat, resource hungry virtual machine. PwnBox2 provides a wide array of tools at your very own fingertips, powered by Arch Linux!</p>
