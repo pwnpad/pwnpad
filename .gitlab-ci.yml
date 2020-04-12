@@ -17,7 +17,7 @@ before_script:
 building:
     stage: build
     script:
-        - sh -c "./p2 -c -s"
+        - docker image build --squash --compress -t platypew/pwnbox2 .
         - docker push platypew/pwnbox2:latest
         - docker tag platypew/pwnbox2:latest registry.gitlab.com/platypew/pwnbox2:latest
         - docker push registry.gitlab.com/platypew/pwnbox2
