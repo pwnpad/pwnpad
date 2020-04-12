@@ -1,0 +1,152 @@
+#!/usr/bin/env bash
+
+P2=`basename "$0"`
+ROOT="$HOME/PwnBox2"
+
+USAGE() {
+    printf "USAGE:
+  ${P2} <SUBCOMMAND>
+
+SUBCOMMAND:
+  build     Build Docker image
+  attach    Attach into container
+  rm        Remove container and its volumes
+  volume    Enter into container's volume
+  list      List pwnboxes
+  update    Update image to the latest build\n"
+  exit 1
+}
+
+BUILD() {
+    BUSE() {
+        printf "USAGE:
+  ${P2} build [OPTIONS]
+OPTIONS:
+  -c    compress build context
+  -s    squash layers (requries experimental mode)\n"
+        exit 1
+    }
+
+    squash=""
+    compress=""
+
+    shift
+    while getopts ":sc" options
+    do
+        case $options in
+            c) compress="--compress"
+                ;;
+            s) squash="--squash"
+                ;;
+            *) BUSE
+                ;;
+        esac
+    done
+    docker image build $squash $compress -t platypew/pwnbox2 $ROOT
+}
+
+ATTACH() {
+    AUSE() {
+        printf "USAGE:
+  ${P2} attach [OPTIONS] <BOX>
+OPTIONS:
+  -e    use environmental variables
+          FOO=bar
+  -p    port range
+          1337-31337
+  -v    mount volumes
+          /foo/bar:/foo/bar\n"
+        exit 1
+    }
+
+    env=""
+    port=""
+    volume=""
+
+    shift
+    while getopts ":e:p:v:" options
+    do
+        case $options in
+            e) env="-e $OPTARG"
+                ;;
+            p) port="-p $OPTARG:$OPTARG"
+                ;;
+            v) volume="-v $OPTARG"
+                ;;
+            *) BUSE
+                ;;
+        esac
+    done
+    shift $(($OPTIND - 1))
+
+    box_name=${1}
+
+    if [ -z ${box_name} ]; then
+        AUSE
+    fi
+
+    printf "Making directory...\n"
+    mkdir $ROOT/${box_name} 2> /dev/null
+    printf "Directory located at: $ROOT/${box_name}\n"
+
+    docker run -it -d \
+        -h ${box_name} \
+        --name ${box_name} \
+        --privileged \
+        --mount type=bind,source="$ROOT/${box_name}",target=/mnt/shared \
+        $env $port $volume \
+        platypew/pwnbox2 2> /dev/null
+
+    if [ $? -ne 0 ]; then
+        printf "Container exists, reattaching...\n"
+        docker start ${box_name} > /dev/null
+    fi
+
+    docker attach ${box_name}
+
+    if [ $? -ne 0 ]; then
+        printf "An error has occured. Check arguments\n\n"
+        AUSE
+    fi
+}
+
+RM() {
+    print "HI"
+
+}
+
+VOLUME() {
+    print "HI"
+
+}
+
+LIST() {
+    docker container ls -a --filter "ancestor=platypew/pwnbox2" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}"
+}
+
+UPDATE() {
+    print "HI"
+
+}
+
+if [ -z ${1} ]; then
+    USAGE
+fi
+
+case ${1} in
+    build) BUILD $@
+        ;;
+    attach) ATTACH $@
+        ;;
+    rm) RM $@
+        ;;
+    volume) VOLUME $@
+        ;;
+    list) LIST
+        ;;
+    update) UPDATE
+        ;;
+    *) USAGE
+        ;;
+esac
+
