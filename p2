@@ -73,7 +73,7 @@ OPTIONS:
                 ;;
             v) volume="-v $OPTARG"
                 ;;
-            *) BUSE
+            *) AUSE
                 ;;
         esac
     done
