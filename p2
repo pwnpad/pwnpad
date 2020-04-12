@@ -171,6 +171,7 @@ VOLUME() {
     fi
 
     cd "$ROOT/$2" 2> /dev/null
+    exec zsh
 
     if [ $? -ne 0 ]; then
         VUSE
@@ -182,13 +183,10 @@ LIST() {
 }
 
 UPDATE() {
-    id=$(docker images platypew/pwnbox2 -q)
-    outdated=0
+    docker pull platypew/pwnbox2:latest
+    id=`docker images platypew/pwnbox2 | grep none | awk '{print $3}'`
     if [ ! -z $id ]; then
-        docker pull platypew/pwnbox2:latest | tee >(grep -q 'Status: Image is up to date' || outdated=1)
-        if [ $outdated -eq 1 ]; then
-            docker rmi $ID
-        fi
+        docker rmi $id
     fi
 
 }
