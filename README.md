@@ -46,7 +46,9 @@ A directory will be created, which is mounted from the docker container to your 
 
 `clean.sh` will stop and remove the container. If the mounted directory is empty, it will clear that as well.
 
-Alternatively, one can place this function into their bashrc/zshrc
+You can use `p2` to manage pwnboxes. `alias p2=~/PwnBox2/p2`
+
+Alternatively, one can place this function into their bashrc/zshrc (will be deprecated soon)
 ```bash
 p2() {
     if [ -z ${1} ];then
