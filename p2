@@ -111,7 +111,52 @@ OPTIONS:
 }
 
 RM() {
-    print "HI"
+    RUSE() {
+        printf "USAGE:
+  ${P2} rm [OPTIONS] <BOX>
+OPTIONS:
+  -f    forcefully remove mounted shared directory\n"
+        exit 1
+    }
+
+    force=0
+
+    shift
+    while getopts ":f" options
+    do
+        case $options in
+            f) force=1
+                ;;
+            *) RUSE
+                ;;
+        esac
+    done
+    shift $(($OPTIND - 1))
+
+    box_name=${1}
+
+    if [ -z ${box_name} ]; then
+        RUSE
+    fi
+
+    printf "Attempting to remove container\n"
+    docker rm ${box_name} -f &> /dev/null
+
+    if [ $? -ne 0 ]; then
+        printf "Container does not exist\n\n"
+        RUSE
+    fi
+
+    printf "Cleaning directory\n"
+    if [ $force -eq 0 ]; then
+        rmdir $ROOT/${box_name} 2> /dev/null
+
+        if [ $? -ne 0 ]; then
+            printf "Directory not empty, not removing...\n"
+        fi
+    else
+        rm -rvf $ROOT/${box_name}
+    fi
 
 }
 
