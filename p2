@@ -179,7 +179,7 @@ VOLUME() {
 }
 
 LIST() {
-    docker container ls -a --filter "ancestor=platypew/pwnbox2" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}"
+    docker container ls -a --filter "ancestor=platypew/pwnbox2" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}\t{{.Ports}}"
 }
 
 UPDATE() {
