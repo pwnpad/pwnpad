@@ -161,8 +161,20 @@ OPTIONS:
 }
 
 VOLUME() {
-    print "HI"
+    VUSE() {
+        printf "USAGE:
+  ${P2} volume <BOX>\n"
+        exit 1
+    }
+    if [ -z $2 ]; then
+        VUSE
+    fi
 
+    cd "$ROOT/$2" 2> /dev/null
+
+    if [ $? -ne 0 ]; then
+        VUSE
+    fi
 }
 
 LIST() {
@@ -170,7 +182,14 @@ LIST() {
 }
 
 UPDATE() {
-    print "HI"
+    id=$(docker images platypew/pwnbox2 -q)
+    outdated=0
+    if [ ! -z $id ]; then
+        docker pull platypew/pwnbox2:latest | tee >(grep -q 'Status: Image is up to date' || outdated=1)
+        if [ $outdated -eq 1 ]; then
+            docker rmi $ID
+        fi
+    fi
 
 }
 
