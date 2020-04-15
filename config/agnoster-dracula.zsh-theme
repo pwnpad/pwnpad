@@ -80,7 +80,7 @@ prompt_end() {
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    prompt_segment magenta black "%(!.%{%F{yellow}%}.) $USER@%m"
+    prompt_segment 141 black "%(!.%{%F{228}%}.) $USER@%m"
   fi
 }
 
@@ -99,9 +99,9 @@ prompt_git() {
     dirty=$(parse_git_dirty)
     ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
     if [[ -n $dirty ]]; then
-      prompt_segment yellow black
+      prompt_segment 228 black
     else
-      prompt_segment green black
+      prompt_segment 84 black
     fi
 
     if [[ -e "${repo_path}/BISECT_LOG" ]]; then
@@ -133,15 +133,15 @@ prompt_hg() {
     if $(hg prompt >/dev/null 2>&1); then
       if [[ $(hg prompt "{status|unknown}") = "?" ]]; then
         # if files are not added
-        prompt_segment red white
+        prompt_segment 203 white
         st='±'
       elif [[ -n $(hg prompt "{status|modified}") ]]; then
         # if any modification
-        prompt_segment yellow black
+        prompt_segment 228 black
         st='±'
       else
         # if working copy is clean
-        prompt_segment green black
+        prompt_segment 84 black
       fi
       echo -n $(hg prompt "☿ {rev}@{branch}") $st
     else
@@ -149,13 +149,13 @@ prompt_hg() {
       rev=$(hg id -n 2>/dev/null | sed 's/[^-0-9]//g')
       branch=$(hg id -b 2>/dev/null)
       if `hg st | grep -q "^\?"`; then
-        prompt_segment red black
+        prompt_segment 203 black
         st='±'
       elif `hg st | grep -q "^[MA]"`; then
-        prompt_segment yellow black
+        prompt_segment 228 black
         st='±'
       else
-        prompt_segment green black
+        prompt_segment 84 black
       fi
       echo -n "☿ $rev@$branch" $st
     fi
@@ -164,14 +164,14 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment cyan black '%~'
+  prompt_segment 117 black '%~'
 }
 
 # Virtualenv: current working virtualenv
 prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n $virtualenv_path && -n $VIRTUAL_ENV_DISABLE_PROMPT ]]; then
-    prompt_segment magenta black "(`basename $virtualenv_path`)"
+    prompt_segment 141 black "(`basename $virtualenv_path`)"
   fi
 }
 
@@ -182,11 +182,11 @@ prompt_virtualenv() {
 prompt_status() {
   local symbols
   symbols=()
-  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘ "
-  [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡"
-  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
+  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{203}%}✘ "
+  [[ $UID -eq 0 ]] && symbols+="%{%F{228}%}⚡"
+  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{117}%}⚙"
 
-  [[ -n "$symbols" ]] && prompt_segment magenta default "$symbols"
+  [[ -n "$symbols" ]] && prompt_segment 141 default "$symbols"
 }
 
 ## Main prompt
