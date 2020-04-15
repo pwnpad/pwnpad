@@ -33,7 +33,7 @@ COPY ./config/tmux.conf /home/$USER/.tmux.conf
 
 # Installing QoL stuff
 RUN yay -S neovim exa-git wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace mlocate python2-pip \
-    python-pip python-virtualenv pypy3 unzip unrar pigz p7zip nodejs yarn ruby rubygems openssh reflector --noconfirm && \
+    python-pip python-virtualenv unzip unrar pigz p7zip nodejs yarn ruby rubygems openssh reflector openvpn --noconfirm && \
     pip install --user --upgrade neovim flake8 && \
     sudo npm install -g arch-wiki-man && \
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs\
@@ -54,8 +54,8 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
 # Install blackarch repo and tools
 RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
     yay -S afl checksec radare2-git ropper shellnoob wcc binwalk foremost gnu-netcat pkcrack \
-    python-gmpy2 hashpump msieve xortool dirsearch john exploitdb hexedit wuzz pwndbg \
-    sqlmap z3 jad hashcat patator metasploit nmap termshark-git perl-image-exiftool \
+    python-gmpy2 msieve xortool dirsearch john exploitdb hexedit wuzz pwndbg \
+    sqlmap z3 jad hydra metasploit nmap termshark-git perl-image-exiftool \
     factordb-pycli featherduster rsactftool --noconfirm && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
     pip install --user --upgrade pycrypto sagemath git+https://github.com/Gallopsled/pwntools.git@dev && \
