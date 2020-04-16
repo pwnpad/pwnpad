@@ -96,7 +96,9 @@ OPTIONS:
         docker run -it -d \
             -h ${box_name} \
             --name ${box_name} \
-            --privileged \
+            --cap-add=SYS_PTRACE \
+            --cap-add=NET_ADMIN \
+            --security-opt seccomp=unconfined \
             --mount type=bind,source="$ROOT/${box_name}",target=/mnt/shared \
             $env $port $volume \
             platypew/pwnbox2 2> /dev/null
