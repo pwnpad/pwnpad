@@ -50,6 +50,8 @@ ATTACH() {
         printf "USAGE:
   ${P2} attach [OPTIONS] <BOX>
 OPTIONS:
+  -P    use privileged mode (not recommended)
+  -X    support X11 forwarding
   -e    use environmental variables
           FOO=bar
   -p    port range
@@ -62,11 +64,17 @@ OPTIONS:
     env=""
     port=""
     volume=""
+    priv=""
+    xsupport=""
 
     shift
-    while getopts ":e:p:v:" options
+    while getopts ":PXe:p:v:" options
     do
         case $options in
+            P) priv="--privileged"
+                ;;
+            X) xsupport="-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY"
+                ;;
             e) env="-e $OPTARG"
                 ;;
             p) port="-p $OPTARG:$OPTARG"
@@ -100,8 +108,10 @@ OPTIONS:
             --cap-add=NET_ADMIN \
             --security-opt seccomp=unconfined \
             --mount type=bind,source="$ROOT/${box_name}",target=/mnt/shared \
+            ${xsupport} \
+            ${priv} \
             $env $port $volume \
-            platypew/pwnbox2 2> /dev/null
+            platypew/pwnbox2
 
         if [ $? -ne 0 ]; then
             printf "An error has occured. Check arguments\n\n"
@@ -172,7 +182,7 @@ VOLUME() {
     fi
 
     cd "$ROOT/$2" 2> /dev/null
-    exec zsh
+    exec $SHELL
 
     if [ $? -ne 0 ]; then
         VUSE
