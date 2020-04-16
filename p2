@@ -12,7 +12,7 @@ SUBCOMMAND:
   attach    Attach into container
   rm        Remove container and its volumes
   volume    Enter into container's volume
-  list      List pwnboxes
+  ls        List pwnboxes
   update    Update image to the latest build
 
 HELP:
@@ -113,6 +113,7 @@ OPTIONS:
             --cap-add=NET_ADMIN \
             --security-opt seccomp=unconfined \
             --mount type=bind,source="$ROOT/${box_name}",target=/mnt/shared \
+            --sysctl net.ipv6.conf.all.disable_ipv6=0 \
             ${xsupport} \
             ${priv} \
             $env $port $volume \
@@ -220,7 +221,7 @@ case ${1} in
         ;;
     volume) VOLUME $@
         ;;
-    list) LIST
+    ls) LIST
         ;;
     update) UPDATE
         ;;
