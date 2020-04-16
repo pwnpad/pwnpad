@@ -13,7 +13,12 @@ SUBCOMMAND:
   rm        Remove container and its volumes
   volume    Enter into container's volume
   list      List pwnboxes
-  update    Update image to the latest build\n"
+  update    Update image to the latest build
+
+HELP:
+  ${P2} build -h
+  ${P2} attach -h
+  ${P2} rm -h\n"
   exit 1
 }
 

@@ -26,12 +26,12 @@
 
 ```bash
 # Build image locally
-./build.sh # Requires experimental mode to be enabled.
+./p2 build
 ```
 
 ```bash
 # Pull pre-built image from docker hub
-docker pull platypew/pwnbox2
+docker pull platypew/pwnbox2:latest
 ```
 
 <br/>
@@ -41,59 +41,25 @@ docker pull platypew/pwnbox2
 </div>
 
 ### General
-`run.sh` will start the container, and attach to it. If container is already running, it will automatically attach to it.
-A directory will be created, which is mounted from the docker container to your local system. You can find this directory in the container at `~/shared`
+You can use `p2` to manage pwnboxes. `echo "alias p2=~/PwnBox2/p2" > ~/.zshrc`
 
-`clean.sh` will stop and remove the container. If the mounted directory is empty, it will clear that as well.
+```
+$ p2
+USAGE:
+  p2 <SUBCOMMAND>
 
-You can use `p2` to manage pwnboxes. `alias p2=~/PwnBox2/p2`
+SUBCOMMAND:
+  build     Build Docker image
+  attach    Attach into container
+  rm        Remove container and its volumes
+  volume    Enter into container's volume
+  list      List pwnboxes
+  update    Update image to the latest build
 
-Alternatively, one can place this function into their bashrc/zshrc (will be deprecated soon)
-```bash
-p2() {
-    if [ -z ${1} ];then
-        echo "Usage: ${0} <attach|rm|list|mount|update> (container name)"
-        return 1
-    fi
-
-    if [ -z "$(docker stats --no-stream 2> /dev/null)" ]; then
-        echo "Docker daemon is not running!"
-        return 1
-    fi
-
-    if [ ${1} != "list" ] && [ ${1} != "update" ] && ([ -z ${1} ] || [ -z ${2} ]); then
-        echo "Usage: ${0} <attach|rm|list|mount|update> (container name)"
-        return 1
-    fi
-
-    cd ~/PwnBox2 > /dev/null
-    case ${1} in
-        attach)
-            ./run.sh ${2}
-            cd - > /dev/null
-            ;;
-        rm)
-            ./clean.sh ${2}
-            cd - > /dev/null
-            ;;
-        list)
-            docker container ls -a --filter "ancestor=platypew/pwnbox2" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}"
-            cd - > /dev/null
-            ;;
-        enter)
-            cd ~/PwnBox2/${2}
-            ;;
-        update)
-            ID=$(docker images platypew/pwnbox2 -q)
-            docker pull platypew/pwnbox2:latest
-            docker rmi $ID
-            ;;
-        *)
-        echo "Usage: ${0} <attach|rm|list|mount> (container name)"
-            return 1
-            ;;
-    esac
-}
+HELP:
+  p2 build -h
+  p2 attach -h
+  p2 rm -h
 ```
 
 <br/>
@@ -115,9 +81,8 @@ p2() {
 | featherduster | An automated, modular cryptanalysis tool.                                                                   |
 | foremost      | File carver.                                                                                                |
 | gdb           | GNU Project debugger.                                                                                       |
-| hashcat       | Advanced password recovery.                                                                                 |
-| hashpump      | A tool for performing hash length extension attacks.                                                        |
 | hexedit       | Terminal-based hex editor                                                                                   |
+| hydra         | Multi-purpose brute-forcer                                                                                  |
 | jad           | Java decompiler                                                                                             |
 | john          | Password cracker                                                                                            |
 | libc-database | Build a database of libc offsets to simplify exploitation.                                                  |
@@ -126,7 +91,6 @@ p2() {
 | ngrok         | Secure introspectable tunnels to localhost webhook development tool and debugging tool                      |
 | nmap          | Nmap free security scanner, port scanner, & network exploration tool.                                       |
 | one_gadget    | Magic gadget search for libc.                                                                               |
-| patator       | Multi-purpose brute-forcer                                                                                  |
 | pwndbg        | Makes debugging with GDB suck less                                                                          |
 | pwntools      | Useful CTF utilities.                                                                                       |
 | pycrypto      | Python cryptography toolkit.                                                                                |
@@ -153,6 +117,7 @@ p2() {
 | netcat                                                                 | TCP/IP swiss army knife                                                                                                                  |
 | nodejs                                                                 | A JavaScript runtime built on Chrome's V8 JavaScript engine                                                                              |
 | oh-my-zsh                                                              | Beautiful zsh shell with agnoster theme                                                                                                  |
+| openvpn                                                                | A virtual private network manager                                                                                                        |
 | python                                                                 | An interpreted, high-level, general-purpose programming language                                                                         |
 | ripgrep                                                                | Grep but fasstttt                                                                                                                        |
 | ruby                                                                   | Another interpreted, high-level, general-purpose programming language.                                                                   |
