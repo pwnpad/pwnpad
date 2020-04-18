@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
+# Constant variables
 P2=`basename "$0"`
 ROOT="$HOME/PwnBox2"
 
+# Print general usage and exits
 USAGE() {
     printf "USAGE:
   ${P2} <SUBCOMMAND>
@@ -22,6 +24,7 @@ HELP:
   exit 1
 }
 
+# Build docker image
 BUILD() {
     BUSE() {
         printf "USAGE:
@@ -50,6 +53,7 @@ OPTIONS:
     docker image build $squash $compress -t platypew/pwnbox2 $ROOT
 }
 
+# Start and attach docker container
 ATTACH() {
     AUSE() {
         printf "USAGE:
@@ -98,10 +102,23 @@ OPTIONS:
         AUSE
     fi
 
+
+    # Check if there's display running x11
+    if [ ! -z $xsupport ]; then
+        if [ -z $DISPLAY ]; then
+            printf "Env DISPLAY not set\n"
+            exit 1
+        elif [ ! -d "/tmp/.X11-unix" ]; then
+            printf "/tmp/.X11-unix not found\n"
+            exit 1
+        fi
+    fi
+
     printf "Making directory...\n"
     mkdir $ROOT/${box_name} 2> /dev/null
     printf "Directory located at: $ROOT/${box_name}\n"
 
+    # Attaches if container exists
     if [ $(docker ps -a --filter "name=^/${box_name}$" --format '{{.Names}}') ]; then
         printf "Container exists, reattaching...\n"
         docker start ${box_name} > /dev/null
@@ -127,6 +144,7 @@ OPTIONS:
     docker attach ${box_name}
 }
 
+# Removes pwnbox
 RM() {
     RUSE() {
         printf "USAGE:
