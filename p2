@@ -2,7 +2,7 @@
 
 # Constant variables
 P2=`basename "$0"`
-ROOT="$HOME/PwnBox2"
+ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Print general usage and exits
 USAGE() {
@@ -131,6 +131,7 @@ OPTIONS:
             --security-opt seccomp=unconfined \
             --mount type=bind,source="$ROOT/${box_name}",target=/mnt/shared \
             --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+	    --device /dev/net/tun \
             ${xsupport} \
             ${priv} \
             $env $port $volume \

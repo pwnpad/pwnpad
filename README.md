@@ -81,6 +81,7 @@ HELP:
 | featherduster | An automated, modular cryptanalysis tool.                                                                   |
 | foremost      | File carver.                                                                                                |
 | gdb           | GNU Project debugger.                                                                                       |
+| gobuster      | URI and DNS subdomain bruteforcer                                                                           |
 | hexedit       | Terminal-based hex editor                                                                                   |
 | hydra         | Multi-purpose brute-forcer                                                                                  |
 | jad           | Java decompiler                                                                                             |
