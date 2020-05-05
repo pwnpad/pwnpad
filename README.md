@@ -8,7 +8,7 @@
     <a href="https://hub.docker.com/_/docker"><img src="https://img.shields.io/badge/docker-19.03.8-blue.svg"></a>
     <br/>
     <h1>PwnBox2</h1>
-    <p>Perfect for doing Capture-The-Flag challenges on MacOS, without needing a clunky, fat, resource hungry virtual machine. PwnBox2 provides a wide array of tools at your very own fingertips, powered by Arch Linux!</p>
+    <p>Perfect for doing Capture-The-Flag challenges and Pentesting on any platform, without needing a clunky, fat, resource hungry virtual machine. PwnBox2 provides a wide array of tools at your very own fingertips, powered by Arch Linux!</p>
     <br/>
 </div>
 
@@ -20,9 +20,13 @@
 
 <div align="center">
     <h1>Download</h1>
+    <p>Download and Install PwnBox2</p>
 </div>
 
-**You can either build it yourself using `./build.sh`, or pull it from docker hub.**
+PwnBox2 can be downloaded using the git command
+```
+git clone https://gitlab.com/PlatyPew/PwnBox2.git
+```
 
 ```bash
 # Build image locally
@@ -30,18 +34,18 @@
 ```
 
 ```bash
-# Pull pre-built image from docker hub
-docker pull platypew/pwnbox2:latest
+# Pull pre-built image from docker hub (Updated once a week)
+./p2 update
 ```
 
 <br/>
 <div align="center">
     <h1>Usage</h1>
-    <p>How to operate pwnbox2</p>
+    <p>How to operate PwnBox2</p>
 </div>
 
 ### General
-You can use `p2` to manage pwnboxes. `echo "alias p2=~/PwnBox2/p2" > ~/.zshrc`
+You might want to alias `p2` in your bashrc/zshrc
 
 ```
 $ p2
@@ -68,7 +72,7 @@ HELP:
     <p>List of all the tools installed in PwnBox2</p>
 </div>
 
-## Included CTF Tools
+## Included Infosec Tools
 | Tools         | Description                                                                                                 |
 |---------------|-------------------------------------------------------------------------------------------------------------|
 | afl           | State-of-the-art fuzzer.                                                                                    |
@@ -107,7 +111,7 @@ HELP:
 | z3            | Theorem prover from Microsoft Research.                                                                     |
 | zsteg         | Detect stegano-hidden data in PNG & BMP.                                                                    |
 
-## General Software
+## Included QoL Tools
 | Software                                                               | Description                                                                                                                              |
 |------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | autojump                                                               | A cd command that learns                                                                                                                 |
