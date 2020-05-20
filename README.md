@@ -38,6 +38,8 @@ git clone https://gitlab.com/PlatyPew/PwnBox2.git
 ./p2 update
 ```
 
+You can get basic autocompletion by sourcing the `_p2-autocomplete.zsh` file in your zshrc
+
 <br/>
 <div align="center">
     <h1>Usage</h1>
