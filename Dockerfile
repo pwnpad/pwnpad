@@ -63,9 +63,9 @@ RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
     mkdir -p /home/$USER/.local/bin /home/$USER/.local/share && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     git clone https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
-    git -C /home/$USER/.local/bin init && git -C /home/$USER/.local/bin remote add origin remote add origin https://gitlab.com/PlatyPew/poor-man-pentest && \
+    git -C /home/$USER/.local/bin init && git -C /home/$USER/.local/bin remote add origin https://gitlab.com/PlatyPew/poor-man-pentest && \
     git -C /home/$USER/.local/bin pull origin master && rm -rf /home/$USER/.local/bin/.git && \
-    git clone --recursive https://github.com/radareorg/r2ghidra-dec.git /tmp && cd /tmp/r2ghidra-dec && git checkout bc7c370 && mkdir build && cd build && \
+    git clone --recursive https://github.com/radareorg/r2ghidra-dec.git /tmp/r2ghidra-dec && cd /tmp/r2ghidra-dec && git checkout bc7c370 && mkdir build && cd build && \
     cmake -DCMAKE_INSTALL_PREFIX=~/.local .. && make -j4 && make install
 
 # Create shared directories
