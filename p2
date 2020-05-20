@@ -62,6 +62,7 @@ ATTACH() {
 OPTIONS:
   -P    use privileged mode (not recommended)
   -X    support X11 forwarding
+  -D    run as daemon mode
   -e    use environmental variables
           FOO=bar
   -p    port range
@@ -77,13 +78,17 @@ OPTIONS:
     priv=""
     xsupport=""
 
+    detach=0
+
     shift
-    while getopts ":PXe:p:v:" options
+    while getopts ":PXDe:p:v:" options
     do
         case $options in
             P) priv="--privileged"
                 ;;
             X) xsupport="-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY"
+                ;;
+            D) detach=1
                 ;;
             e) env="-e $OPTARG"
                 ;;
@@ -143,7 +148,10 @@ OPTIONS:
             AUSE
         fi
     fi
-    docker attach ${box_name}
+
+    if [ $detach -eq 0 ]; then
+        docker attach ${box_name}
+    fi
 }
 
 EXEC() {
