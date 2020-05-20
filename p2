@@ -156,7 +156,10 @@ EXEC() {
         exit 1
     fi
 
-    docker exec -it "${2}" "${3}"
+    box_name=${2}
+    shift
+    shift
+    docker exec -it "${box_name}" $@
 }
 
 # Removes pwnbox
