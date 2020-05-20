@@ -62,8 +62,10 @@ RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
     gem install zsteg one_gadget && \
     mkdir -p /home/$USER/.local/bin /home/$USER/.local/share && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
-    r2pm init && r2pm install r2ghidra-dec && \
-    git clone https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database
+    git clone https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
+    git -C /home/$USER/.local/bin init && git -C /home/$USER/.local/bin remote add origin remote add origin https://gitlab.com/PlatyPew/poor-man-pentest && \
+    git -C /home/$USER/.local/bin pull origin master && rm -rf /home/$USER/.local/bin/.git && \
+    r2pm init && r2pm install r2ghidra-dec
 
 # Create shared directories
 RUN sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
