@@ -15,8 +15,9 @@
 ## Contents
 1. [Download](#download)
 2. [Usage](#usage)
-3. [Tools](#tools)
-4. [License](#license)
+3. [Screenshot](#screenshot)
+4. [Tools](#tools)
+5. [License](#license)
 
 <div align="center">
     <h1>Download</h1>
@@ -57,9 +58,10 @@ USAGE:
 SUBCOMMAND:
   build     Build Docker image
   attach    Attach into container
+  exec      Execute command in container
   rm        Remove container and its volumes
   volume    Enter into container's volume
-  list      List pwnboxes
+  ls        List pwnboxes
   update    Update image to the latest build
 
 HELP:
@@ -67,6 +69,13 @@ HELP:
   p2 attach -h
   p2 rm -h
 ```
+
+<br/>
+<div align="center">
+    <h1>Screenshot</h1>
+    <p>PwnBox2 Workflow</p>
+    <img width="720" height="450" src="images/demo-shot.jpg"/>
+</div>
 
 <br/>
 <div align="center">
