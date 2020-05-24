@@ -217,3 +217,32 @@ export PATH="$PATH:/home/$USER/.local/bin:$(gem env GEM_PATHS | cut -d ':' -f 1)
 
 ## Set locale
 export LC_ALL=en_US.UTF-8
+
+## Proxy
+proxy() {
+    if [ ${1} = "up" ]; then
+        if [ -z ${2} ]; then
+            printf "${0} <up|down> <port>\n"
+            return 1
+        fi
+
+        if [ ! -f "$HOME/.ssh/authorized_keys" ]; then
+            mkdir -p $HOME/.ssh
+            printf "Enter public key: "
+            read key
+            echo "$key" >> $HOME/.ssh/authorized_keys
+            chmod 600 $HOME/.ssh/authorized_keys
+        fi
+
+        sudo /usr/bin/ssh-keygen -A
+        sudo /usr/bin/sshd -p 2222 -o PermitTunnel=yes
+        printf "Connect to host machine:\n"
+        printf "ssh $USER@localhost -p 2222 -D 12345 -N\n"
+
+    elif [ ${1} = "down" ]; then
+        sudo kill -9 `pidof sshd`
+    else
+        printf "${0} <up|down> <port>\n"
+        return 1
+    fi
+}
