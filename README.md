@@ -107,6 +107,7 @@ HELP:
 | ngrok         | Secure introspectable tunnels to localhost webhook development tool and debugging tool                      |
 | nmap          | Nmap free security scanner, port scanner, & network exploration tool.                                       |
 | one_gadget    | Magic gadget search for libc.                                                                               |
+| pmp kit       | Poor Man's Pentesting Suite                                                                                 |
 | pwndbg        | Makes debugging with GDB suck less                                                                          |
 | pwntools      | Useful CTF utilities.                                                                                       |
 | pycrypto      | Python cryptography toolkit.                                                                                |
@@ -115,7 +116,6 @@ HELP:
 | rsactftool    | RSA attack tool (mainly for CTFs)                                                                           |
 | shellnoob     | A shellcode writing toolkit.                                                                                |
 | sqlmap        | Automatic SQL injection and database takeover tool                                                          |
-| pmp kit       | Poor Man's Pentesting Suite                                                                                 |
 | wcc           | A collection of compilation tools to perform binary black magic on the GNU/Linux and other POSIX platforms. |
 | wuzz          | Interactive cli tool for HTTP inspection                                                                    |
 | xortool       | XOR analysis tool.                                                                                          |
