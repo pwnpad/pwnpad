@@ -55,7 +55,7 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
 RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
     yay -S afl checksec radare2-git ropper shellnoob wcc binwalk foremost gnu-netcat \
     python-gmpy2 msieve xortool gobuster john exploitdb hexedit wuzz pwndbg \
-    sqlmap z3 jad hydra metasploit nmap termshark-git perl-image-exiftool \
+    sqlmap z3 jad hydra metasploit nmap perl-image-exiftool \
     factordb-pycli featherduster rsactftool --noconfirm && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
     pip install --user --upgrade pycrypto sagemath git+https://github.com/Gallopsled/pwntools.git@dev && \

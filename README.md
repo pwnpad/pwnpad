@@ -115,7 +115,7 @@ HELP:
 | rsactftool    | RSA attack tool (mainly for CTFs)                                                                           |
 | shellnoob     | A shellcode writing toolkit.                                                                                |
 | sqlmap        | Automatic SQL injection and database takeover tool                                                          |
-| termshark     | Terminal-based Wireshark                                                                                    |
+| pmp kit       | Poor Man's Pentesting Suite                                                                                 |
 | wcc           | A collection of compilation tools to perform binary black magic on the GNU/Linux and other POSIX platforms. |
 | wuzz          | Interactive cli tool for HTTP inspection                                                                    |
 | xortool       | XOR analysis tool.                                                                                          |
