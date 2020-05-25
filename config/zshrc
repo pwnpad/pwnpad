@@ -244,9 +244,9 @@ proxy() {
         fi
 
         sudo /usr/bin/ssh-keygen -A
-        sudo /usr/bin/sshd -p 2222 -o PermitTunnel=yes
+        sudo /usr/bin/sshd -p ${2} -o PermitTunnel=yes
         printf "Connect to host machine:\n"
-        printf "ssh $USER@localhost -p 2222 -D 12345 -N\n"
+        printf "ssh $USER@localhost -p ${2} -D 12345 -N\n"
 
     elif [ ${1} = "down" ]; then
         sudo kill -9 `pidof sshd`
