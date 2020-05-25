@@ -221,7 +221,7 @@ export LC_ALL=en_US.UTF-8
 ## Proxy
 proxy() {
     local USAGE() {
-        printf "proxy <up|down> <port>\n"
+        printf "proxy <up|down> [port]\n"
     }
 
     if [ -z ${1} ]; then
@@ -250,5 +250,44 @@ proxy() {
 
     elif [ ${1} = "down" ]; then
         sudo kill -9 `pidof sshd`
+    fi
+}
+
+## Ngrok
+webhook() {
+    local USAGE() {
+        printf "webhook <start|stop|status> [port]\n"
+    }
+
+    if [ -z ${1} ]; then
+        USAGE
+        return 1
+    fi
+
+    if [ ${1} = "start" ]; then
+        if [ -z ${2} ]; then
+            USAGE
+            return 1
+        fi
+
+        if [ ! -f "$HOME/.ngrok2/ngrok.yml" ]; then
+            printf "Enter auth token: "
+            read token
+            ngrok authtoken $token
+        fi
+
+        ngrok tcp -log=stdout ${2} > /dev/null &
+        disown %$(jobs | grep ngrok | awk '{print $1}' | tr -d "[]")
+        sleep 2
+        printf "Port forwarding 0.0.0.0:${2} -> "
+        curl -s http://localhost:4040/api/tunnels | python3 -c "import sys, json; print(json.load(sys.stdin)['tunnels'][0]['public_url'])" | cut -f 3 -d '/'
+    elif [ ${1} = "stop" ]; then
+        kill -9 `pidof ngrok`
+    elif [ ${1} = "status" ]; then
+        printf "Connect at: "
+        curl -s http://localhost:4040/api/tunnels | python3 -c "import sys, json; print(json.load(sys.stdin)['tunnels'][0]['public_url'])" | cut -f 3 -d '/'
+    else
+        USAGE
+        return 1
     fi
 }
