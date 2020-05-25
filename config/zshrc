@@ -220,9 +220,18 @@ export LC_ALL=en_US.UTF-8
 
 ## Proxy
 proxy() {
+    local USAGE() {
+        printf "proxy <up|down> <port>\n"
+    }
+
+    if [ -z ${1} ]; then
+        USAGE
+        return 1
+    fi
+
     if [ ${1} = "up" ]; then
         if [ -z ${2} ]; then
-            printf "${0} <up|down> <port>\n"
+            USAGE
             return 1
         fi
 
@@ -241,8 +250,5 @@ proxy() {
 
     elif [ ${1} = "down" ]; then
         sudo kill -9 `pidof sshd`
-    else
-        printf "${0} <up|down> <port>\n"
-        return 1
     fi
 }
