@@ -244,9 +244,9 @@ proxy() {
         fi
 
         sudo /usr/bin/ssh-keygen -A
-        sudo /usr/bin/sshd -p ${2} -o PermitTunnel=yes
-        printf "Connect to host machine:\n"
-        printf "ssh $USER@localhost -p ${2} -D 12345 -N\n"
+        sudo /usr/bin/sshd -p ${2} -o PermitTunnel=yes -o PasswordAuthentication=no
+        printf "Sample code to host machine:\n"
+        printf "ssh $USER@localhost -p ${2} -D 12345 -N -f\n"
 
     elif [ ${1} = "down" ]; then
         sudo kill -9 `pidof sshd`
@@ -254,9 +254,9 @@ proxy() {
 }
 
 ## Ngrok
-webhook() {
+publish() {
     local USAGE() {
-        printf "webhook <start|stop|status> [port]\n"
+        printf "publish <start|stop|status> [port]\n"
     }
 
     if [ -z ${1} ]; then
@@ -279,12 +279,14 @@ webhook() {
         ngrok tcp -log=stdout ${2} > /dev/null &
         disown %$(jobs | grep ngrok | awk '{print $1}' | tr -d "[]")
         sleep 2
-        printf "Port forwarding 0.0.0.0:${2} -> "
+        export NGROK_PORT=${2}
+        printf "Port forwarding 0.0.0.0:${NGROK_PORT} -> "
         curl -s http://localhost:4040/api/tunnels | python3 -c "import sys, json; print(json.load(sys.stdin)['tunnels'][0]['public_url'])" | cut -f 3 -d '/'
     elif [ ${1} = "stop" ]; then
         kill -9 `pidof ngrok`
+        export NGROK_PORT=""
     elif [ ${1} = "status" ]; then
-        printf "Connect at: "
+        printf "Port forwrding 0.0.0.0:${NGROK_PORT} -> "
         curl -s http://localhost:4040/api/tunnels | python3 -c "import sys, json; print(json.load(sys.stdin)['tunnels'][0]['public_url'])" | cut -f 3 -d '/'
     else
         USAGE
