@@ -5,7 +5,6 @@ function _p2() {
         commands=(
             'attach:Attach into container'
             'build:Build Docker image'
-            'exec:Execute command in container'
             'rm:Remove container and its volumes'
             'volume:Enter into container volume'
             'ls:List pwnboxes'
@@ -40,9 +39,6 @@ function _p2() {
                     _arguments -s : \
                         '-c[compress build context]' \
                         '-s[squash layers (requries experimental mode)]'
-                    ;;
-                exec)
-                    _getcontainer
                     ;;
                 rm)
                     _getcontainer

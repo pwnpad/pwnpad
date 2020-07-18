@@ -58,7 +58,6 @@ USAGE:
 SUBCOMMAND:
   build     Build Docker image
   attach    Attach into container
-  exec      Execute command in container
   rm        Remove container and its volumes
   volume    Enter into container's volume
   ls        List pwnboxes

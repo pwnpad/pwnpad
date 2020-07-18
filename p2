@@ -12,7 +12,6 @@ USAGE() {
 SUBCOMMAND:
   build     Build Docker image
   attach    Attach into container
-  exec      Execute command in container
   rm        Remove container and its volumes
   volume    Enter into container's volume
   ls        List pwnboxes
@@ -138,10 +137,13 @@ OPTIONS:
             --mount type=bind,source="$ROOT/${box_name}",target=/mnt/shared \
             --sysctl net.ipv6.conf.all.disable_ipv6=0 \
             --device /dev/net/tun \
+            -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
+            --tmpfs /run \
+            --tmpfs /tmp \
             ${xsupport} \
             ${priv} \
             $env $port $volume \
-            platypew/pwnbox2
+            platypew/pwnbox2 sh
 
         if [ $? -ne 0 ]; then
             printf "An error has occured. Check arguments\n\n"
@@ -150,24 +152,8 @@ OPTIONS:
     fi
 
     if [ $detach -eq 0 ]; then
-        docker attach ${box_name}
+        docker exec -it "${box_name}" su pwnbox
     fi
-}
-
-EXEC() {
-    EUSE() {
-        printf "USAGE:
-  ${P2} exec <BOX> <COMMAND>\n"
-    }
-    if [ -z $2 ] || [ -z $3 ]; then
-        EUSE
-        exit 1
-    fi
-
-    box_name=${2}
-    shift
-    shift
-    docker exec -it "${box_name}" $@
 }
 
 # Removes pwnbox

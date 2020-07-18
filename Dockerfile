@@ -1,4 +1,4 @@
-FROM archlinux/base:latest
+FROM archlinux:latest
 
 ENV USER pwnbox
 ENV ZONE Asia
@@ -13,6 +13,11 @@ RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g'
     useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
     touch /home/$USER/.zshrc && \
     ln -sf /usr/share/zoneinfo/$ZONE/$SUBZONE /etc/localtime
+
+# Enable systemd
+RUN sudo pacman -Sy --noconfirm systemd systemd-sysvcompat
+COPY ./config/docker-entrypoint.sh /
+
 USER $USER
 WORKDIR /home/$USER
 RUN git clone https://aur.archlinux.org/yay.git && \
@@ -79,5 +84,6 @@ RUN yay -Scc --noconfirm && \
     /home/$USER/.bash_logout /home/$USER/.cache /home/$USER/bin \
     /home/$USER/.cargo /home/$USER/.gem/ruby/2.7.0/cache /tmp/* && sudo updatedb
 
-# Start in zsh
-ENTRYPOINT ["/usr/bin/zsh"]
+# Start systemd
+USER root
+ENTRYPOINT ["/docker-entrypoint.sh"]
