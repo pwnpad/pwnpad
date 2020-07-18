@@ -230,6 +230,8 @@ LIST() {
 }
 
 UPDATE() {
+    DIR=$(dirname $0)
+    git -C $DIR fetch origin master && git -C $DIR pull origin master --rebase
     docker pull platypew/pwnbox2:latest
     id=`docker images platypew/pwnbox2 | grep none | awk '{print $3}'`
     if [ ! -z $id ]; then
