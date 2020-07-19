@@ -13,6 +13,7 @@ SUBCOMMAND:
   build     Build Docker image
   attach    Attach into container
   rm        Remove container and its volumes
+  kill      Stop container from running
   volume    Enter into container's volume
   ls        List pwnboxes
   update    Update image to the latest build
@@ -207,6 +208,20 @@ OPTIONS:
 
 }
 
+KILL() {
+    KUSE() {
+        printf "USAGE:
+  ${P2} kill <BOX>\n"
+    }
+    if [ -z $2 ] ; then
+        EUSE
+        exit 1
+    fi
+
+    box_name=${2}
+    docker stop "${box_name}"
+}
+
 VOLUME() {
     VUSE() {
         printf "USAGE:
@@ -249,7 +264,7 @@ case ${1} in
         ;;
     attach) ATTACH $@
         ;;
-    exec) EXEC $@
+    kill) KILL $@
         ;;
     rm) RM $@
         ;;

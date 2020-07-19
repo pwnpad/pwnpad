@@ -6,6 +6,7 @@ function _p2() {
             'attach:Attach into container'
             'build:Build Docker image'
             'rm:Remove container and its volumes'
+            'kill:Stop container from running'
             'volume:Enter into container volume'
             'ls:List pwnboxes'
             'update:Update image to the latest build'
@@ -44,6 +45,9 @@ function _p2() {
                     _getcontainer
                     _arguments -s : \
                         '-f[forcefully remove mounted shared directory]'
+                    ;;
+                kill)
+                    _getcontainer
                     ;;
                 volume)
                     _getcontainer
