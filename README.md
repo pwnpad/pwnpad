@@ -59,6 +59,7 @@ SUBCOMMAND:
   build     Build Docker image
   attach    Attach into container
   rm        Remove container and its volumes
+  kill      Stop container from running
   volume    Enter into container's volume
   ls        List pwnboxes
   update    Update image to the latest build
@@ -86,8 +87,8 @@ HELP:
 | Tools         | Description                                                                                                 |
 |---------------|-------------------------------------------------------------------------------------------------------------|
 | afl           | State-of-the-art fuzzer.                                                                                    |
+| autorecon     | Wrapper around multiple scanning tools for quick enumeration                                                |
 | binwalk       | Firmware (and arbitrary file) analysis tool.                                                                |
-| checksec      | Check binary hardening settings.                                                                            |
 | dirsearch     | Web path scanner.                                                                                           |
 | exiftool      | Meta information reader/writer.                                                                             |
 | exploitdb     | The official Exploit Database repository.                                                                   |
@@ -102,6 +103,7 @@ HELP:
 | john          | Password cracker                                                                                            |
 | libc-database | Build a database of libc offsets to simplify exploitation.                                                  |
 | metasploit    | Platform for developing, testing, and executing exploits.                                                   |
+| mitmproxy     | A TUI-based proxy for http and https protocols                                                              |
 | msieve        | Msieve is a C library implementing a suite of algorithms to factor large integers.                          |
 | ngrok         | Secure introspectable tunnels to localhost webhook development tool and debugging tool                      |
 | nmap          | Nmap free security scanner, port scanner, & network exploration tool.                                       |
@@ -116,7 +118,6 @@ HELP:
 | shellnoob     | A shellcode writing toolkit.                                                                                |
 | sqlmap        | Automatic SQL injection and database takeover tool                                                          |
 | wcc           | A collection of compilation tools to perform binary black magic on the GNU/Linux and other POSIX platforms. |
-| wuzz          | Interactive cli tool for HTTP inspection                                                                    |
 | xortool       | XOR analysis tool.                                                                                          |
 | z3            | Theorem prover from Microsoft Research.                                                                     |
 | zsteg         | Detect stegano-hidden data in PNG & BMP.                                                                    |
