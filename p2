@@ -183,6 +183,13 @@ OPTIONS:
 
     box_name=${1}
 
+    printf "Are you sure you want to remove ${box_name}? This cannot be undone! (y/n) "
+    read confirmation
+
+    if [ -z $confirmation ] || [ $confirmation != "y" ]; then
+        exit 0
+    fi
+
     if [ -z ${box_name} ]; then
         RUSE
     fi
@@ -219,6 +226,14 @@ KILL() {
     fi
 
     box_name=${2}
+
+    printf "Are you sure you want to kill ${box_name}? This will stop all processes running! (y/n) "
+    read confirmation
+
+    if [ -z $confirmation ] || [ $confirmation != "y" ]; then
+        exit 0
+    fi
+
     docker stop "${box_name}"
 }
 
