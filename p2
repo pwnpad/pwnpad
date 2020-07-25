@@ -221,7 +221,7 @@ KILL() {
   ${P2} kill <BOX>\n"
     }
     if [ -z $2 ] ; then
-        EUSE
+        KUSE
         exit 1
     fi
 
