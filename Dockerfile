@@ -8,7 +8,7 @@ ENV SUBZONE Singapore
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf && \
     pacman -Syyu --noconfirm && \
     pacman -S base-devel lib32-glibc git zsh reflector cmake vi man-db man-pages npm --noconfirm && \
-    reflector -c $SUBZONE -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
+    reflector -c $SUBZONE -a 24 -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
     touch /home/$USER/.zshrc && \
