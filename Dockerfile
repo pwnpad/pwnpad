@@ -82,7 +82,8 @@ RUN yay -Scc --noconfirm && \
     sudo rm -rf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
     /home/$USER/.zsh_history /home/$USER/.bash_profile \
     /home/$USER/.bash_logout /home/$USER/.cache /home/$USER/bin \
-    /home/$USER/.cargo /home/$USER/.gem/ruby/2.7.0/cache /tmp/* && sudo updatedb
+    /home/$USER/.cargo /home/$USER/.gem/ruby/2.7.0/cache /tmp/* /var/cache && \
+    sudo updatedb
 
 # Start systemd
 USER root
