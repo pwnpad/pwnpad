@@ -63,7 +63,7 @@ RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
     sqlmap z3 jad hydra metasploit nmap perl-image-exiftool mitmproxy \
     factordb-pycli featherduster rsactftool ngrok autorecon --noconfirm && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
-    pip install --user --upgrade pycrypto sagemath git+https://github.com/Gallopsled/pwntools.git@dev git+https://github.com/calebstewart/pwncat.git && \
+    pip install --user --upgrade pycrypto sagemath git+https://github.com/Gallopsled/pwntools.git@dev git+https://github.com/calebstewart/pwncat.git paramiko==2.7.1 && \
     gem install zsteg one_gadget && \
     mkdir -p /home/$USER/.local/bin /home/$USER/.local/share && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
