@@ -58,7 +58,7 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
 
 # Install blackarch repo and tools
 RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
-    yay -S afl radare2 ropper shellnoob wcc binwalk foremost gnu-netcat \
+    yay -S afl r2ghidra-dec ropper shellnoob wcc binwalk foremost gnu-netcat \
     python-gmpy2 msieve xortool gobuster john exploitdb hexedit pwndbg \
     sqlmap z3 jad hydra metasploit nmap perl-image-exiftool mitmproxy \
     factordb-pycli featherduster rsactftool ngrok autorecon --noconfirm && \
@@ -67,9 +67,7 @@ RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
     gem install zsteg one_gadget && \
     mkdir -p /home/$USER/.local/bin /home/$USER/.local/share && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
-    git clone https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
-    git -C /home/$USER/.local/bin pull origin master && rm -rf /home/$USER/.local/bin/.git && \
-    r2pm init && r2pm install r2ghidra-dec
+    git clone https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database
 
 # Create shared directories
 RUN sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
@@ -77,7 +75,6 @@ RUN sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
 # Cleanup
 RUN yay -Scc --noconfirm && \
     yay -Rsc $(yay -Qtdq) npm --noconfirm && \
-    r2pm -c r2ghidra-dec r2ghidra-dec.git radare2-pm || : && \
     sudo rm -rf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
     /home/$USER/.zsh_history /home/$USER/.bash_profile \
     /home/$USER/.bash_logout /home/$USER/.cache /home/$USER/bin \
