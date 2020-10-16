@@ -37,7 +37,7 @@ COPY ./config/agnoster-dracula.zsh-theme /home/$USER/.oh-my-zsh/custom/themes/ag
 COPY ./config/tmux.conf /home/$USER/.tmux.conf
 
 # Installing QoL stuff
-RUN yay -S neovim exa-git wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace mlocate python2-pip ufw \
+RUN yay -S neovim exa wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace mlocate python2-pip ufw \
     python-pip python-virtualenv unzip unrar pigz p7zip nodejs yarn ruby rubygems openssh reflector openvpn --noconfirm && \
     pip install --user --upgrade neovim flake8 && \
     sudo npm install -g arch-wiki-man && \
