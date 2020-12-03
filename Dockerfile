@@ -59,15 +59,20 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
 # Install blackarch repo and tools
 RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
     yay -S afl r2ghidra-dec ropper shellnoob wcc binwalk foremost gnu-netcat \
-    python-gmpy2 msieve xortool gobuster john exploitdb hexedit pwndbg \
+    python-gmpy2 xortool gobuster john exploitdb hexedit pwndbg \
     sqlmap z3 jad hydra metasploit nmap perl-image-exiftool mitmproxy \
     factordb-pycli featherduster rsactftool ngrok autorecon --noconfirm && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
-    pip install --user --upgrade pycrypto sagemath git+https://github.com/Gallopsled/pwntools.git@dev git+https://github.com/calebstewart/pwncat.git paramiko==2.7.1 && \
+    pip install --user --upgrade pycrypto sagemath git+https://github.com/Gallopsled/pwntools.git@dev \
+    git+https://github.com/calebstewart/pwncat.git && \
     gem install zsteg one_gadget && \
     mkdir -p /home/$USER/.local/bin /home/$USER/.local/share && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
-    git clone https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database
+    git clone https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
+    mkdir -p /home/$USER/.local/share/yafu && \
+    wget "https://udomain.dl.sourceforge.net/project/yafu/1.34/yafu-1.34.zip?viasf=1" -O /home/$USER/yafu-1.34.zip && \
+    unzip /home/$USER/yafu-1.34.zip -d /home/$USER/.local/share/yafu && chmod +x /home/$USER/.local/share/yafu/yafu && \
+    rm -f /home/$USER/yafu-1.34.zip /home/$USER/.local/share/yafu/*.exe && ln -sf /home/$USER/.local/share/yafu/yafu /home/$USER/.local/bin/yafu
 
 # Create shared directories
 RUN sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
