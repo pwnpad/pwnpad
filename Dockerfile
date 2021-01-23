@@ -58,7 +58,7 @@ RUN sudo chown $USER:users /home/$USER/.zshrc \
 
 # Install blackarch repo and tools
 RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
-    yay -S afl r2ghidra-dec ropper shellnoob wcc binwalk foremost gnu-netcat \
+    yay -S afl r2ghidra ropper shellnoob wcc binwalk foremost gnu-netcat \
     python-gmpy2 xortool gobuster john exploitdb hexedit pwndbg \
     sqlmap z3 jad hydra metasploit nmap perl-image-exiftool mitmproxy \
     factordb-pycli featherduster rsactftool ngrok autorecon --noconfirm && \
