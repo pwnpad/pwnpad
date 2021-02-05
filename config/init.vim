@@ -18,12 +18,11 @@ Plug 'tpope/vim-fugitive'                                               " Git wr
 Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}
 " File finding
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}                    " Shows file tree
-Plug '/usr/local/opt/fzf'                                               " Fuzzy finder
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }                     " Fuzzy finder
 Plug 'junegunn/fzf.vim'
 "More efficient (lazy) plugins
 Plug 'terryma/vim-multiple-cursors'                                     " Sublime-styled multiple cursors support
 Plug 'jiangmiao/auto-pairs'                                             " Insert/delete brackets/quotes in pairs
-Plug 'shime/vim-livedown', {'on': 'LivedownToggle'}                     " Live preview of markdown in browser
 Plug 'easymotion/vim-easymotion'                                        " Enhanced mobility in vim
 Plug 'scrooloose/nerdcommenter'                                         " Easy commenting
 Plug 'anyakichi/vim-surround'                                           " Surround highlighted text easier
@@ -71,18 +70,6 @@ augroup spell_check
     autocmd!
     autocmd FileType text,markdown setlocal spell
 augroup END
-let g:clipboard = {
-  \ 'name': 'pbcopy',
-  \ 'copy': {
-  \    '+': 'xclip',
-  \    '*': 'xclip',
-  \  },
-  \ 'paste': {
-  \    '+': 'xsel',
-  \    '*': 'xsel',
-  \ },
-  \ 'cache_enabled': 0,
-  \ }
 """ End Of Vanilla Configurations ----------------------------------------------
 
 

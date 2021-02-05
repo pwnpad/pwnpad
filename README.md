@@ -35,7 +35,8 @@ git clone https://gitlab.com/PlatyPew/PwnBox2.git
 ```
 
 ```bash
-# Pull pre-built image from docker hub (Updated once a week) ./p2 update ```
+# Pull pre-built image from docker hub (Updated once a week) ./p2 update
+```
 
 You can get basic autocompletion by sourcing the `_p2-autocomplete.zsh` file in your zshrc
 
