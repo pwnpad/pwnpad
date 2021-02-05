@@ -35,9 +35,7 @@ git clone https://gitlab.com/PlatyPew/PwnBox2.git
 ```
 
 ```bash
-# Pull pre-built image from docker hub (Updated once a week)
-./p2 update
-```
+# Pull pre-built image from docker hub (Updated once a week) ./p2 update ```
 
 You can get basic autocompletion by sourcing the `_p2-autocomplete.zsh` file in your zshrc
 
@@ -104,21 +102,22 @@ HELP:
 | libc-database | Build a database of libc offsets to simplify exploitation.                                                  |
 | metasploit    | Platform for developing, testing, and executing exploits.                                                   |
 | mitmproxy     | A TUI-based proxy for http and https protocols                                                              |
-| msieve        | Msieve is a C library implementing a suite of algorithms to factor large integers.                          |
 | ngrok         | Secure introspectable tunnels to localhost webhook development tool and debugging tool                      |
 | nmap          | Nmap free security scanner, port scanner, & network exploration tool.                                       |
 | one_gadget    | Magic gadget search for libc.                                                                               |
-| pmp kit       | Poor Man's Pentesting Suite                                                                                 |
+| pwncat        | A post-exploitation platform for Linux targets                                                              |
 | pwndbg        | Makes debugging with GDB suck less                                                                          |
 | pwntools      | Useful CTF utilities.                                                                                       |
 | pycrypto      | Python cryptography toolkit.                                                                                |
 | radare2       | The best disassembler (Not an opinion)                                                                      |
 | ropper        | Gadget finder.                                                                                              |
 | rsactftool    | RSA attack tool (mainly for CTFs)                                                                           |
+| rustscan      | The Modern Port Scanner. Find ports quickly (3 seconds at its fastest)                                      |
 | shellnoob     | A shellcode writing toolkit.                                                                                |
 | sqlmap        | Automatic SQL injection and database takeover tool                                                          |
 | wcc           | A collection of compilation tools to perform binary black magic on the GNU/Linux and other POSIX platforms. |
 | xortool       | XOR analysis tool.                                                                                          |
+| yafu          | Yafu factor input integers in a completely automated way.                                                   |
 | z3            | Theorem prover from Microsoft Research.                                                                     |
 | zsteg         | Detect stegano-hidden data in PNG & BMP.                                                                    |
 

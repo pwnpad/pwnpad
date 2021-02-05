@@ -61,9 +61,9 @@ RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
     yay -S afl r2ghidra ropper shellnoob wcc binwalk foremost gnu-netcat \
     python-gmpy2 xortool gobuster john exploitdb hexedit pwndbg \
     sqlmap z3 jad hydra metasploit nmap perl-image-exiftool mitmproxy \
-    factordb-pycli featherduster rsactftool ngrok autorecon --noconfirm && \
+    factordb-pycli featherduster rsactftool ngrok autorecon rustscan --noconfirm && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
-    pip install --user --upgrade pycrypto sagemath git+https://github.com/Gallopsled/pwntools.git@dev \
+    pip install --user --upgrade pycrypto sagemath pwntools \
     git+https://github.com/calebstewart/pwncat.git && \
     gem install zsteg one_gadget && \
     mkdir -p /home/$USER/.local/bin /home/$USER/.local/share && \

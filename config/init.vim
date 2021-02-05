@@ -8,14 +8,8 @@ Plug 'dracula/vim'                                                      " Colour
 Plug 'vim-airline/vim-airline'                                          " Plugin that gives blocks on the top and bottom neovim
 Plug 'vim-airline/vim-airline-themes'                                   " Imports a library of themes for vim-arline
 Plug 'ryanoasis/vim-devicons'                                           " Allows for nerdfont icons to be displayed
-Plug 'junegunn/limelight.vim', {'on': 'Limelight!!'}                    " Grey-out paragraphs the cursor is not on
 Plug 'junegunn/rainbow_parentheses.vim', {'on': 'RainbowParentheses!!'} " Adds rainbow colouring for nested parenthesis
-Plug 'junegunn/goyo.vim', {'on': 'Goyo'}                                " Distraction-free setting
 Plug 'mhinz/vim-startify'                                               " Better startup screen for vim
-" Syntax highlighting
-Plug 'pangloss/vim-javascript', {'for': 'javascript'}                   " Nicer syntax highlighting for javascript
-Plug 'vim-python/python-syntax', {'for': 'python'}                      " Nicer syntax highlighting for python
-Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['c', 'cpp']}          " Nicer syntax highlighting for clang
 
 "" Functionalities
 " Git
@@ -26,14 +20,6 @@ Plug 'Xuyuanp/nerdtree-git-plugin', {'on': 'NERDTreeToggle'}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}                    " Shows file tree
 Plug '/usr/local/opt/fzf'                                               " Fuzzy finder
 Plug 'junegunn/fzf.vim'
-" Auto-completion
-Plug 'shougo/neoinclude.vim'                                            " Completion framework for deoplete
-Plug 'shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}             " Auto-completion plugin
-Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp']}                      " Auto-Completion support for C/C++
-Plug 'zchee/deoplete-jedi', {'for': 'python'}                           " Auto-Completion support for Python
-Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}                  " Auto-Completion support for Javascript
-Plug 'zchee/deoplete-zsh', {'for': ['sh', 'bash', 'zsh']}               " Auto-Completion for Zsh
-Plug 'shougo/neco-syntax'                                               " Auto-Completion for other languages
 "More efficient (lazy) plugins
 Plug 'terryma/vim-multiple-cursors'                                     " Sublime-styled multiple cursors support
 Plug 'jiangmiao/auto-pairs'                                             " Insert/delete brackets/quotes in pairs
@@ -45,24 +31,9 @@ Plug 'anyakichi/vim-surround'                                           " Surrou
 Plug 'vim-scripts/LargeFile'                                            " Edit large files quickly
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}                        " Undo visualiser
 Plug 'w0rp/ale'                                                         " Asynchronous linting
-Plug 'majutsushi/tagbar', {'on': ['TagbarToggle', 'TagbarOpen']}        " Shows tags while programming
-Plug 'hushicai/tagbar-javascript.vim'                                   " Shows tags for javascript
 
 call plug#end()
 """ End Of Vim-Plug -----------------------------------------------------------
-
-
-""" Plugin Colouring ----------------------------------------------------------
-"" Python
-let g:python_highlight_all = 1
-let g:python_slow_sync = 0
-"" Clang
-let g:cpp_class_scope_highlight = 1
-let g:cpp_member_variable_highlight = 1
-let g:cpp_class_decl_highlight = 1
-let g:cpp_experimental_simple_template_highlight = 1
-let g:cpp_concepts_highlight = 1
-""" End Of Plugin Colouring ---------------------------------------------------
 
 
 """ Vanilla Colouring ---------------------------------------------------------
@@ -78,7 +49,7 @@ highlight ColorColumn guifg=#ff5555 guibg=#231833
 
 
 """ Vanilla Configurations ----------------------------------------------------
-set number
+set number relativenumber
 set encoding=UTF-8
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l                                                  " Cursor wrap around in normal mode
@@ -185,16 +156,6 @@ let g:airline#extensions#tabline#enabled = 1
 """ End Of Vim-Airline Configurations -----------------------------------------
 
 
-""" Limelight Configurations --------------------------------------------------
-"" Mappings
-" Activate Limelight   \l
-nmap <leader>l :Limelight!!<CR>
-
-"" Colour
-let g:limelight_conceal_ctermfg = 254
-""" End Of Limelight Configurations -------------------------------------------
-
-
 """ Rainbow Parentheses Configurations ----------------------------------------
 "" Mappings
 " Activate Rainbow Parentheses    \r
@@ -206,14 +167,9 @@ augroup rainbow_lisp
     autocmd VimEnter * RainbowParentheses
 augroup END
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
+
+let g:rainbow#blacklist = ['foreground', '#d1951d']
 """ End Of Rainbow Parentheses Configurations ---------------------------------
-
-
-""" Goyo Configurations -------------------------------------------------------
-"" Mappings
-" Activate Goyo    \G
-nmap <leader>G :Goyo <bar> :highlight clear Comment <CR> :highlight Comment cterm=italic guifg=#7c7c7c<CR>
-""" End Of Goyo Configurations ------------------------------------------------
 
 
 """ Git Gutter Configurations -------------------------------------------------
@@ -268,30 +224,6 @@ let g:fzf_colors =
 "" Mappings
 nnoremap <silent><C-p> :FZF --preview=head\ -13\ {}<CR>
 """ End Of FZF Configurations -------------------------------------------------
-
-
-""" Deoplete Configurations ---------------------------------------------------
-"" Colours
-highlight Pmenu guifg=#b2b2b2 guibg=#26252d
-highlight PmenuSel guifg=#bd93f9 guibg=#756b82
-
-"" Mappings
-" Activate deoplete    \d
-nmap <leader>d :call deoplete#toggle()<CR>
-" Go down    Tab
-inoremap <silent><expr><tab>  pumvisible() ? "\<C-n>" : "\<tab>"
-" Go up      Shift-Tab
-inoremap <silent><expr><s-tab> pumvisible() ? "\<C-p>" : "\<s-tab>"
-
-"" Settings
-set completeopt-=preview
-" C/C++
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so.8'
-let g:deoplete#sources#clang#sort_algo = 'priority'
-" JS
-let g:tern_request_timeout = 1
-let g:tern_request_timeout = 6000
-""" End Of Deoplete Configurations --------------------------------------------
 
 
 """ Vim Fugitive Configurations -----------------------------------------------
@@ -426,48 +358,3 @@ function StartShell()
     silent execute('term')
 endfunction
 """ End Of Vanilla Terminal Support ------------------------------------------
-
-
-""" Vanilla IDE Mode ----------------------------------------------------------
-"" Mappings
-" Activate IDE mode    \i
-nmap <leader>i :call ToggleIDE()<CR>
-
-let s:ide = 0
-function ToggleIDE()
-    if s:ide
-        silent execute("norm \<C-h>")
-        silent execute('vertical resize +6')
-        silent execute('NERDTreeToggle')
-        silent execute('TagbarClose')
-        silent execute("norm \<C-j>")
-        augroup stop_insertmode
-            autocmd!
-            autocmd WinEnter * stopinsert
-        augroup END
-        silent execute('q')
-        silent execute('ALEDisable')
-        silent call deoplete#disable()
-        let s:ide = 0
-    else
-        silent execute('NERDTreeToggle')
-        silent execute('vertical resize -6')
-        silent execute("norm \<C-l>")
-        silent execute('sp')
-        silent execute('resize -10')
-        silent execute('term')
-        augroup start_insertmode
-            autocmd!
-            autocmd WinEnter term://* startinsert
-        augroup END
-        silent execute("norm \<C-k>")
-        silent execute('TagbarOpen')
-        silent execute("norm \<C-l>")
-        silent execute('vertical resize -8')
-        silent execute("norm \<C-h>")
-        silent execute('ALEEnable')
-        silent call deoplete#enable()
-        let s:ide = 1
-    endif
-endfunction
-""" End Of Vanilla IDE Mode ---------------------------------------------------

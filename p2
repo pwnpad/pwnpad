@@ -65,7 +65,7 @@ OPTIONS:
   -D    run as daemon mode
   -e    use environmental variables
           FOO=bar
-  -p    port range
+  -p    port range (default: 12345)
           1337-31337
   -v    mount volumes
           /foo/bar:/foo/bar\n"
@@ -73,7 +73,7 @@ OPTIONS:
     }
 
     env=""
-    port=""
+    port="12345"
     volume=""
     priv=""
     xsupport=""
