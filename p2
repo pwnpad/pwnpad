@@ -73,7 +73,7 @@ OPTIONS:
     }
 
     env=""
-    port="12345"
+    port="-p 42069:42069"
     volume=""
     priv=""
     xsupport=""
