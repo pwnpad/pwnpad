@@ -6,6 +6,7 @@ ENV SUBZONE Singapore
 
 # Installing yay
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf && \
+    curl -fsSL "https://repo.archlinuxcn.org/x86_64/glibc-linux4-2.33-4-x86_64.pkg.tar.zst" | bsdtar -C / -xvf - && \
     pacman -Syyu --noconfirm && \
     pacman -S base-devel lib32-glibc git zsh reflector cmake vi man-db man-pages npm --noconfirm && \
     reflector -c $SUBZONE -a 24 -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
