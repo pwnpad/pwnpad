@@ -23,13 +23,11 @@ Plug 'junegunn/fzf.vim'
 "More efficient (lazy) plugins
 Plug 'terryma/vim-multiple-cursors'                                     " Sublime-styled multiple cursors support
 Plug 'jiangmiao/auto-pairs'                                             " Insert/delete brackets/quotes in pairs
-Plug 'easymotion/vim-easymotion'                                        " Enhanced mobility in vim
 Plug 'scrooloose/nerdcommenter'                                         " Easy commenting
 Plug 'anyakichi/vim-surround'                                           " Surround highlighted text easier
 " Misc
 Plug 'vim-scripts/LargeFile'                                            " Edit large files quickly
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}                        " Undo visualiser
-Plug 'w0rp/ale'                                                         " Asynchronous linting
 
 call plug#end()
 """ End Of Vim-Plug -----------------------------------------------------------

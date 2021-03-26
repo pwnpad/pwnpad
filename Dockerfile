@@ -40,7 +40,7 @@ COPY ./config/tmux.conf /home/$USER/.tmux.conf
 # Installing QoL stuff
 RUN yay -S neovim exa wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace mlocate python2-pip ufw \
     python-pip python-virtualenv unzip unrar pigz p7zip nodejs yarn ruby rubygems openssh reflector openvpn --noconfirm && \
-    pip install --user --upgrade neovim flake8 && \
+    pip install --user --upgrade neovim && \
     sudo npm install -g arch-wiki-man && \
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs\
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
