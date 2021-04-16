@@ -293,3 +293,6 @@ publish() {
         return 1
     fi
 }
+
+# Run nmap in privileged mode
+export NMAP_PRIVILEGED=""

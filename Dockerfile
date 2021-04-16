@@ -44,7 +44,8 @@ RUN yay -S neovim exa wget bat fzf ripgrep tmux autojump strace net-tools iputil
     sudo npm install -g arch-wiki-man && \
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs\
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
-    mkdir -p /home/$USER/.config/nvim
+    mkdir -p /home/$USER/.config/nvim && \
+    sudo setcap cap_net_raw+ep /usr/sbin/ping
 COPY ./config/init.vim /home/$USER/.config/nvim
 RUN sed '/call plug#end/q' /home/$USER/.config/nvim/init.vim > /home/$USER/.config/nvim/temp.vim && \
     nvim -u /home/$USER/.config/nvim/temp.vim -c ':PlugInstall' -c ':qall' && \
@@ -73,7 +74,8 @@ RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
     mkdir -p /home/$USER/.local/share/yafu && \
     wget "https://udomain.dl.sourceforge.net/project/yafu/1.34/yafu-1.34.zip?viasf=1" -O /home/$USER/yafu-1.34.zip && \
     unzip /home/$USER/yafu-1.34.zip -d /home/$USER/.local/share/yafu && chmod +x /home/$USER/.local/share/yafu/yafu && \
-    rm -f /home/$USER/yafu-1.34.zip /home/$USER/.local/share/yafu/*.exe && ln -sf /home/$USER/.local/share/yafu/yafu /home/$USER/.local/bin/yafu
+    rm -f /home/$USER/yafu-1.34.zip /home/$USER/.local/share/yafu/*.exe && ln -sf /home/$USER/.local/share/yafu/yafu /home/$USER/.local/bin/yafu && \
+    sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap
 
 # Create shared directories
 RUN sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
