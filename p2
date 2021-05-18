@@ -110,10 +110,12 @@ OPTIONS:
 
 
     # Check if there's display running x11
-    if [ ! -z $xsupport ]; then
-        if [ -z $DISPLAY ]; then
+    if [[ ! -z $xsupport ]]; then
+        if [[ -z $DISPLAY ]]; then
             printf "Env DISPLAY not set\n"
-            exit 1
+            DISPLAY="$(hostname):0"
+            printf "Using default display ${DISPLAY}\n"
+            xsupport="-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY"
         elif [ ! -d "/tmp/.X11-unix" ]; then
             printf "/tmp/.X11-unix not found\n"
             exit 1
