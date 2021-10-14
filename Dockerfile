@@ -48,9 +48,8 @@ RUN yay -S neovim exa wget bat fzf ripgrep tmux autojump strace net-tools iputil
     sudo setcap cap_net_raw+ep /usr/sbin/ping
 COPY ./config/init.vim /home/$USER/.config/nvim
 RUN sed '/call plug#end/q' /home/$USER/.config/nvim/init.vim > /home/$USER/.config/nvim/temp.vim && \
-    nvim -u /home/$USER/.config/nvim/temp.vim -c ':PlugInstall' -c ':qall' && \
+    nvim -u /home/$USER/.config/nvim/temp.vim --headless +PlugInstall +qall && \
     rm -f /home/$USER/.config/nvim/temp.vim && \
-    nvim -c ':TSInstallSync all' -c ':qall' && \
     sudo touch /usr/include/stropts.h
 
 # Change permissions

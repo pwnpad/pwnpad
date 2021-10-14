@@ -6,7 +6,7 @@ Plug 'dracula/vim'
 Plug 'shadmansaleh/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'p00f/nvim-ts-rainbow'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': 'TSUpdateSync all'}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSInstallSync all'}
 Plug 'machakann/vim-highlightedyank'
 
 Plug 'lewis6991/gitsigns.nvim'
