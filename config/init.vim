@@ -15,7 +15,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq', 'do': 'python3 -m coq deps'}
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
-Plug 'tami5/lspsaga.nvim'
+Plug 'alphatroya/lspsaga.nvim'
 Plug 'kabouzeid/nvim-lspinstall'
 
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
