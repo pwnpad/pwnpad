@@ -312,23 +312,15 @@ local lspconfig = require'lspconfig'
 local coq = require'coq'
 local lspinstall = require'lspinstall'
 
-local jedi_config = require"lspinstall/util".extract_config("jedi_language_server")
-jedi_config.default_config.cmd[1] = "./venv/bin/jedi-language-server"
-
-require'lspinstall/servers'.jedi = vim.tbl_extend('error', jedi_config, {
-     install_script = [[
-     python3 -m venv ./venv
-     ./venv/bin/pip3 install --upgrade pip
-     ./venv/bin/pip3 install --upgrade jedi-language-server
-     ]]
-})
-
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lspinstall.setup()
 local servers = lspinstall.installed_servers()
-table.insert(servers, 'clangd')
+
+if vim.api.nvim_call_function('executable', {'clangd'}) == 1 then
+    table.insert(servers, 'clangd')
+end
 
 for _, server in pairs(servers) do
     local config = {
