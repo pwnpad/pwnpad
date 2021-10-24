@@ -3,33 +3,33 @@ call plug#begin()
 
 Plug 'dracula/vim'
 
-Plug 'shadmansaleh/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'p00f/nvim-ts-rainbow'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSInstallSync all'}
 Plug 'machakann/vim-highlightedyank'
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSInstallSync all'}
+Plug 'p00f/nvim-ts-rainbow'
 
-Plug 'lewis6991/gitsigns.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } , 'on': 'FZF'}
 Plug 'junegunn/fzf.vim'
-Plug 'neovim/nvim-lspconfig'
-Plug 'ms-jpq/coq_nvim', {'branch': 'coq', 'do': 'python3 -m coq deps'}
-Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
-Plug 'alphatroya/lspsaga.nvim'
 Plug 'kabouzeid/nvim-lspinstall'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq', 'do': 'python3 -m coq deps'}
+Plug 'neovim/nvim-lspconfig'
+Plug 'tami5/lspsaga.nvim', {'branch': 'nvim51'}
 
-Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-Plug 'windwp/nvim-autopairs'
-Plug 'easymotion/vim-easymotion'
-Plug 'preservim/nerdcommenter'
 Plug 'anyakichi/vim-surround'
+Plug 'easymotion/vim-easymotion'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'preservim/nerdcommenter'
+Plug 'windwp/nvim-autopairs'
 
-Plug 'vim-scripts/LargeFile'
-Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-Plug 'nvim-treesitter/nvim-treesitter-refactor'
-Plug 'lewis6991/impatient.nvim'
 Plug 'abecodes/tabout.nvim'
+Plug 'lewis6991/impatient.nvim'
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'vim-scripts/LargeFile'
 
 call plug#end()
 """ End Of Vim-Plug -----------------------------------------------------------
@@ -328,14 +328,6 @@ for _, server in pairs(servers) do
         flags = { debounce_text_changes = 500 },
         root_dir = lspconfig.util.path.dirname,
     }
-
-    if server == 'latex' then
-        config.settings = { texlab = { build = {
-            args = { "-halt-on-error", "%f" },
-            executable = "pdflatex",
-            onSave = true,
-        }, }, }
-    end
 
     lspconfig[server].setup(coq.lsp_ensure_capabilities(config))
 end
