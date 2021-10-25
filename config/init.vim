@@ -318,10 +318,6 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 lspinstall.setup()
 local servers = lspinstall.installed_servers()
 
-if vim.api.nvim_call_function('executable', {'clangd'}) == 1 then
-    table.insert(servers, 'clangd')
-end
-
 for _, server in pairs(servers) do
     local config = {
         capabilities = capabilities,

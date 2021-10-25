@@ -82,7 +82,7 @@ RUN sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
 
 # Cleanup
 RUN yay -Scc --noconfirm && \
-    yay -Rsc $(yay -Qtdq) npm --noconfirm && \
+    yay -Rsc $(yay -Qtdq) --noconfirm && \
     sudo rm -rf /home/$USER/yay /home/$USER/.zshrc.pre-oh-my-zsh \
     /home/$USER/.zsh_history /home/$USER/.bash_profile \
     /home/$USER/.bash_logout /home/$USER/.cache /home/$USER/bin \
