@@ -1,9 +1,9 @@
-FROM lopsided/archlinux:devel
+FROM lopsided/archlinux
 
 ENV USER pwnbox
 
 RUN pacman -Syyu --noconfirm && \
-    pacman -S git zsh vi man-db man-pages npm --noconfirm && \
+    pacman -S git zsh vi man-db man-pages npm sudo --noconfirm && \
     sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     groupadd users && groupadd wheel && \
     useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
@@ -15,32 +15,15 @@ WORKDIR /home/$USER
 
 RUN curl -fsSL https://blackarch.org/strap.sh | sudo sh && \
     sudo pacman -S yay --noconfirm && \
-    yay -S neovim exa wget bat fzf ripgrep tmux autojump strace net-tools iputils wget ltrace mlocate python2-pip ufw \
+    yay -S neovim exa wget bat fzf ripgrep tmux strace net-tools iputils wget ltrace mlocate python2-pip ufw clang \
         python-pip python-virtualenv unzip unrar pigz p7zip nodejs yarn ruby rubygems openssh openvpn --noconfirm && \
     pip install --user --upgrade neovim && \
-    sudo npm install -g arch-wiki-man && \
-    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
-    mkdir -p /home/$USER/.config/nvim
+    sudo npm install -g arch-wiki-man
 
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
-    git clone https://github.com/zsh-users/zsh-autosuggestions.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-autosuggestions && \
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting && \
-    git clone https://github.com/b4b4r07/zsh-vimode-visual.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-vimode-visual && \
-    git clone https://github.com/DarrinTisdale/zsh-aliases-exa.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-aliases-exa && \
-    git clone https://github.com/hlissner/zsh-autopair.git /home/$USER/.oh-my-zsh/custom/plugins/zsh-autopair
+COPY ./config/init.lua /home/$USER/.config/nvim/init.lua
+COPY ./config/lua/ /home/$USER/.config/nvim/lua
 
-COPY ./config/zshrc /home/$USER/.zshrc
-COPY ./config/agnoster-dracula.zsh-theme /home/$USER/.oh-my-zsh/custom/themes/agnoster-dracula.zsh-theme
-COPY ./config/tmux.conf /home/$USER/.tmux.conf
-
-COPY ./config/init.vim /home/$USER/.config/nvim
-
-RUN sed '/call plug#end/q' /home/$USER/.config/nvim/init.vim > /home/$USER/.config/nvim/temp.vim && \
-    nvim -u /home/$USER/.config/nvim/temp.vim --headless +PlugInstall +qall && \
-    rm -f /home/$USER/.config/nvim/temp.vim
-
-RUN sudo chown $USER:users /home/$USER/.zshrc \
-    /home/$USER/.oh-my-zsh/custom/themes/agnoster-dracula.zsh-theme \
-    /home/$USER/.config/nvim/init.vim \
-    /home/$USER/.tmux.conf
+RUN sudo chown -R $USER:users /home/$USER/.config/nvim && \
+    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' && \
+    nvim --headless -c 'TSInstallSync c cpp python javascript markdown ruby' -c 'quitall' && \
+    /home/$USER/.config/nvim/lua/coqchad-install.sh && /home/$USER/.config/nvim/lua/tabnine-install.sh
