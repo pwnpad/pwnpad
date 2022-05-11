@@ -27,3 +27,20 @@ RUN sudo chown -R $USER:users /home/$USER/.config/nvim && \
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' && \
     nvim --headless -c 'TSInstallSync c cpp python javascript markdown ruby' -c 'quitall' && \
     /home/$USER/.config/nvim/lua/coqchad-install.sh && /home/$USER/.config/nvim/lua/tabnine-install.sh
+
+RUN yay -S afl r2ghidra ropper shellnoob binwalk foremost gnu-netcat \
+    python-gmpy2 xortool gobuster exploitdb hexedit pwndbg \
+    sqlmap z3 jad metasploit nmap perl-image-exiftool mitmproxy \
+    factordb-pycli featherduster rsactftool ngrok rustscan --noconfirm && \
+    echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
+    pip install --user --upgrade pycrypto sagemath pwntools \
+    git+https://github.com/calebstewart/pwncat.git && \
+    gem install zsteg one_gadget && \
+    mkdir -p /home/$USER/.local/bin /home/$USER/.local/share && \
+    ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
+    git clone https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
+    mkdir -p /home/$USER/.local/share/yafu && \
+    wget "https://udomain.dl.sourceforge.net/project/yafu/1.34/yafu-1.34.zip?viasf=1" -O /home/$USER/yafu-1.34.zip && \
+    unzip /home/$USER/yafu-1.34.zip -d /home/$USER/.local/share/yafu && chmod +x /home/$USER/.local/share/yafu/yafu && \
+    rm -f /home/$USER/yafu-1.34.zip /home/$USER/.local/share/yafu/*.exe && ln -sf /home/$USER/.local/share/yafu/yafu /home/$USER/.local/bin/yafu && \
+    sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap
