@@ -31,7 +31,7 @@ vim.g.dashboard_custom_section = {
     },
     e = {
         description = { "  File Explorer            ,o" },
-        command = ":CHADopen",
+        command = ":NvimTreeToggle",
     },
     f = {
         description = { "  Exit                      q" },

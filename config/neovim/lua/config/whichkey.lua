@@ -5,26 +5,14 @@ wk.setup({
 })
 
 wk.register({
-    D = { "<Cmd>DogeGenerate<CR>", "Generate docs" },
     F = { "<Cmd>lua vim.lsp.buf.formatting_sync()<CR>", "Format code" },
     T = { "<Cmd>Transparency<CR>", "Toggle Transparency" },
-    o = { "<Cmd>CHADopen<CR>", "File Explorer" },
+    o = { "<Cmd>NvimTreeToggle<CR>", "File Explorer" },
     u = { "<Cmd>UndotreeToggle<CR>", "Toggle UndoTree" },
-    m = { "<Cmd>MarkdownPreviewToggle<CR>", "Toggle Markdown Preview" },
-
-    c = {
-        name = "Copilot",
-        S = { "<Cmd>Copilot split<CR>", "Split Screen" },
-        d = { "<Cmd>Copilot disable<CR>", "Disable Copilot" },
-        e = { "<Cmd>Copilot enable<CR>", "Enable Copilot" },
-        r = { "<Cmd>Copilot restart<CR>", "Restart Copilot" },
-        s = { "<Cmd>Copilot status<CR>", "Copilot Status" },
-    },
 
     d = {
         name = "Debugger",
-        C = { "<Cmd>lua require'dap'.close()<CR>", "Close" },
-        D = { "<Cmd>lua require'dapui'.disconnect()<CR>", "Disconnect" },
+        C = { "<Cmd>lua require'dap'.disconnect()<CR>", "Close" },
         R = { "<Cmd>lua require'dap'.repl.open()<CR>", "REPL" },
         S = { "<Cmd>lua require'dap'.step_into()<CR>", "Step Into" },
         b = { "<Cmd>lua require'dap'.toggle_breakpoint()<CR>", "Toggle Breakpoint" },
@@ -39,7 +27,10 @@ wk.register({
         name = "FZF",
         ["/"] = { "<Cmd>lua require'fzf-lua'.blines()<CR>", "Lines in Buffer" },
         C = { "<Cmd>lua require'fzf-lua'.git_commits()<CR>", "Commits" },
-        D = { "<Cmd>lua require'fzf-lua'.lsp_workspace_diagnostics()<CR>", "Workspace Diagnostics" },
+        D = {
+            "<Cmd>lua require'fzf-lua'.lsp_workspace_diagnostics()<CR>",
+            "Workspace Diagnostics",
+        },
         G = { "<Cmd>lua require'fzf-lua'.git_status()<CR>", "Git Status Files" },
         M = { "<Cmd>lua require'fzf-lua'.keymaps()<CR>", "Mappings" },
         b = { "<Cmd>lua require'fzf-lua'.buffers()<CR>", "Buffers" },
@@ -72,14 +63,6 @@ wk.register({
         u = { "<Cmd>Gitsigns undo_stage_hunk<CR>", "Undo Stage Hunk" },
     },
 
-    i = {
-        name = "Instant",
-        Q = { "<Cmd>call v:lua.InstantStopServer()<CR>", "Stop Instant Server" },
-        j = { "<Cmd>call v:lua.InstantJoinSession()<CR>", "Join Instant Session" },
-        q = { "<Cmd>call v:lua.InstantStopSession()<CR>", "Stop Instant Session" },
-        s = { "<Cmd>call v:lua.InstantStartSession()<CR>", "Start Instant Session" },
-    },
-
     l = {
         name = "LSP",
         D = { "<Cmd>Lspsaga show_line_diagnostics<CR>", "Show Line Diagnostics" },
@@ -95,18 +78,6 @@ wk.register({
         r = { "<Cmd>Lspsaga rename<CR>", "Rename Variable" },
         s = { "<Cmd>Lspsaga signature_help<CR>", "Show Signature" },
     },
-
-    r = {
-        name = "REPL",
-        C = { "<Cmd>IronReplHere<CR>", "Create REPL Here" },
-        R = { "<Cmd>IronRestart<CR>", "Restart REPL" },
-        c = { "<Cmd>IronRepl<CR>", "Create REPL" },
-        f = { "<Cmd>IronFocus<CR>", "Focus" },
-        i = { "<Plug>(iron-interrupt)", "Interrupt REPL" },
-        l = { "<Plug>(iron-clear)", "Clear REPL" },
-        q = { "<Plug>(iron-exit)", "Quit REPL" },
-        r = { "<Plug>(iron-repeat-cmd)", "Repeat Command" },
-    },
 }, { mode = "n", prefix = "," })
 
 wk.register({
@@ -115,15 +86,5 @@ wk.register({
         name = "Git",
         s = { "<Cmd>Gitsigns stage_hunk<CR>", "Stage Hunk" },
         u = { "<Cmd>Gitsigns undo_stage_hunk<CR>", "Undo Stage Hunk" },
-    },
-    r = {
-        name = "REPL",
-        s = { "<Plug>(iron-visual-send)", "Send to REPL" },
-    },
-    m = {
-        name = "Magic",
-        a = { "<Plug>nvim-magic-suggest-alteration", "Alter Completion" },
-        c = { "<Plug>nvim-magic-append-completion", "Append Completion" },
-        d = { "<Plug>nvim-magic-suggest-docstring", "Suggest docstring" },
     },
 }, { mode = "v", prefix = "," })

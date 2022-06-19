@@ -1,4 +1,5 @@
 require("nvim-treesitter.configs").setup({
+    ensure_installed = { "c", "cpp", "java", "javascript", "python" },
     autotag = {
         enable = true,
     },
@@ -50,4 +51,4 @@ require("nvim-treesitter.configs").setup({
     },
 })
 
-vim.cmd("highlight TSDefinitionUsage gui=underline")
+vim.api.nvim_set_hl(0, "TSDefinitionUsage", { underline = true })

@@ -1,0 +1,172 @@
+## Python3 #################################################
+ve() {
+    if [[ -z ${VIRTUAL_ENV} ]]; then
+        if [[ ! -d venv ]]; then
+            virtualenv venv
+        fi
+        source venv/bin/activate
+        echo "python:  $(which python3)"
+        echo "pip:     $(which pip3)"
+    else
+        echo "You are already in a virtual environment"
+        return 1
+    fi
+}
+alias de='deactivate'
+
+alias python='python3'
+alias pip='pip3'
+############################################################
+
+## Misc Functions ##########################################
+# Convert text to QR code
+qrcode() {
+    if [ -z ${1} ]; then
+        echo "Usage: ${0} <string>"
+        return 1
+    else
+        printf "${1}" | curl -s -F-=\<- qrenco.de
+    fi
+}
+
+# Ulimate cheat sheet
+howdafak() {
+    if [[ -z ${1} || "${1}" == "-h" ]] then
+        echo "Usage:    ${0} [-l] <topic> [query]"
+        echo "Example:  ${0} c \"get string length\"  # Shows how to get string length in C"
+        echo "          ${0} python \"~file\"         # Uses keyword \"file\""
+        echo "          ${0} -l                     # Shows list of all topics"
+        return 1
+    elif [ ${1} = "-l" ]; then
+        curl -s "https://cht.sh/:list" | grep -v '[/:]' | xargs -s 100 | tr " " "\t"
+    else
+        topic=${1}
+        shift
+        time curl -s "https://cht.sh/${topic}/${*}/i"
+    fi
+}
+
+# List directories when directory is changed
+chpwd() {
+    exa -a --icons
+}
+
+## FZF functions ###########################################
+f() {
+    MYSEARCH="*"
+    if [ ! -z $1 ]
+    then
+        MYSEARCH="${1}"
+    fi
+
+    locate "${MYSEARCH}" | fzf -m --ansi --preview '[[ $(file --mime {}) =~ binary ]] && echo $(basename {}) is a binary file \($(file --mime-type {} | cut -d ":" -f 2 | cut -c 2-)\) || (bat --color=always --style=header,grid --line-range :200 {})'
+}
+
+ff() {
+    MYPATH="."
+    if [ ! -z $1 ]
+    then
+        MYPATH="${1}"
+    fi
+
+        FILE=$(rg ${MYPATH} --files --hidden --no-ignore-vcs -g '!.git/*' 2> /dev/null | fzf --ansi --preview '[[ $(file --mime {}) =~ binary ]] && echo $(basename {}) is a binary file \($(file --mime-type {} | cut -d ":" -f 2 | cut -c 2-)\) || (bat --color=always --style=header,grid --line-range :200 {})')
+
+    if [ ! -z $FILE ]
+    then
+        nvim "${FILE}"
+    fi
+}
+
+fd() {
+    MYPATH="."
+    if [ ! -z $1 ]
+    then
+        MYPATH="${1}"
+    fi
+
+    DIR="$(find ${MYPATH} -type d -name ".git" -prune -o -type d -print 2> /dev/null | fzf --ansi --preview 'exa -T --level 1 --color always {}')"
+
+    if [ ! -z $DIR ]
+    then
+        cd "${DIR}"
+    fi
+}
+
+ft(){
+    if [ -z ${1} ]
+    then
+        echo "Usage: ${0} <search term> [path]"
+        return
+    fi
+
+    MYPATH="."
+    if [ ! -z $2 ]
+    then
+        MYPATH="${2}"
+    fi
+
+    local match=$(
+      rg --hidden --trim --vimgrep --color=never --line-number "$1" ${MYPATH} 2> /dev/null |
+        fzf --no-multi --delimiter : \
+            --preview "bat --color=always --line-range {2}: {1}"
+      )
+    local file=$(echo "$match" | cut -d':' -f1)
+    if [[ -n $file ]]; then
+        nvim $file +$(echo "$match" | cut -d':' -f2)
+    fi
+}
+
+export FZF_DEFAULT_COMMAND='rg $(pwd) --files --hidden --no-ignore-vcs -g "!.git/*" 2> /dev/null'
+export BAT_THEME='TwoDark'
+############################################################
+
+## Ngrok ###################################################
+# Publish a port online using ngrok
+publish() {
+    local USAGE() {
+        printf "publish <start|stop|status> [port]\n"
+    }
+
+    if [ -z ${1} ]; then
+        USAGE
+        return 1
+    fi
+
+    if [ ${1} = "start" ]; then
+        if [ -z ${2} ]; then
+            USAGE
+            return 1
+        fi
+
+        if [ ! -f "$HOME/.ngrok2/ngrok.yml" ]; then
+            printf "Enter auth token: "
+            read token
+            ngrok authtoken $token
+        fi
+
+        ngrok tcp --log=stdout ${2} > /dev/null &
+        export NGROK_PID=$!
+        sleep 2
+        export NGROK_PORT=${2}
+        printf "Port forwarding 0.0.0.0:${NGROK_PORT} -> "
+        curl -s http://localhost:4040/api/tunnels | python3 -c "import sys, json; print(json.load(sys.stdin)['tunnels'][0]['public_url'])" | cut -f 3 -d '/'
+    elif [ ${1} = "stop" ]; then
+        kill $NGROK_PID
+        export NGROK_PORT=""
+    elif [ ${1} = "status" ]; then
+        printf "Port forwrding 0.0.0.0:${NGROK_PORT} -> "
+        curl -s http://localhost:4040/api/tunnels | python3 -c "import sys, json; print(json.load(sys.stdin)['tunnels'][0]['public_url'])" | cut -f 3 -d '/'
+    else
+        USAGE
+        return 1
+    fi
+}
+############################################################
+
+## Aliases #################################################
+alias vi="nvim"
+alias :q='exit'
+alias cls='clear'
+alias ls='exa --icons'
+alias cat='bat'
+############################################################

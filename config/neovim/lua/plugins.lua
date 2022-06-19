@@ -1,5 +1,3 @@
--- vim.g.python3_host_prog = '/usr/bin/python3' -- For plugins using Python
-
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
     PACKER_BOOTSTRAP = vim.fn.system({
@@ -49,6 +47,8 @@ return packer.startup(function(use)
         end,
     })
 
+    use({ "nathom/filetype.nvim" })
+
     use({
         "Pocco81/Catppuccino.nvim",
         branch = "old-catppuccino",
@@ -57,7 +57,7 @@ return packer.startup(function(use)
 
     use({
         "norcalli/nvim-colorizer.lua",
-        event = "BufReadPre",
+        event = "BufReadPost",
         config = function()
             require("colorizer").setup()
         end,
@@ -72,6 +72,7 @@ return packer.startup(function(use)
 
     use({
         "glepnir/dashboard-nvim",
+        commit = "a36b3232c98616149784f2ca2654e77caea7a522",
         requires = {
             {
                 "ibhagwan/fzf-lua",
@@ -89,24 +90,30 @@ return packer.startup(function(use)
             },
             "kyazdani42/nvim-web-devicons",
         },
+        after = "Catppuccino.nvim",
         config = getConfig("dashboard"),
     })
 
     use({
-        "ms-jpq/chadtree",
-        branch = "chad",
-        cmd = "CHADopen",
+        "kyazdani42/nvim-tree.lua",
+        requires = "kyazdani42/nvim-web-devicons",
+        cmd = "NvimTreeToggle",
+        config = function()
+            require("nvim-tree").setup({
+                disable_netrw = true,
+                hijack_cursor = true,
+            })
+        end,
     })
 
     use({
         "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
         requires = {
-            "nvim-treesitter/nvim-treesitter-refactor",
-            "windwp/nvim-ts-autotag",
-            "p00f/nvim-ts-rainbow",
-            "nvim-treesitter/nvim-treesitter-textobjects",
-            "yioneko/nvim-yati",
+            { "nvim-treesitter/nvim-treesitter-refactor", event = "VimEnter" },
+            { "windwp/nvim-ts-autotag", event = "InsertEnter" },
+            { "p00f/nvim-ts-rainbow", event = "BufEnter" },
+            { "nvim-treesitter/nvim-treesitter-textobjects", event = "BufReadPost" },
+            { "yioneko/nvim-yati", event = "BufReadPost" },
             {
                 "windwp/nvim-autopairs",
                 event = "InsertEnter",
@@ -120,7 +127,7 @@ return packer.startup(function(use)
         "machakann/vim-highlightedyank",
         event = "BufReadPost",
         config = function()
-            vim.cmd("highlight HighlightedyankRegion gui=reverse")
+            vim.api.nvim_set_hl(0, "HighlightedyankRegion", { reverse = true })
             vim.g.highlightedyank_highlight_duration = -1
         end,
     })
@@ -128,41 +135,20 @@ return packer.startup(function(use)
     use({
         "lewis6991/gitsigns.nvim",
         requires = "nvim-lua/plenary.nvim",
-        event = "BufReadPre",
+        event = "BufReadPost",
         config = getConfig("gitsigns"),
     })
 
     use({
         "neovim/nvim-lspconfig",
+        event = "BufEnter",
         requires = {
             "williamboman/nvim-lsp-installer",
             "tami5/lspsaga.nvim",
-            {
-                "ms-jpq/coq_nvim",
-                branch = "coq",
-            },
+            "ms-jpq/coq_nvim",
             "ms-jpq/coq.artifacts",
-            "ms-jpq/coq.thirdparty",
-            {
-                "PlatyPew/copilot.vim",
-                branch = "removevirt",
-                cmd = "Copilot",
-            },
         },
         config = getConfig("lsp"),
-    })
-
-    use({
-        "jameshiew/nvim-magic",
-        requires = {
-            "MunifTanjim/nui.nvim",
-            "nvim-lua/plenary.nvim",
-        },
-        ft = { "python", "javascript", "typescript", "go", "sh" },
-        event = "VimEnter",
-        config = function()
-            require("nvim-magic").setup()
-        end,
     })
 
     use({
@@ -171,15 +157,19 @@ return packer.startup(function(use)
             "rcarriga/nvim-dap-ui",
             "theHamsta/nvim-dap-virtual-text",
             "mfussenegger/nvim-jdtls",
-            "Pocco81/DAPInstall.nvim",
+            {
+                "Pocco81/dap-buddy.nvim",
+                commit = "24923c3819a450a772bb8f675926d530e829665f",
+            },
         },
-        event = "BufReadPre",
+        event = "BufReadPost",
         config = getConfig("dap"),
     })
 
     use({
         "anyakichi/vim-surround",
         requires = "tpope/vim-repeat",
+        event = "BufReadPost",
     })
 
     use({
@@ -190,49 +180,14 @@ return packer.startup(function(use)
 
     use({
         "mg979/vim-visual-multi",
-        event = "BufReadPre",
+        event = "BufReadPost",
     })
 
     use({
         "numToStr/Comment.nvim",
-        event = "VimEnter",
+        event = "BufReadPost",
         requires = "JoosepAlviste/nvim-ts-context-commentstring",
         config = getConfig("comment"),
-    })
-
-    use({
-        "KeitaNakamura/tex-conceal.vim",
-        ft = "tex",
-        config = function()
-            vim.g.tex_flavor = "latex"
-            vim.g.tex_conceal = "abdgm"
-            vim.g.tex_conceal_frac = 1
-            vim.cmd("highlight clear Conceal")
-        end,
-    })
-
-    use({
-        "hkupty/iron.nvim",
-        cmd = { "IronRepl", "IronReplHere" },
-        config = getConfig("iron"),
-    })
-
-    use({
-        "jbyuki/instant.nvim",
-        cmd = { "InstantStartServer", "InstantJoinSession" },
-        config = function()
-            vim.g.instant_username = io.popen("whoami"):read("*a"):sub(0, -2)
-        end,
-    })
-
-    use({
-        "kkoomen/vim-doge",
-        run = "./scripts/install.sh",
-        cmd = "DogeGenerate",
-        config = function()
-            vim.g.doge_mapping = "<Leader>K"
-            vim.g.doge_doc_standard_c = "kernel_doc"
-        end,
     })
 
     use({
@@ -241,10 +196,7 @@ return packer.startup(function(use)
         event = "InsertCharPre",
     })
 
-    use({
-        "mbbill/undotree",
-        cmd = "UndotreeToggle",
-    })
+    use({ "mbbill/undotree", cmd = "UndotreeToggle" })
 
     use({
         "jose-elias-alvarez/null-ls.nvim",
@@ -255,15 +207,9 @@ return packer.startup(function(use)
 
     use({ "vim-scripts/LargeFile" })
 
-    use({
-        "iamcco/markdown-preview.nvim",
-        ft = "markdown",
-        run = "cd app && npm install",
-        cmd = { "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewToggle" },
-    })
-
-    local status_ok, _ = pcall(require, "packer_compiled")
+    local status_ok, packer = pcall(require, "packer_compiled")
     if not status_ok then
+        vim.cmd("PackerCompile")
         return
     end
 

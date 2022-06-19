@@ -1,26 +1,21 @@
 -- Settings
 vim.g.coq_settings = {
     auto_start = "shut-up",
-    clients = {
-        tabnine = {
-            enabled = true,
-        },
-    },
     display = {
         mark_highlight_group = "COQMarks",
     },
     keymap = {
         recommended = false,
-        jump_to_mark = "<c-x>",
+        jump_to_mark = "<C-s>",
     },
 }
 
 local coq = require("coq")
-local coq_3p = require("coq_3p")
 local lspinstall = require("nvim-lsp-installer")
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.offsetEncoding = { "utf-16" }
 
 lspinstall.on_server_ready(function(server)
     local config = {
@@ -63,10 +58,6 @@ lspinstall.on_server_ready(function(server)
 
     server:setup(coq.lsp_ensure_capabilities(config))
 end)
-
-coq_3p({
-    { src = "copilot", short_name = "COP", accept_key = "<C-f>" },
-})
 
 require("lspsaga").init_lsp_saga({
     finder_action_keys = {

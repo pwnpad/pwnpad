@@ -4,6 +4,7 @@ require("lualine").setup({
         theme = "catppuccino",
         section_separators = { left = "", right = "" },
         component_separators = { left = "", right = "" },
+        globalstatus = true,
     },
     sections = {
         lualine_a = { "mode" },
@@ -59,7 +60,7 @@ require("lualine").setup({
                 padding = 1,
                 filetype_names = {
                     dashboard = "舘Dashboard",
-                    CHADTree = " CHADTree",
+                    NvimTree = " NvimTree",
                     ["lsp-installer"] = " LSP Install",
                     undotree = " UndoTree",
                     lspinfo = " LSP Info",

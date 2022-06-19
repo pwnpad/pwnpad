@@ -19,5 +19,6 @@ vim.cmd([[
     command Transparency lua transparency()
     syntax on
     colorscheme catppuccino
-    highlight ColorColumn guifg=#d84652 guibg=#000000
 ]])
+
+vim.api.nvim_set_hl(0, "ColorColumn", { fg = "#d84652", bg = "#000000" })
