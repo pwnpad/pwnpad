@@ -140,9 +140,9 @@ OPTIONS:
             --mount type=bind,source="$ROOT/${box_name}",target=/mnt/shared \
             --sysctl net.ipv6.conf.all.disable_ipv6=0 \
             --device /dev/net/tun \
-            -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
+            -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
             --tmpfs /run \
-            --tmpfs /tmp:exec,mode=777 \
+            --tmpfs /tmp \
             ${xsupport} \
             ${priv} \
             $env $port $volume \
