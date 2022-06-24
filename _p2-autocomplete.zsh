@@ -39,7 +39,8 @@ function _p2() {
                 build)
                     _arguments -s : \
                         '-c[compress build context]' \
-                        '-s[squash layers (requries experimental mode)]'
+                        '-s[squash layers (requries experimental mode)]' \
+                        '-p[platform]'
                     ;;
                 rm)
                     _getcontainer

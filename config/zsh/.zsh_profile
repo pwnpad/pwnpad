@@ -1,4 +1,6 @@
-export LD_LIBRARY_PATH="/lib:/lib32:/lib64"
+## Libraries for qemu ######################################
+export LD_LIBRARY_PATH="/lib:/lib64"
+############################################################
 
 ## Python3 #################################################
 ve() {
@@ -21,33 +23,6 @@ alias pip='pip3'
 ############################################################
 
 ## Misc Functions ##########################################
-# Convert text to QR code
-qrcode() {
-    if [ -z ${1} ]; then
-        echo "Usage: ${0} <string>"
-        return 1
-    else
-        printf "${1}" | curl -s -F-=\<- qrenco.de
-    fi
-}
-
-# Ulimate cheat sheet
-howdafak() {
-    if [[ -z ${1} || "${1}" == "-h" ]] then
-        echo "Usage:    ${0} [-l] <topic> [query]"
-        echo "Example:  ${0} c \"get string length\"  # Shows how to get string length in C"
-        echo "          ${0} python \"~file\"         # Uses keyword \"file\""
-        echo "          ${0} -l                     # Shows list of all topics"
-        return 1
-    elif [ ${1} = "-l" ]; then
-        curl -s "https://cht.sh/:list" | grep -v '[/:]' | xargs -s 100 | tr " " "\t"
-    else
-        topic=${1}
-        shift
-        time curl -s "https://cht.sh/${topic}/${*}/i"
-    fi
-}
-
 # List directories when directory is changed
 chpwd() {
     exa -a --icons
@@ -171,4 +146,5 @@ alias :q='exit'
 alias cls='clear'
 alias ls='exa --icons'
 alias cat='bat'
+alias gdb='gdb -q'
 ############################################################

@@ -26,14 +26,15 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
     iputils wget ltrace mlocate ufw python-pip python-virtualenv unzip unrar pigz p7zip nodejs \
     yarn openssh openvpn afl r2ghidra ropper shellnoob binwalk foremost gnu-netcat \
     python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
-    perl-image-exiftool mitmproxy rustscan python-pwntools python-pycryptodome python-r2pipe yay && \
+    perl-image-exiftool mitmproxy python-pwntools python-pycryptodome python-r2pipe yay && \
     yay -S --noconfirm metasploit-git autojump && \
     git clone --depth=1 https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
     git clone --depth=1 https://github.com/Ganapati/RsaCtfTool.git /home/$USER/.local/share/rsactftool && \
-    pip install --upgrade pwncat-cs git+https://github.com/Tib3rius/AutoRecon.git && \
+    sudo pip install --upgrade pwncat-cs git+https://github.com/Tib3rius/AutoRecon.git && \
     sudo npm install -g ngrok && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
     mkdir -p /home/$USER/.local/bin && ln -sf /home/$USER/.local/share/rsactftool/attacks/single_key/yafu /home/$USER/.local/bin/yafu && \
+    ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \
     sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared && \
     pip install neovim && nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync" && \
