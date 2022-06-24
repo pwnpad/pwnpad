@@ -1,3 +1,5 @@
+export LD_LIBRARY_PATH="/lib:/lib32:/lib64"
+
 ## Python3 #################################################
 ve() {
     if [[ -z ${VIRTUAL_ENV} ]]; then
