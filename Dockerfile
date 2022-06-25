@@ -4,7 +4,8 @@ ENV USER pwnbox
 ENV ZONE Asia
 ENV SUBZONE Singapore
 
-RUN pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
+RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 8/g' /etc/pacman.conf && \
+    pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
     sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     curl -fsSL https://blackarch.org/strap.sh | sh && \
     useradd -m -g users -G wheel -s /usr/bin/zsh $USER && touch /home/$USER/.zshrc && \
