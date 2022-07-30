@@ -28,10 +28,10 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
     yarn openssh openvpn afl r2ghidra ropper shellnoob binwalk foremost gnu-netcat \
     python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
     perl-image-exiftool mitmproxy python-pwntools python-pycryptodome python-r2pipe yay && \
-    yay -S --noconfirm metasploit-git autojump && \
+    MAKEFLAGS="-j$(nproc)" yay -S --noconfirm metasploit-git autojump && \
     git clone --depth=1 https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
     git clone --depth=1 https://github.com/Ganapati/RsaCtfTool.git /home/$USER/.local/share/rsactftool && \
-    sudo pip install --upgrade pwncat-cs git+https://github.com/Tib3rius/AutoRecon.git && \
+    sudo pip install --upgrade pip pwncat-cs git+https://github.com/Tib3rius/AutoRecon.git && \
     sudo npm install -g ngrok && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
     mkdir -p /home/$USER/.local/bin && ln -sf /home/$USER/.local/share/rsactftool/attacks/single_key/yafu /home/$USER/.local/bin/yafu && \
@@ -39,7 +39,8 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
     sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \
     sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared && \
     pip install neovim && nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync" && \
-    cd /home/$USER/.local/share/nvim/site/pack/packer/start/coq_nvim && python3 -m coq deps && \
+    cd /home/$USER/.local/share/nvim/site/pack/packer/start/coq_nvim && mkdir ./tmp && \
+    TMPDIR=./tmp python3 -m coq deps && rm -rf ./tmp && \
     nvim --headless -c "sleep 10" -c "qall" && \
     git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
     touch /home/$USER/.hushlogin && \
