@@ -31,7 +31,10 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
     MAKEFLAGS="-j$(nproc)" yay -S --noconfirm metasploit-git autojump && \
     git clone --depth=1 https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
     git clone --depth=1 https://github.com/Ganapati/RsaCtfTool.git /home/$USER/.local/share/rsactftool && \
-    sudo pip install --upgrade pip pwncat-cs git+https://github.com/Tib3rius/AutoRecon.git && \
+    virtualenv --system-site-packages /home/$USER/.local/share/venv && \
+    /home/$USER/.local/share/venv/bin/pip install --upgrade pwncat-cs && \
+    ln -sf /home/$USER/.local/share/venv/bin/pwncat-cs /home/$USER/.local/bin/pwncat-cs && \
+    pip install --upgrade --user git+https://github.com/Tib3rius/AutoRecon.git && \
     sudo npm install -g ngrok && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
     mkdir -p /home/$USER/.local/bin && ln -sf /home/$USER/.local/share/rsactftool/attacks/single_key/yafu /home/$USER/.local/bin/yafu && \
