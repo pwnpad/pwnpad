@@ -90,7 +90,7 @@ OPTIONS:
         case $options in
             P) priv="--privileged"
                 ;;
-            X) xsupport="-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY"
+            X) xsupport="-v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=host.docker.internal:0"
                 ;;
             D) detach=1
                 ;;
@@ -114,16 +114,9 @@ OPTIONS:
 
 
     # Check if there's display running x11
-    if [[ ! -z $xsupport ]]; then
-        if [[ -z $DISPLAY ]]; then
-            printf "Env DISPLAY not set\n"
-            DISPLAY="$(hostname):0"
-            printf "Using default display ${DISPLAY}\n"
-            xsupport="-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY"
-        elif [ ! -d "/tmp/.X11-unix" ]; then
-            printf "/tmp/.X11-unix not found\n"
-            exit 1
-        fi
+    if [[ ! -z $xsupport && ! -d "/tmp/.X11-unix" ]]; then
+        printf "/tmp/.X11-unix not found\n"
+        exit 1
     fi
 
     printf "Making directory...\n"
@@ -144,6 +137,7 @@ OPTIONS:
             --mount type=bind,source="$ROOT/${box_name}",target=/mnt/shared \
             --sysctl net.ipv6.conf.all.disable_ipv6=0 \
             --device /dev/net/tun \
+            --cgroupns=host \
             -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
             --tmpfs /run \
             --tmpfs /tmp \
