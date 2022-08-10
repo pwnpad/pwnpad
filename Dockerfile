@@ -25,9 +25,9 @@ COPY --chown=$USER:users ./config/tmux /home/$USER
 
 RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-tools npm \
     iputils wget ltrace mlocate ufw python-pip python-virtualenv unzip unrar pigz p7zip nodejs \
-    yarn openssh openvpn afl r2ghidra ropper shellnoob binwalk foremost gnu-netcat \
+    yarn openssh openvpn afl r2ghidra ropper binwalk foremost gnu-netcat \
     python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
-    perl-image-exiftool mitmproxy python-pwntools python-pycryptodome python-r2pipe yay && \
+    perl-image-exiftool python-pwntools python-pycryptodome python-r2pipe yay && \
     MAKEFLAGS="-j$(nproc)" yay -S --noconfirm metasploit-git autojump && \
     git clone --depth=1 https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
     git clone --depth=1 https://github.com/Ganapati/RsaCtfTool.git /home/$USER/.local/share/rsactftool && \
