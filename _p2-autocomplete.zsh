@@ -32,6 +32,7 @@ function _p2() {
                         '(-P)-P[use privileged mode (not recommended)]' \
                         '(-X)-X[support X11 forwarding]' \
                         '(-D)-D[run as daemon mode]' \
+                        '(-d)-d[display]' \
                         '(-e)-e[use environmental variables]' \
                         '(-p)-p[port range]' \
                         '(-v)-v[mount volumes]'

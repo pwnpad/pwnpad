@@ -69,6 +69,7 @@ OPTIONS:
   -D    run as daemon mode
   -e    use environmental variables
           FOO=bar
+  -d    display (use with -X)
   -p    port range (default: 42069)
           1337-31337
   -v    mount volumes
@@ -81,18 +82,21 @@ OPTIONS:
     volume=""
     priv=""
     xsupport=""
+    display=""
 
     detach=0
 
     shift
-    while getopts ":PXDe:p:v:" options
+    while getopts ":PXDe:d:p:v:" options
     do
         case $options in
             P) priv="--privileged"
                 ;;
-            X) xsupport="-v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=host.docker.internal:0"
+            X) xsupport="-v /tmp/.X11-unix:/tmp/.X11-unix:rw"
                 ;;
             D) detach=1
+                ;;
+            d) display="$OPTARG"
                 ;;
             e) env="-e $OPTARG"
                 ;;
@@ -114,9 +118,21 @@ OPTIONS:
 
 
     # Check if there's display running x11
-    if [[ ! -z $xsupport && ! -d "/tmp/.X11-unix" ]]; then
-        printf "/tmp/.X11-unix not found\n"
-        exit 1
+    if [[ ! -z $xsupport ]]; then
+        if [[ ! -d "/tmp/.X11-unix" ]]; then
+            printf "/tmp/.X11-unix not found\n"
+            exit 1
+        fi
+
+        if [[ -z $display ]]; then
+            if [[ $OSTYPE == 'darwin'* ]]; then
+                display="host.docker.internal:0"
+            else
+                display=$DISPLAY
+            fi
+        fi
+
+        xsupport="${xsupport} -e DISPLAY=${display}"
     fi
 
     printf "Making directory...\n"
