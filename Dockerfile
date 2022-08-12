@@ -1,8 +1,10 @@
+FROM platypew/gdb-multiarch as gdb
+
 FROM lopsided/archlinux:devel
 
-ENV USER pwnbox
-ENV ZONE Asia
-ENV SUBZONE Singapore
+ENV USER=pwnbox \
+    ZONE=Asia \
+    SUBZONE=Singapore
 
 RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 8/g' /etc/pacman.conf && \
     pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
@@ -22,6 +24,7 @@ WORKDIR /home/$USER
 COPY --chown=$USER:users ./config/neovim /home/$USER/.config/nvim
 COPY --chown=$USER:users ./config/zsh /home/$USER
 COPY --chown=$USER:users ./config/tmux /home/$USER
+COPY --from=gdb /gdb-multiarch.tgz /tmp
 
 RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-tools npm \
     iputils wget ltrace mlocate ufw python-pip python-virtualenv unzip unrar pigz p7zip nodejs \
@@ -29,7 +32,8 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
     python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
     perl-image-exiftool python-pwntools python-pycryptodome python-r2pipe yay && \
     sudo pacman -Rdd --noconfirm gdb && \
-    MAKEFLAGS="-j$(nproc)" yay -S --noconfirm metasploit-git gdb-multiarch autojump && \
+    sudo tar -xzf /tmp/gdb-multiarch.tgz -C / && \
+    MAKEFLAGS="-j$(nproc)" yay -S --noconfirm metasploit-git autojump && \
     git clone --depth=1 https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
     git clone --depth=1 https://github.com/Ganapati/RsaCtfTool.git /home/$USER/.local/share/rsactftool && \
     virtualenv --system-site-packages /home/$USER/.local/share/venv && \
