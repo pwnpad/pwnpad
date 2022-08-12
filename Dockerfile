@@ -1,6 +1,6 @@
 FROM platypew/gdb-multiarch as gdb
 
-FROM lopsided/archlinux:devel
+FROM lopsided/archlinux:devel as build
 
 ENV USER=pwnbox \
     ZONE=Asia \
@@ -60,4 +60,8 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
 
 USER root
 COPY ./config/docker-entrypoint.sh /
+
+FROM scratch
+COPY --from=build / /
+WORKDIR /home/pwnbox
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
