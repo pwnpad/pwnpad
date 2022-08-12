@@ -146,5 +146,5 @@ alias :q='exit'
 alias cls='clear'
 alias ls='exa --icons'
 alias cat='bat'
-alias gdb='gdb -q'
+alias gdb='gdb-multiarch -q'
 ############################################################

@@ -28,7 +28,8 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
     yarn openssh openvpn afl r2ghidra ropper binwalk foremost gnu-netcat \
     python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
     perl-image-exiftool python-pwntools python-pycryptodome python-r2pipe yay && \
-    MAKEFLAGS="-j$(nproc)" yay -S --noconfirm metasploit-git autojump && \
+    sudo pacman -Rdd --noconfirm gdb && \
+    MAKEFLAGS="-j$(nproc)" yay -S --noconfirm metasploit-git gdb-multiarch autojump && \
     git clone --depth=1 https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
     git clone --depth=1 https://github.com/Ganapati/RsaCtfTool.git /home/$USER/.local/share/rsactftool && \
     virtualenv --system-site-packages /home/$USER/.local/share/venv && \
@@ -55,4 +56,4 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
 
 USER root
 COPY ./config/docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
