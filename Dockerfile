@@ -28,9 +28,9 @@ COPY --from=gdb /gdb-multiarch.tgz /tmp
 
 RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-tools npm \
     iputils wget ltrace mlocate ufw python-pip python-virtualenv unzip unrar pigz p7zip nodejs \
-    yarn openssh openvpn afl r2ghidra ropper binwalk foremost gnu-netcat \
+    yarn openssh openvpn afl rz-ghidra ropper binwalk foremost gnu-netcat \
     python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
-    perl-image-exiftool python-pwntools python-pycryptodome python-r2pipe yay && \
+    perl-image-exiftool python-pwntools python-pycryptodome yay && \
     sudo pacman -Rdd --noconfirm gdb && \
     sudo tar -xzf /tmp/gdb-multiarch.tgz -C / && \
     wget -O /tmp/yafu.tgz https://github.com/PlatyPew/yafu-docker/releases/download/v2.09/yafu.tgz && \
@@ -44,6 +44,7 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
     sudo npm install -g ngrok && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
     mkdir -p /home/$USER/.local/bin && ln -sf /usr/bin/yafu /home/$USER/.local/share/rsactftool/attacks/single_key/yafu && \
+    ln -s /home/$USER/.local/share/rsactftool/RsaCtfTool.py /home/$USER/.local/bin/rsactftool && \
     ln -sf /home/$USER/.local/share/venv/bin/pwncat-cs /home/$USER/.local/bin/pwncat-cs && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \

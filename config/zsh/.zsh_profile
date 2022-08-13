@@ -147,4 +147,5 @@ alias cls='clear'
 alias ls='exa --icons'
 alias cat='bat'
 alias gdb='gdb-multiarch -q'
+alias r2='rizin'
 ############################################################
