@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# Yafu
+sed -i "s/% threads=1/threads=$(nproc --all)/g" /etc/yafu/yafu.ini
+
+# Systemd
 set -e
 container=docker
 export container
