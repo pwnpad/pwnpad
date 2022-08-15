@@ -70,7 +70,7 @@ OPTIONS:
   -e    use environmental variables
           FOO=bar
   -d    display (use with -X)
-  -p    port range (default: 42069)
+  -p    port range (default: 22, default port will map to random host port)
           1337-31337
   -v    mount volumes
           /foo/bar:/foo/bar\n"
@@ -78,7 +78,7 @@ OPTIONS:
     }
 
     env=""
-    port="-p $(( ((RANDOM<<15)|RANDOM) % 10000 + 40000 )):42069"
+    port="-p $(( ((RANDOM<<15)|RANDOM) % 10000 + 40000 )):22"
     volume=""
     priv=""
     xsupport=""
@@ -144,6 +144,8 @@ OPTIONS:
         printf "Container exists, reattaching...\n"
         docker start ${box_name} > /dev/null
     else
+        printf "SSH tunneling to create a proxy\n"
+        printf "ssh -D localhost:<port of proxy> pwnbox@localhost -p <port of sshd>\n"
         docker run -it -d \
             -h ${box_name} \
             --name ${box_name} \
