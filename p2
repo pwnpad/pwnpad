@@ -17,12 +17,37 @@ SUBCOMMAND:
   volume    Enter into container's volume
   ls        List pwnboxes
   update    Update image to the latest build
+  aslr      Set aslr
 
 HELP:
   ${P2} build -h
   ${P2} attach -h
   ${P2} rm -h\n"
   exit 1
+}
+
+ASLR() {
+    ASUSE() {
+        printf "USAGE:
+  ${P2} aslr <on/off>\n"
+        exit 1
+    }
+
+    aslr=""
+
+    if [[ ${2} == "on" ]]; then
+        aslr=2
+    elif [[ ${2} == "off" ]]; then
+        aslr=0
+    else
+        ASUSE
+    fi
+
+    if [[ $OSTYPE == 'darwin'* ]]; then
+        docker run -it --rm --privileged --pid=host justincormack/nsenter1 /bin/sh -c "echo ${aslr} > /proc/sys/kernel/randomize_va_space"
+    else
+        echo "${aslr}" | sudo tee /proc/sys/kernel/randomize_va_space > /dev/null
+    fi
 }
 
 # Build docker image
@@ -306,6 +331,8 @@ case ${1} in
     ls) LIST
         ;;
     update) UPDATE
+        ;;
+    aslr) ASLR $@
         ;;
     *) USAGE
         ;;
