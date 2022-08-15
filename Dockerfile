@@ -1,6 +1,3 @@
-FROM platypew/gdb-multiarch as gdb
-
-
 FROM lopsided/archlinux:devel as build
 
 ENV USER pwnbox
@@ -26,7 +23,6 @@ WORKDIR /home/$USER
 COPY --chown=$USER:users ./config/neovim /home/$USER/.config/nvim
 COPY --chown=$USER:users ./config/zsh /home/$USER
 COPY --chown=$USER:users ./config/tmux /home/$USER
-COPY --from=gdb /gdb-multiarch.tgz /tmp
 
 RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-tools npm \
     iputils wget ltrace mlocate ufw python-pip python-virtualenv unzip unrar pigz p7zip nodejs \
@@ -34,6 +30,15 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
     python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
     perl-image-exiftool python-pwntools python-pycryptodome yay && \
     sudo pacman -Rdd --noconfirm gdb && \
+    if [ "$(uname -m)" == "aarch64" ]; then \
+        sudo pacman -S --noconfirm qemu-user && cp /usr/sbin/qemu-i386 /usr/sbin/qemu-x86_64 /tmp && \
+        sudo pacman -Rsc --noconfirm qemu-user && sudo pacman -S --noconfirm liburing && sudo mv /tmp/qemu-i386 /tmp/qemu-x86_64 /usr/sbin && \
+        wget -O /tmp/gdb-multiarch.tgz https://github.com/PlatyPew/gdb-multiarch-docker/releases/download/v12.1/gdb-multiarch-arm64.tgz && \
+        wget -O /tmp/binutils.tgz https://github.com/PlatyPew/x86_64-elf-binutils-aarch64/releases/download/v2.38/binutils-arm64.tgz && \
+        sudo tar -xzf /tmp/binutils.tgz -C / ; \
+    else \
+        wget -O /tmp/gdb-multiarch.tgz https://github.com/PlatyPew/gdb-multiarch-docker/releases/download/v12.1/gdb-multiarch-amd64.tgz ; \
+    fi && \
     sudo tar -xzf /tmp/gdb-multiarch.tgz -C / && \
     wget -O /tmp/yafu.tgz https://github.com/PlatyPew/yafu-docker/releases/download/v2.09/yafu.tgz && \
     sudo tar -xzf /tmp/yafu.tgz -C / && \
@@ -59,10 +64,6 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
     git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
     touch /home/$USER/.hushlogin && \
     zsh -c "source /home/$USER/.zshrc && /home/$USER/.zgenom/sources/romkatv/powerlevel10k/___/gitstatus/install" && \
-    if [ "$(uname -m)" == "aarch64" ]; then \
-        sudo pacman -S --noconfirm qemu-user && cp /usr/sbin/qemu-i386 /usr/sbin/qemu-x86_64 /tmp && \
-        sudo pacman -Rsc --noconfirm qemu-user && sudo pacman -S --noconfirm liburing && sudo mv /tmp/qemu-i386 /tmp/qemu-x86_64 /usr/sbin; \
-    fi && \
     yay -Scc --noconfirm && yay -Rsc --noconfirm npm && yay -Rsc --noconfirm $(yay -Qtdq | grep -v gdb-common) || true && \
     sudo rm -rf /home/$USER/.zshrc.pre-oh-my-zsh /home/$USER/.zsh_history /home/$USER/.bash_profile /home/$USER/.wget-hsts \
     /home/$USER/.bash_logout /home/$USER/.bundle /tmp/* /var/cache /home/$USER/.cache/pip /home/$USER/.cache/yay && \
