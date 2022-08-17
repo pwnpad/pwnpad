@@ -25,7 +25,7 @@ COPY --chown=$USER:users ./config/zsh /home/$USER
 COPY --chown=$USER:users ./config/tmux /home/$USER
 
 RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-tools npm \
-    iputils wget ltrace mlocate ufw python-pip python-virtualenv unzip unrar pigz p7zip nodejs \
+    iputils wget ltrace procps-ng mlocate python-pip python-virtualenv unzip unrar pigz p7zip nodejs \
     yarn openssh openvpn afl rz-ghidra ropper binwalk foremost gnu-netcat \
     python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
     perl-image-exiftool python-pwntools python-pycryptodome yay && \
@@ -34,17 +34,20 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
         sudo pacman -S --noconfirm qemu-user && cp /usr/sbin/qemu-i386 /usr/sbin/qemu-x86_64 /tmp && \
         sudo pacman -Rsc --noconfirm qemu-user && sudo pacman -S --noconfirm liburing && sudo mv /tmp/qemu-i386 /tmp/qemu-x86_64 /usr/sbin && \
         wget -O /tmp/gdb-multiarch.pkg.tar.xz https://github.com/PlatyPew/gdb-multiarch-arch/releases/download/v12.1/gdb-multiarch-12.1-1-aarch64.pkg.tar.xz && \
+        wget -O /tmp/metasploit-pkg.tar.xz https://github.com/PlatyPew/metasploit-arch/releases/download/v6.2.11/metasploit-6.2.11-1-aarch64.pkg.tar.xz && \
+        sudo pacman -U --noconfirm /tmp/metasploit-pkg.tar.xz && \
         wget -O /tmp/binutils.tgz https://github.com/PlatyPew/x86_64-elf-binutils-aarch64/releases/download/v2.38/binutils-arm64.tgz && \
         sudo tar -xzf /tmp/binutils.tgz -C / ; \
     else \
-        wget -O /tmp/gdb-multiarch.pkg.tar.xz https://github.com/PlatyPew/gdb-multiarch-arch/releases/download/v12.1/gdb-multiarch-12.1-1-x86_64.pkg.tar.zst ; \
+        wget -O /tmp/gdb-multiarch.pkg.tar.xz https://github.com/PlatyPew/gdb-multiarch-arch/releases/download/v12.1/gdb-multiarch-12.1-1-x86_64.pkg.tar.zst && \
+        sudo pacman -S --noconfirm metasploit ; \
     fi && \
     sudo pacman -U --noconfirm /tmp/gdb-multiarch.pkg.tar.xz && \
     wget -O /tmp/yafu.tgz https://github.com/PlatyPew/yafu-docker/releases/download/v2.09/yafu.tgz && \
     sudo tar -xzf /tmp/yafu.tgz -C / && \
     sudo sed -i 's/ecm_path=\.\.\\gmp-ecm\\bin\\x64\\Release\\ecm.exe/ecm_path=\/usr\/sbin\/ecm/g' /etc/yafu/yafu.ini && \
     sudo pacman -S --noconfirm gmp-ecm --overwrite \* && \
-    MAKEFLAGS="-j$(nproc)" yay -S --noconfirm metasploit-git autojump && \
+    MAKEFLAGS="-j$(nproc)" yay -S --noconfirm autojump && \
     git clone --depth=1 https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
     git clone --depth=1 https://github.com/Ganapati/RsaCtfTool.git /home/$USER/.local/share/rsactftool && \
     virtualenv --system-site-packages /home/$USER/.local/share/venv && \
@@ -65,7 +68,7 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
     git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
     touch /home/$USER/.hushlogin && \
     zsh -c "source /home/$USER/.zshrc && /home/$USER/.zgenom/sources/romkatv/powerlevel10k/___/gitstatus/install" && \
-    yay -Scc --noconfirm && yay -Rsc --noconfirm npm && yay -Rsc --noconfirm $(yay -Qtdq | grep -v gdb-common) || true && \
+    yay -Scc --noconfirm && yay -Rsc --noconfirm npm && yay -Rsc --noconfirm $(yay -Qtdq) || true && \
     sudo rm -rf /home/$USER/.zshrc.pre-oh-my-zsh /home/$USER/.zsh_history /home/$USER/.bash_profile /home/$USER/.wget-hsts \
     /home/$USER/.bash_logout /home/$USER/.bundle /tmp/* /var/cache /home/$USER/.cache/pip /home/$USER/.cache/yay && \
     sudo updatedb
