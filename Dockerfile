@@ -26,7 +26,7 @@ COPY --chown=$USER:users ./config/tmux /home/$USER
 
 RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-tools npm \
     iputils wget ltrace procps-ng mlocate python-pip python-virtualenv unzip unrar pigz p7zip nodejs \
-    yarn openssh openvpn afl rz-ghidra ropper binwalk foremost gnu-netcat \
+    yarn openssh openvpn rz-ghidra ropper binwalk foremost gnu-netcat \
     python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
     perl-image-exiftool python-pwntools python-pycryptodome yay && \
     sudo pacman -Rdd --noconfirm gdb && \
@@ -36,11 +36,13 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
         wget -O /tmp/gdb-multiarch.pkg.tar.xz https://github.com/PlatyPew/gdb-multiarch-arch/releases/download/v12.1/gdb-multiarch-12.1-1-aarch64.pkg.tar.xz && \
         wget -O /tmp/metasploit-pkg.tar.xz https://github.com/PlatyPew/metasploit-arch/releases/download/v6.2.11/metasploit-6.2.11-1-aarch64.pkg.tar.xz && \
         sudo pacman -U --noconfirm /tmp/metasploit-pkg.tar.xz && \
+        wget -O /tmp/aflplusplus.pkg.tar.xz https://github.com/PlatyPew/aflplusplus-arch/releases/download/v4.02c/aflplusplus-4.02c-1-aarch64.pkg.tar.xz && \
+        sudo pacman -U --noconfirm /tmp/aflplusplus.pkg.tar.xz && \
         wget -O /tmp/binutils.tgz https://github.com/PlatyPew/x86_64-elf-binutils-aarch64/releases/download/v2.38/binutils-arm64.tgz && \
         sudo tar -xzf /tmp/binutils.tgz -C / ; \
     else \
         wget -O /tmp/gdb-multiarch.pkg.tar.xz https://github.com/PlatyPew/gdb-multiarch-arch/releases/download/v12.1/gdb-multiarch-12.1-1-x86_64.pkg.tar.zst && \
-        sudo pacman -S --noconfirm metasploit ; \
+        sudo pacman -S --noconfirm aflplusplus metasploit ; \
     fi && \
     sudo pacman -U --noconfirm /tmp/gdb-multiarch.pkg.tar.xz && \
     wget -O /tmp/yafu.tgz https://github.com/PlatyPew/yafu-docker/releases/download/v2.09/yafu.tgz && \
