@@ -145,7 +145,7 @@ return packer.startup(function(use)
         requires = {
             "williamboman/nvim-lsp-installer",
             "tami5/lspsaga.nvim",
-            { "PlatyPew/coq_nvim", branch = "fix/upstream" },
+            { "PlatyPew/coq_nvim", branch = "coq" },
             "ms-jpq/coq.artifacts",
         },
         config = getConfig("lsp"),
