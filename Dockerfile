@@ -9,6 +9,7 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
     pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
     sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     curl -fsSL https://blackarch.org/strap.sh | sh && \
+    printf "[pwnbox]\nSigLevel = Optional TrustedOnly\nServer = https://raw.githubusercontent.com/platypew/pwnbox2-repo/master/\$arch\n" >> /etc/pacman.conf && \
     useradd -m -g users -G wheel -s /usr/bin/zsh $USER && touch /home/$USER/.zshrc && \
     cat /usr/share/zoneinfo/$ZONE/$SUBZONE > /etc/localtime && \
     if [ ! -d "/lib64" ]; then \
@@ -28,23 +29,15 @@ RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-t
     iputils wget ltrace procps-ng mlocate python-pip python-virtualenv unzip unrar pigz p7zip nodejs \
     yarn openssh openvpn rz-ghidra ropper binwalk foremost gnu-netcat \
     python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
-    perl-image-exiftool python-pwntools python-pycryptodome yay && \
+    perl-image-exiftool python-pwntools python-pycryptodome yay \
+    metasploit gdb-multiarch aflplusplus && \
     sudo pacman -Rdd --noconfirm gdb && \
     if [ "$(uname -m)" == "aarch64" ]; then \
         sudo pacman -S --noconfirm qemu-user && cp /usr/sbin/qemu-i386 /usr/sbin/qemu-x86_64 /tmp && \
         sudo pacman -Rsc --noconfirm qemu-user && sudo pacman -S --noconfirm liburing && sudo mv /tmp/qemu-i386 /tmp/qemu-x86_64 /usr/sbin && \
-        wget -O /tmp/gdb-multiarch.pkg.tar.xz https://github.com/PlatyPew/gdb-multiarch-arch/releases/download/v12.1/gdb-multiarch-12.1-1-aarch64.pkg.tar.xz && \
-        wget -O /tmp/metasploit-pkg.tar.xz https://github.com/PlatyPew/metasploit-arch/releases/download/v6.2.11/metasploit-6.2.11-1-aarch64.pkg.tar.xz && \
-        sudo pacman -U --noconfirm /tmp/metasploit-pkg.tar.xz && \
-        wget -O /tmp/aflplusplus.pkg.tar.xz https://github.com/PlatyPew/aflplusplus-arch/releases/download/v4.02c/aflplusplus-4.02c-1-aarch64.pkg.tar.xz && \
-        sudo pacman -U --noconfirm /tmp/aflplusplus.pkg.tar.xz && \
         wget -O /tmp/binutils.tgz https://github.com/PlatyPew/x86_64-elf-binutils-aarch64/releases/download/v2.38/binutils-arm64.tgz && \
         sudo tar -xzf /tmp/binutils.tgz -C / ; \
-    else \
-        wget -O /tmp/gdb-multiarch.pkg.tar.xz https://github.com/PlatyPew/gdb-multiarch-arch/releases/download/v12.1/gdb-multiarch-12.1-1-x86_64.pkg.tar.zst && \
-        sudo pacman -S --noconfirm aflplusplus metasploit ; \
     fi && \
-    sudo pacman -U --noconfirm /tmp/gdb-multiarch.pkg.tar.xz && \
     wget -O /tmp/yafu.tgz https://github.com/PlatyPew/yafu-docker/releases/download/v2.09/yafu.tgz && \
     sudo tar -xzf /tmp/yafu.tgz -C / && \
     sudo sed -i 's/ecm_path=\.\.\\gmp-ecm\\bin\\x64\\Release\\ecm.exe/ecm_path=\/usr\/sbin\/ecm/g' /etc/yafu/yafu.ini && \
