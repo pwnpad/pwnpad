@@ -25,7 +25,7 @@ COPY --chown=$USER:users ./config/neovim /home/$USER/.config/nvim
 COPY --chown=$USER:users ./config/zsh /home/$USER
 COPY --chown=$USER:users ./config/tmux /home/$USER
 
-RUN sudo pacman -S --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-tools npm \
+RUN sudo pacman -Sy --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-tools npm \
     iputils wget ltrace procps-ng mlocate python-pip python-virtualenv unzip unrar pigz p7zip nodejs \
     yarn openssh openvpn rz-ghidra ropper binwalk foremost gnu-netcat \
     python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
