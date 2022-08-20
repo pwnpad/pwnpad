@@ -3,6 +3,9 @@
 # Yafu
 sed -i "s/% threads=1/threads=$(nproc --all)/g" /etc/yafu/yafu.ini
 
+# Timezone
+cat /usr/share/zoneinfo/$(curl -fsSL https://ipapi.co/timezone) > /etc/localtime &
+
 # Systemd
 set -e
 container=docker

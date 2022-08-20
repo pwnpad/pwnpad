@@ -3,10 +3,6 @@ FROM lopsided/archlinux:devel as build
 # Define user
 ENV USER pwnbox
 
-# Get current zone and subzone
-ARG ZONE=Asia \
-    SUBZONE=Singapore
-
 # Setup base pacman repositories
 RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf && \
     pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
@@ -15,8 +11,8 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
     curl -fsSL https://blackarch.org/strap.sh | sh
 
 # Setup users
-RUN useradd -m -g users -G wheel -s /usr/bin/zsh $USER && touch /home/$USER/.zshrc && \
-    cat /usr/share/zoneinfo/$ZONE/$SUBZONE > /etc/localtime
+RUN useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
+    touch /home/$USER/.zshrc
 
 # Download i386 and x86_64 glibc
 RUN if [ ! -d "/lib64" ]; then \
