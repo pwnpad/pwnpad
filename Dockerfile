@@ -35,8 +35,7 @@ RUN sudo pacman -Sy --noconfirm neovim exa wget bat fzf ripgrep tmux strace net-
     if [ "$(uname -m)" == "aarch64" ]; then \
         sudo pacman -S --noconfirm qemu-user && cp /usr/sbin/qemu-i386 /usr/sbin/qemu-x86_64 /tmp && \
         sudo pacman -Rsc --noconfirm qemu-user && sudo pacman -S --noconfirm liburing && sudo mv /tmp/qemu-i386 /tmp/qemu-x86_64 /usr/sbin && \
-        wget -O /tmp/binutils.tgz https://github.com/PlatyPew/x86_64-elf-binutils-aarch64/releases/download/v2.38/binutils-arm64.tgz && \
-        sudo tar -xzf /tmp/binutils.tgz -C / ; \
+        sudo pacman -S --noconfirm x86_64-elf-binutils ; \
     fi && \
     wget -O /tmp/yafu.tgz https://github.com/PlatyPew/yafu-docker/releases/download/v2.09/yafu.tgz && \
     sudo tar -xzf /tmp/yafu.tgz -C / && \
