@@ -4,7 +4,7 @@
 sed -i "s/% threads=1/threads=$(nproc --all)/g" /etc/yafu/yafu.ini
 
 # Timezone
-cat /usr/share/zoneinfo/$(curl -fsSL https://ipapi.co/timezone) > /etc/localtime &
+cat /usr/share/zoneinfo/${TZ} > /etc/localtime &
 
 # Systemd
 set -e

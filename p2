@@ -160,6 +160,13 @@ OPTIONS:
         xsupport="${xsupport} -e DISPLAY=${display}"
     fi
 
+    tz=""
+    if [[ $OSTYPE == 'darwin'* ]]; then
+        tz=$(readlink /etc/localtime | sed 's#/var/db/timezone/zoneinfo/##g')
+    else
+        tz=$(readlink /etc/localtime | sed 's#/usr/share/zoneinfo/##g')
+    fi
+
     printf "Making directory...\n"
     mkdir $ROOT/${box_name} 2> /dev/null
     printf "Directory located at: $ROOT/${box_name}\n"
@@ -174,6 +181,7 @@ OPTIONS:
         docker run -it -d \
             -h ${box_name} \
             --name ${box_name} \
+            -e TZ=${tz} \
             --cap-add=SYS_PTRACE \
             --cap-add=NET_ADMIN \
             --security-opt seccomp=unconfined \
