@@ -88,7 +88,7 @@ RUN git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
 # Clean system
 RUN yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) || true && \
     sudo rm -rf /home/$USER/.zshrc.pre-oh-my-zsh /home/$USER/.zsh_history /home/$USER/.bash_profile /home/$USER/.wget-hsts \
-    /home/$USER/.bash_logout /home/$USER/.bundle /tmp/* /var/cache /home/$USER/.cache/pip /home/$USER/.cache/yay && \
+         /home/$USER/.bash_logout /home/$USER/.bundle /tmp/* /var/cache /home/$USER/.cache/pip /home/$USER/.cache/yay && \
     sudo updatedb
 
 # Setup for systemd
