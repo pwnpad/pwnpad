@@ -78,7 +78,8 @@ RUN yay -S --noconfirm autojump && \
 RUN pip install neovim && nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync" && \
     cd /home/$USER/.local/share/nvim/site/pack/packer/start/coq_nvim && mkdir ./tmp && \
     TMPDIR=./tmp python3 -m coq deps && rm -rf ./tmp && \
-    nvim --headless -c "TSInstallSync c cpp java javascript python" -c "qall"
+    nvim --headless -c "TSInstallSync c cpp java javascript python" -c "qall" && \
+    nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerInstall coq.artifacts"
 
 # Setup zgenom
 RUN git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
