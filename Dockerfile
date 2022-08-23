@@ -17,10 +17,10 @@ RUN useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
 # Download i386 and x86_64 glibc
 RUN if [ ! -d "/lib64" ]; then \
         mkdir /tmp/glibc && \
-        curl -fsSL https://archlinux.org/packages/core/x86_64/glibc/download | bsdtar -C /tmp/glibc -xvf - && \
+        curl -fsSL https://archlinux.org/packages/core/x86_64/glibc/download | bsdtar -C /tmp/glibc -xf - && \
         mv /tmp/glibc/usr/lib /lib64; \
     fi && \
-    curl -fsSL https://archlinux.org/packages/core/x86_64/lib32-glibc/download | bsdtar -C / -xvf -
+    curl -fsSL https://archlinux.org/packages/core/x86_64/lib32-glibc/download | bsdtar -C / -xf -
 
 USER $USER
 WORKDIR /home/$USER
