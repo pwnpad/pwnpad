@@ -140,6 +140,16 @@ publish() {
 }
 ############################################################
 
+### ASLR Toggle ############################################
+aslr() {
+    if [[ ${1} == off && ${ASLR_DISABLE} != 1 ]]; then
+        zsh -c "export ASLR_DISABLE=1; setarch `uname -m` -R /bin/zsh"
+    elif [[ ${1} == on && ${ASLR_DISABLE} == 1 ]]; then
+        exit
+    fi
+}
+############################################################
+
 ## Aliases #################################################
 alias vi="nvim"
 alias :q='exit'

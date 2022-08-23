@@ -31,6 +31,7 @@
   # Right prompt segments.
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
     background_jobs
+    my_aslr_status
     date
     time_joined
   )
@@ -85,6 +86,11 @@
   typeset -g POWERLEVEL9K_DATE_FORMAT="%D{%d-%b-%y}"
 
   typeset -g POWERLEVEL9K_TIME_FORMAT="%D{%H:%M}"
+
+  function prompt_my_aslr_status() {
+      [[ $ASLR_DISABLE == 1 ]] && p10k segment -b 9 -f 15 -i $'\uF074 ' -t 'ASLR' || \
+          p10k segment -b 10 -f 0 -i $'\uF074 ' -t 'ASLR'
+  }
 
   function p10k-on-pre-prompt() {
     p10k display '1'=show 'empty_line'=hide '*/load'=show '*/ram'=show '*/wifi'=show
