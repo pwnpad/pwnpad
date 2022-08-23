@@ -35,7 +35,8 @@ function _p2() {
                         '(-d)-d[display]' \
                         '(-e)-e[use environmental variables]' \
                         '(-p)-p[port range]' \
-                        '(-v)-v[mount volumes]'
+                        '(-v)-v[mount volumes]' \
+                        '(-i)-i[select image]'
                     ;;
                 build)
                     _arguments -s : \

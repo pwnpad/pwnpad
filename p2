@@ -73,7 +73,9 @@ OPTIONS:
   -p    port range (default: 22, default port will map to random host port)
           1337-31337
   -v    mount volumes
-          /foo/bar:/foo/bar\n"
+          /foo/bar:/foo/bar
+  -i    select image (default: latest)
+          latest/extra\n"
         exit 1
     }
 
@@ -83,11 +85,12 @@ OPTIONS:
     priv=""
     xsupport=""
     display=""
+    image="latest"
 
     detach=0
 
     shift
-    while getopts ":PXDe:d:p:v:" options
+    while getopts ":PXDe:d:p:v:i:" options
     do
         case $options in
             P) priv="--privileged"
@@ -103,6 +106,8 @@ OPTIONS:
             p) port="-p $OPTARG:$OPTARG"
                 ;;
             v) volume="-v $OPTARG"
+                ;;
+            i) image="$OPTARG"
                 ;;
             *) AUSE
                 ;;
@@ -170,7 +175,7 @@ OPTIONS:
             ${xsupport} \
             ${priv} \
             $env $port $volume \
-            platypew/pwnbox2 sh
+            platypew/pwnbox2:${image} sh
 
         if [ $? -ne 0 ]; then
             printf "An error has occured. Check arguments\n\n"
@@ -282,7 +287,8 @@ VOLUME() {
 }
 
 LIST() {
-    docker container ls -a --filter "ancestor=platypew/pwnbox2" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}\t{{.Ports}}"
+    docker container ls -a --filter "ancestor=platypew/pwnbox2:latest" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}\t{{.Ports}}" | tail -n +2
+    docker container ls -a --filter "ancestor=platypew/pwnbox2:extra" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}\t{{.Ports}}" | tail -n +2
 }
 
 UPDATE() {
