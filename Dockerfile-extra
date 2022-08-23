@@ -3,7 +3,7 @@ FROM platypew/pwnbox2:latest
 ENV USER pwnbox
 USER $USER
 
-RUN sudo pacman -S --noconfirm arp-scan commix creddump crunch dbd dns2tcp dnsenum enum4linux \
+RUN sudo pacman -Syu --noconfirm arp-scan commix creddump crunch dbd dns2tcp dnsenum enum4linux \
     expect fping hashcat hashcat-utils hping i2c-tools ike-scan inetsim iodine john laudanum lbd \
     masscan mimikatz mitmproxy nasm nbtscan ncrack netsed netsniff-ng ngrep nikto onesixtyone \
     patator rbndr recon-ng redsocks samdump2 scalpel set sleuthkit snmpcheck socat spiderfoot spike \
