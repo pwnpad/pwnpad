@@ -55,9 +55,6 @@ function _p2() {
                 volume)
                     _getcontainer
                     ;;
-                aslr)
-                    compadd on off
-                    ;;
             esac
             ;;
     esac
