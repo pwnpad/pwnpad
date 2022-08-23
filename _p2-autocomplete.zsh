@@ -10,7 +10,6 @@ function _p2() {
             'volume:Enter into container volume'
             'ls:List pwnboxes'
             'update:Update image to the latest build'
-            'aslr:Enable or disable ASLR'
         )
         _describe 'command' commands
     }
