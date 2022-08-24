@@ -3,12 +3,12 @@ FROM platypew/pwnbox2:latest
 ENV USER pwnbox
 USER $USER
 
-RUN sudo pacman -Syu --noconfirm arp-scan commix creddump crunch dbd dns2tcp dnsenum enum4linux \
-    expect fping hashcat hashcat-utils hping i2c-tools ike-scan inetsim iodine john laudanum lbd \
-    masscan mimikatz mitmproxy nasm nbtscan ncrack netsed netsniff-ng ngrep nikto onesixtyone \
-    patator rbndr recon-ng redsocks samdump2 scalpel set sleuthkit snmpcheck socat spiderfoot spike \
-    swaks tcpreplay thc-ipv6 thc-pptp-bruter traceroute udptunnel unix-privesc-check \
-    upx wafw00f wce webshells whatweb whois windows-binaries && \
+RUN sudo pacman -Syu --noconfirm arp-scan autorecon commix creddump crunch dbd dns2tcp dnsenum \
+    enum4linux expect fping hashcat hashcat-utils hping i2c-tools ike-scan inetsim iodine john \
+    laudanum lbd masscan mimikatz mitmproxy nasm nbtscan ncrack netsed netsniff-ng ngrep nikto \
+    onesixtyone patator rbndr recon-ng redsocks samdump2 scalpel set sleuthkit snmpcheck socat \
+    spiderfoot spike swaks tcpreplay thc-ipv6 thc-pptp-bruter traceroute udptunnel \
+    unix-privesc-check upx wafw00f wce webshells whatweb whois windows-binaries && \
     if [ "$(uname -m)" == "aarch64" ]; then \
         wget -O /tmp/donut.pkg.tar.zst \
             "https://github.com/PlatyPew/pwnbox2-repo/blob/master/x86_64/donut-368.dafea17-3-x86_64.pkg.tar.zst?raw=true" && \

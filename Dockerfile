@@ -83,10 +83,9 @@ RUN git clone --depth=1 https://github.com/niklasb/libc-database.git \
     ln -sf /usr/bin/yafu /home/$USER/.local/share/rsactftool/attacks/single_key/yafu && \
     ln -s /home/$USER/.local/share/rsactftool/RsaCtfTool.py /home/$USER/.local/bin/rsactftool
 
-# Download autorecon and pwncat-cs
+# Download pwncat-cs
 RUN virtualenv --system-site-packages /home/$USER/.local/share/venv && \
     /home/$USER/.local/share/venv/bin/pip install --upgrade pwncat-cs && \
-    pip install --upgrade --user git+https://github.com/Tib3rius/AutoRecon.git && \
     ln -sf /home/$USER/.local/share/venv/bin/pwncat-cs /home/$USER/.local/bin/pwncat
 
 # Setup Qol tools
