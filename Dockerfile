@@ -10,6 +10,16 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
     printf "[pwnbox]\nSigLevel = Optional TrustedOnly\nServer = https://raw.githubusercontent.com/platypew/pwnbox2-repo/master/\$arch\n" >> /etc/pacman.conf && \
     curl -fsSL https://blackarch.org/strap.sh | sh
 
+# Setup better sources for x86
+RUN if [ "$(uname -m)" == "x86_64" ]; then \
+        printf '%s\n%s\n%s\n%s\n' \
+            'Server = http://mirror.rackspace.com/archlinux/$repo/os/$arch' \
+            'Server = http://mirrors.acm.wpi.edu/archlinux/$repo/os/$arch' \
+            'Server = http://archlinux.uk.mirror.allworldit.com/archlinux/$repo/os/$arch' \
+            'Server = http://mirror.0x.sg/archlinux/$repo/os/$arch' > /etc/pacman.d/mirrorlist && \
+        sudo pacman -S --noconfirm x86_64-elf-binutils ; \
+    fi
+
 # Setup users
 RUN useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
     touch /home/$USER/.zshrc
