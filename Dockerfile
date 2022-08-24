@@ -21,7 +21,8 @@ RUN if [ "$(uname -m)" == "x86_64" ]; then \
                'Server = http://archlinux.uk.mirror.allworldit.com/archlinux/$repo/os/$arch' \
                'Server = http://mirror.0x.sg/archlinux/$repo/os/$arch' \
                 > /etc/pacman.d/mirrorlist ; \
-    fi
+    fi && \
+    sudo pacman -Sy
 
 # Setup users
 RUN useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
