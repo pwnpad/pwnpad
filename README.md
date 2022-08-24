@@ -4,7 +4,7 @@
     <br/>
     <a href="https://github.com/PlatyPew/PwnBox2/actions"><img src="https://github.com/PlatyPew/PwnBox2/actions/workflows/docker-image.yml/badge.svg"></a>
     <br/>
-    <a href="https://gitlab.com/PlatyPew/PwnBox2/-/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg"></a>
+    <a href="https://github.com/PlatyPew/PwnBox2/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg"></a>
     <a href="https://hub.docker.com/_/docker"><img src="https://img.shields.io/badge/docker-20.10.17-blue.svg"></a>
     <br/>
     <h1>PwnBox2</h1>
@@ -26,7 +26,7 @@
 
 PwnBox2 can be downloaded using the git command
 ```
-git clone https://gitlab.com/PlatyPew/PwnBox2.git
+git clone https://github.com/PlatyPew/PwnBox2.git
 ```
 
 ```bash
@@ -135,5 +135,5 @@ HELP:
 
 <div align="center">
     <h1>License</h1>
-    <p>This project is released under the <a href="https://gitlab.com/PlatyPew/PwnBox2/-/blob/master/LICENSE">MIT License</a></p>
+    <p>This project is released under the <a href="https://github.com/PlatyPew/PwnBox2/blob/master/LICENSE">MIT License</a></p>
 </div>
