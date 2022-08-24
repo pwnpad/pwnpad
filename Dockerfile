@@ -7,16 +7,20 @@ ENV USER pwnbox
 RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf && \
     pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
     sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
-    printf "[pwnbox]\nSigLevel = Optional TrustedOnly\nServer = https://raw.githubusercontent.com/platypew/pwnbox2-repo/master/\$arch\n" >> /etc/pacman.conf && \
-    curl -fsSL https://blackarch.org/strap.sh | sh
+    curl -fsSL https://blackarch.org/strap.sh | sh && \
+    printf '\n%s\n%s\n%s\n' \
+           '[pwnbox]' 'SigLevel = Optional TrustedOnly' \
+           'Server = https://raw.githubusercontent.com/platypew/pwnbox2-repo/master/$arch' \
+            >> /etc/pacman.conf
 
 # Setup better sources for x86
 RUN if [ "$(uname -m)" == "x86_64" ]; then \
         printf '%s\n%s\n%s\n%s\n' \
-            'Server = http://mirror.rackspace.com/archlinux/$repo/os/$arch' \
-            'Server = http://mirrors.acm.wpi.edu/archlinux/$repo/os/$arch' \
-            'Server = http://archlinux.uk.mirror.allworldit.com/archlinux/$repo/os/$arch' \
-            'Server = http://mirror.0x.sg/archlinux/$repo/os/$arch' > /etc/pacman.d/mirrorlist ; \
+               'Server = http://mirror.rackspace.com/archlinux/$repo/os/$arch' \
+               'Server = http://mirrors.acm.wpi.edu/archlinux/$repo/os/$arch' \
+               'Server = http://archlinux.uk.mirror.allworldit.com/archlinux/$repo/os/$arch' \
+               'Server = http://mirror.0x.sg/archlinux/$repo/os/$arch' \
+                > /etc/pacman.d/mirrorlist ; \
     fi
 
 # Setup users
@@ -26,8 +30,9 @@ RUN useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
 # Download i386 and x86_64 glibc
 RUN if [ ! -d "/lib64" ]; then \
         mkdir /tmp/glibc && \
-        curl -fsSL https://archlinux.org/packages/core/x86_64/glibc/download | bsdtar -C /tmp/glibc -xf - && \
-        mv /tmp/glibc/usr/lib /lib64; \
+        curl -fsSL https://archlinux.org/packages/core/x86_64/glibc/download | \
+            bsdtar -C /tmp/glibc -xf - && \
+        mv /tmp/glibc/usr/lib /lib64 ; \
     fi && \
     curl -fsSL https://archlinux.org/packages/core/x86_64/lib32-glibc/download | bsdtar -C / -xf -
 
@@ -57,19 +62,23 @@ RUN mkdir -p /home/$USER/.local/bin && \
 # Install qemu user and binutils for x86 if on arm
 RUN if [ "$(uname -m)" == "aarch64" ]; then \
         sudo pacman -S --noconfirm qemu-user && cp /usr/sbin/qemu-i386 /usr/sbin/qemu-x86_64 /tmp && \
-        sudo pacman -Rsc --noconfirm qemu-user && sudo pacman -S --noconfirm liburing && sudo mv /tmp/qemu-i386 /tmp/qemu-x86_64 /usr/sbin && \
+        sudo pacman -Rsc --noconfirm qemu-user && sudo pacman -S --noconfirm liburing && \
+        sudo mv /tmp/qemu-i386 /tmp/qemu-x86_64 /usr/sbin && \
         sudo pacman -S --noconfirm x86_64-elf-binutils ; \
     fi
 
 # Setup yafu
 RUN wget -O /tmp/yafu.tgz https://github.com/PlatyPew/yafu-docker/releases/download/v2.09/yafu.tgz && \
     sudo tar -xzf /tmp/yafu.tgz -C / && \
-    sudo sed -i 's/ecm_path=\.\.\\gmp-ecm\\bin\\x64\\Release\\ecm.exe/ecm_path=\/usr\/sbin\/ecm/g' /etc/yafu/yafu.ini && \
+    sudo sed -i 's/ecm_path=\.\.\\gmp-ecm\\bin\\x64\\Release\\ecm.exe/ecm_path=\/usr\/sbin\/ecm/g' \
+         /etc/yafu/yafu.ini && \
     sudo pacman -S --noconfirm gmp-ecm --overwrite \*
 
 # Download libc db and rsactftool
-RUN git clone --depth=1 https://github.com/niklasb/libc-database.git /home/$USER/.local/share/libc-database && \
-    git clone --depth=1 https://github.com/Ganapati/RsaCtfTool.git /home/$USER/.local/share/rsactftool && \
+RUN git clone --depth=1 https://github.com/niklasb/libc-database.git \
+                        /home/$USER/.local/share/libc-database && \
+    git clone --depth=1 https://github.com/Ganapati/RsaCtfTool.git \
+                        /home/$USER/.local/share/rsactftool && \
     ln -sf /usr/bin/yafu /home/$USER/.local/share/rsactftool/attacks/single_key/yafu && \
     ln -s /home/$USER/.local/share/rsactftool/RsaCtfTool.py /home/$USER/.local/bin/rsactftool
 
