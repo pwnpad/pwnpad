@@ -49,6 +49,7 @@ if ! zgenom saved; then
     zgenom ohmyzsh plugins/extract
     zgenom ohmyzsh plugins/vi-mode
 
+    zgenom load DarrinTisdale/zsh-aliases-exa
     zgenom load hlissner/zsh-autopair
     zgenom load zsh-users/zsh-syntax-highlighting
     zgenom load b4b4r07/zsh-vimode-visual
