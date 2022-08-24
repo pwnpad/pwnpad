@@ -16,8 +16,7 @@ RUN if [ "$(uname -m)" == "x86_64" ]; then \
             'Server = http://mirror.rackspace.com/archlinux/$repo/os/$arch' \
             'Server = http://mirrors.acm.wpi.edu/archlinux/$repo/os/$arch' \
             'Server = http://archlinux.uk.mirror.allworldit.com/archlinux/$repo/os/$arch' \
-            'Server = http://mirror.0x.sg/archlinux/$repo/os/$arch' > /etc/pacman.d/mirrorlist && \
-        sudo pacman -S --noconfirm x86_64-elf-binutils ; \
+            'Server = http://mirror.0x.sg/archlinux/$repo/os/$arch' > /etc/pacman.d/mirrorlist ; \
     fi
 
 # Setup users
