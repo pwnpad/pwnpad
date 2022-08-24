@@ -171,7 +171,7 @@ OPTIONS:
             --cgroupns=host \
             -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
             --tmpfs /run \
-            --tmpfs /tmp \
+            --tmpfs /tmp:exec \
             ${xsupport} \
             ${priv} \
             $env $port $volume \
