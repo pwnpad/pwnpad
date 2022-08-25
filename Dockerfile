@@ -86,7 +86,8 @@ RUN git clone --depth=1 https://github.com/niklasb/libc-database.git \
 # Download pwncat-cs
 RUN virtualenv --system-site-packages /home/$USER/.local/share/venv && \
     /home/$USER/.local/share/venv/bin/pip install --upgrade pwncat-cs && \
-    ln -sf /home/$USER/.local/share/venv/bin/pwncat-cs /home/$USER/.local/bin/pwncat
+    ln -sf /home/$USER/.local/share/venv/bin/pwncat-cs /home/$USER/.local/bin/pwncat && \
+    pwncat --download-plugins
 
 # Setup Qol tools
 RUN yay -S --noconfirm autojump && \
