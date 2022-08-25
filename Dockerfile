@@ -53,12 +53,13 @@ RUN mkdir -p /home/$USER/.local/bin && \
     sudo pacman -S --noconfirm strace ltrace rz-ghidra ropper binwalk foremost gnu-netcat \
          python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
          perl-image-exiftool python-pwntools python-pycryptodome metasploit gdb-multiarch \
-         aflplusplus && \
+         aflplusplus rsactftool && \
     sudo pacman -Rdd --noconfirm gdb && \
     sudo npm install -g ngrok && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
-    sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap
+    sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \
+    sudo ln -s /usr/bin/yafu /usr/share/rsactftool/attacks/single_key/yafu
 
 # Install qemu user and binutils for x86 if on arm
 RUN if [ "$(uname -m)" == "aarch64" ]; then \
@@ -75,18 +76,10 @@ RUN wget -O /tmp/yafu.tgz https://github.com/PlatyPew/yafu-docker/releases/downl
          /etc/yafu/yafu.ini && \
     sudo pacman -S --noconfirm gmp-ecm --overwrite \*
 
-# Download libc db and rsactftool
-RUN git clone --depth=1 https://github.com/niklasb/libc-database.git \
-                        /home/$USER/.local/share/libc-database && \
-    git clone --depth=1 https://github.com/Ganapati/RsaCtfTool.git \
-                        /home/$USER/.local/share/rsactftool && \
-    ln -sf /usr/bin/yafu /home/$USER/.local/share/rsactftool/attacks/single_key/yafu && \
-    ln -s /home/$USER/.local/share/rsactftool/RsaCtfTool.py /home/$USER/.local/bin/rsactftool
-
 # Download pwncat-cs
-RUN virtualenv --system-site-packages /home/$USER/.local/share/venv && \
-    /home/$USER/.local/share/venv/bin/pip install --upgrade pwncat-cs && \
-    ln -sf /home/$USER/.local/share/venv/bin/pwncat-cs /home/$USER/.local/bin/pwncat && \
+RUN virtualenv --system-site-packages /home/$USER/.local/share/pwncat && \
+    /home/$USER/.local/share/pwncat/bin/pip install --upgrade pwncat-cs && \
+    ln -s /home/$USER/.local/share/pwncat/bin/pwncat-cs /home/$USER/.local/bin/pwncat && \
     pwncat --download-plugins
 
 # Setup Qol tools
