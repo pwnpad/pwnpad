@@ -50,10 +50,9 @@ RUN mkdir -p /home/$USER/.local/bin && \
     sudo pacman -S --noconfirm bat exa fzf iputils mlocate neovim net-tools nodejs npm openssh \
          openvpn p7zip pigz procps-ng python-pip python-virtualenv ripgrep tmux unrar unzip \
          wget yay && \
-    sudo pacman -S --noconfirm strace ltrace rz-ghidra ropper binwalk foremost gnu-netcat \
-         python-gmpy2 xortool gobuster exploitdb hexedit pwndbg sqlmap z3 jadx nmap \
-         perl-image-exiftool python-pwntools python-pycryptodome metasploit gdb-multiarch \
-         aflplusplus rsactftool && \
+    sudo pacman -S --noconfirm aflplusplus binwalk foremost exploitdb gdb-multiarch gnu-netcat \
+         gobuster hexedit jadx ltrace metasploit nmap perl-image-exiftool pwndbg python-gmpy2 \
+         python-pwntools ropper rsactftool rz-ghidra sqlmap strace xortool z3 && \
     sudo pacman -Rdd --noconfirm gdb && \
     sudo npm install -g ngrok && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
