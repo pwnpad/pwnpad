@@ -79,7 +79,7 @@ RUN wget -O /tmp/yafu.tgz https://github.com/PlatyPew/yafu-docker/releases/downl
 RUN virtualenv --system-site-packages /home/$USER/.local/share/pwncat && \
     /home/$USER/.local/share/pwncat/bin/pip install --upgrade pwncat-cs && \
     ln -s /home/$USER/.local/share/pwncat/bin/pwncat-cs /home/$USER/.local/bin/pwncat && \
-    pwncat --download-plugins
+    /home/$USER/.local/bin/pwncat --download-plugins
 
 # Setup Qol tools
 RUN yay -S --noconfirm autojump && \
