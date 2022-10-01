@@ -101,8 +101,8 @@ RUN git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
 # Setup better sources for blackarch
 RUN printf '#Worldwide\n%s\n%s\n' \
            'Server = https://mirrors.fosshost.org/blackarch/$repo/os/$arch' \
-           'Server = https://mirrors.fossho.st/blackarch/$repo/os/$arch' \
-            > /etc/pacman.d/blackarch-mirrorlist && \
+           'Server = https://mirrors.fossho.st/blackarch/$repo/os/$arch' | \
+            sudo tee /etc/pacman.d/blackarch-mirrorlist && \
     sudo pacman -Sy
 
 # Clean system
