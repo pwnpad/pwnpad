@@ -24,13 +24,6 @@ RUN if [ "$(uname -m)" == "x86_64" ]; then \
     fi && \
     sudo pacman -Sy
 
-# Setup better sources for blackarch
-RUN printf '#Worldwide\n%s\n%s\n' \
-           'Server = https://mirrors.fosshost.org/blackarch/$repo/os/$arch' \
-           'Server = https://mirrors.fossho.st/blackarch/$repo/os/$arch' \
-            > /etc/pacman.d/blackarch-mirrorlist && \
-    sudo pacman -Sy
-
 # Setup users
 RUN useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
     touch /home/$USER/.zshrc
@@ -104,6 +97,13 @@ RUN pip install neovim && nvim --headless -c "autocmd User PackerComplete quital
 RUN git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
     touch /home/$USER/.hushlogin && \
     zsh -c "source /home/$USER/.zshrc && /home/$USER/.zgenom/sources/romkatv/powerlevel10k/___/gitstatus/install"
+
+# Setup better sources for blackarch
+RUN printf '#Worldwide\n%s\n%s\n' \
+           'Server = https://mirrors.fosshost.org/blackarch/$repo/os/$arch' \
+           'Server = https://mirrors.fossho.st/blackarch/$repo/os/$arch' \
+            > /etc/pacman.d/blackarch-mirrorlist && \
+    sudo pacman -Sy
 
 # Clean system
 RUN yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) || true && \
