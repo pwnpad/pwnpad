@@ -25,7 +25,7 @@ RUN if [ "$(uname -m)" == "x86_64" ]; then \
     sudo pacman -Sy
 
 # Setup better sources for blackarch
-RUN printf '#Worldwide\n%s\n%s' \
+RUN printf '#Worldwide\n%s\n%s\n' \
            'Server = https://mirrors.fosshost.org/blackarch/$repo/os/$arch' \
            'Server = https://mirrors.fossho.st/blackarch/$repo/os/$arch' \
             > /etc/pacman.d/blackarch-mirrorlist && \
@@ -59,9 +59,10 @@ RUN mkdir -p /home/$USER/.local/bin && \
          wget yay && \
     sudo pacman -S --noconfirm aflplusplus binwalk foremost exploitdb gdb-multiarch gnu-netcat \
          gobuster hexedit jadx ltrace metasploit nmap perl-image-exiftool pwndbg python-gmpy2 \
-         python-pwntools ropper rsactftool rz-ghidra sqlmap strace xortool z3 && \
+         python-pwntools ropper rsactftool rz-ghidra strace xortool z3 && \
     sudo pacman -Rdd --noconfirm gdb && \
     sudo npm install -g ngrok && \
+    sudo pip install sqlmap && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \
