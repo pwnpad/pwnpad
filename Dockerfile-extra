@@ -18,7 +18,7 @@ RUN sudo pacman -Syu --noconfirm arp-scan autorecon commix creddump crunch dbd d
     yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) || true && \
     sudo rm -rf /home/$USER/.zshrc.pre-oh-my-zsh /home/$USER/.zsh_history /home/$USER/.bash_profile \
          /home/$USER/.wget-hsts /home/$USER/.bash_logout /home/$USER/.bundle /tmp/* /var/cache \
-         /home/$USER/.cache/pip /home/$USER/.cache/yay /var/lib/pacman/sync && \
+         /home/$USER/.cache/pip /home/$USER/.cache/yay && \
     sudo updatedb
 
 USER root

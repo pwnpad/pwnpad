@@ -24,6 +24,13 @@ RUN if [ "$(uname -m)" == "x86_64" ]; then \
     fi && \
     sudo pacman -Sy
 
+# Setup better sources for blackarch
+RUN printf '#Worldwide\n%s\n%s' \
+           'Server = https://mirrors.fosshost.org/blackarch/$repo/os/$arch' \
+           'Server = https://mirrors.fossho.st/blackarch/$repo/os/$arch' \
+            > /etc/pacman.d/blackarch-mirrorlist && \
+    sudo pacman -Sy
+
 # Setup users
 RUN useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
     touch /home/$USER/.zshrc
@@ -101,7 +108,7 @@ RUN git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
 RUN yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) || true && \
     sudo rm -rf /home/$USER/.zshrc.pre-oh-my-zsh /home/$USER/.zsh_history /home/$USER/.bash_profile \
          /home/$USER/.wget-hsts /home/$USER/.bash_logout /home/$USER/.bundle /tmp/* /var/cache \
-         /home/$USER/.cache/pip /home/$USER/.cache/yay /var/lib/pacman/sync && \
+         /home/$USER/.cache/pip /home/$USER/.cache/yay && \
     sudo updatedb
 
 # Setup for systemd
