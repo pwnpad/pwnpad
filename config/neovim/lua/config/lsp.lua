@@ -22,8 +22,8 @@ lspinstall.on_server_ready(function(server)
         capabilities = capabilities,
         flags = { debounce_text_changes = 500 },
         on_attach = function(client)
-            client.resolved_capabilities.document_formatting = false
-            client.resolved_capabilities.document_range_formatting = false
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
 
             if client.name == "jdtls" then
                 require("jdtls").setup_dap({ hotcodereplace = "auto" })
