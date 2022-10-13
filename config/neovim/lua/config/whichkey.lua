@@ -5,7 +5,7 @@ wk.setup({
 })
 
 wk.register({
-    F = { "<Cmd>lua vim.lsp.buf.formatting_sync()<CR>", "Format code" },
+    F = { "<Cmd>lua vim.lsp.buf.format()<CR>", "Format code" },
     T = { "<Cmd>Transparency<CR>", "Toggle Transparency" },
     o = { "<Cmd>NvimTreeToggle<CR>", "File Explorer" },
     u = { "<Cmd>UndotreeToggle<CR>", "Toggle UndoTree" },

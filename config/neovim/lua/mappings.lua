@@ -115,7 +115,7 @@ remap("n", "<Tab>", "<Cmd>UndotreeToggle<CR>")
 
 -- Format
 remap("n", "g=", function()
-    vim.lsp.buf.formatting_sync()
+    vim.lsp.buf.format()
 end)
 
 -- Instant
