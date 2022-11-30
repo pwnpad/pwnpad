@@ -34,8 +34,11 @@ RUN if [ ! -d "/lib64" ]; then \
         curl -fsSL https://archlinux.org/packages/core/x86_64/glibc/download | \
             bsdtar -C /tmp/glibc -xf - && \
         mv /tmp/glibc/usr/lib /lib64 ; \
-    fi && \
-    curl -fsSL https://archlinux.org/packages/core/x86_64/lib32-glibc/download | bsdtar -C / -xf -
+        curl -fsSL https://archlinux.org/packages/core/x86_64/lib32-glibc/download \
+            | bsdtar -C / -xf - ; \
+    else \
+        sudo pacman -S lib32-gcc-libs --noconfirm ; \
+    fi
 
 USER $USER
 WORKDIR /home/$USER
