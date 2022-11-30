@@ -2,3 +2,5 @@
 !/config/
 !/images/
 !/.github
+
+.DS_Store
