@@ -56,7 +56,6 @@ RUN mkdir -p /home/$USER/.local/bin && \
     sudo pacman -S --noconfirm aflplusplus binwalk foremost exploitdb gdb-multiarch gnu-netcat \
          gobuster hexedit jadx ltrace metasploit nmap perl-image-exiftool pwndbg python-gmpy2 \
          python-pwntools ropper rsactftool rz-ghidra strace xortool z3 && \
-    sudo pacman -Rdd --noconfirm gdb && \
     sudo npm install -g ngrok && \
     sudo pip install sqlmap && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
