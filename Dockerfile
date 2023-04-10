@@ -61,7 +61,8 @@ RUN mkdir -p /home/$USER/.local/bin && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \
-    sudo ln -s /usr/bin/yafu /usr/share/rsactftool/attacks/single_key/yafu
+    sudo ln -s /usr/bin/yafu /usr/share/rsactftool/attacks/single_key/yafu && \
+    sudo ln -s /usr/sbin/rizin /usr/sbin/radare2
 
 # Install qemu user and binutils for x86 if on arm
 RUN if [ "$(uname -m)" == "aarch64" ]; then \
