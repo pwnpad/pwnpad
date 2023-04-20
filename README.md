@@ -2,10 +2,13 @@
     <img src="images/logo-rectangle.png" style="width: 75%; height: auto;"/>
     <br/>
     <br/>
-    <a href="https://github.com/PlatyPew/PwnBox2/actions"><img src="https://github.com/PlatyPew/PwnBox2/actions/workflows/docker-image.yml/badge.svg"></a>
+    <a href="https://github.com/PlatyPew/PwnBox2/blob/master/LICENSE"><img src="https://img.shields.io/github/license/platypew/pwnbox2"></a>
+    <a href="https://hub.docker.com/_/docker"><img src="https://img.shields.io/badge/docker-20.10.23-blue.svg"></a>
+    <img src="https://img.shields.io/badge/Coded%20By%20Humans-100%25-brightgreen" />
     <br/>
-    <a href="https://github.com/PlatyPew/PwnBox2/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg"></a>
-    <a href="https://hub.docker.com/_/docker"><img src="https://img.shields.io/badge/docker-20.10.17-blue.svg"></a>
+    <a href="https://github.com/PlatyPew/PwnBox2/actions"><img src="https://img.shields.io/github/actions/workflow/status/platypew/pwnbox2/docker-image.yml?label=docker%20build"></a>
+    <a href="https://hub.docker.com/r/platypew/pwnbox2/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnbox2?arch=amd64&label=amd64"></a>
+    <a href="https://hub.docker.com/r/platypew/pwnbox2/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnbox2?arch=arm64&label=arm64"></a>
     <br/>
     <h1>PwnBox2</h1>
     <p>Perfect for doing Capture-The-Flag challenges and Pentesting on any platform, without needing a clunky, fat, resource hungry virtual machine. PwnBox2 provides a wide array of tools at your very own fingertips, powered by Arch Linux!</p>
