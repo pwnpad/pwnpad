@@ -22,3 +22,4 @@ vim.cmd([[
 ]])
 
 vim.api.nvim_set_hl(0, "ColorColumn", { fg = "#d84652", bg = "#000000" })
+vim.api.nvim_set_hl(0, "VertSplit", { fg = "#526175" })

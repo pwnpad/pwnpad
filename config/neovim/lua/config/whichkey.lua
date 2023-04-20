@@ -38,7 +38,9 @@ wk.register({
         M = { "<Cmd>Telescope keymaps<CR>", "Mappings" },
         b = { "<Cmd>Telescope buffers<CR>", "Buffers" },
         c = { "<Cmd>Telescope git_bcommits<CR>", "Commits for Buffer" },
-        f = { "<Cmd>Telescope find_files<CR>", "Files" },
+        f = {
+            '<Cmd>lua require("telescope.builtin").find_files({ find_command = { "rg", "--files", "--hidden", "--no-ignore-vcs", "-g", "!.git/*" } }) <CR>',
+            "Files" },
         g = { "<Cmd>Telescope git_files<CR>", "Git Files" },
         h = { "<Cmd>Telescope command_history<CR>", "Command History" },
         m = { "<Cmd>Telescope marks<CR>", "Marks" },

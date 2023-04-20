@@ -13,7 +13,8 @@ local highlights = augroup("highlights", { clear = true })
 autocmd("FileType", {
     pattern = "*",
     group = highlights,
-    command = "if &ft!='dashboard' && &ft!='WhichKey' && &ft!='lazy' && &ft!='mason' | call matchadd('ColorColumn', '\\%101v[^\n]')",
+    command =
+    "if &ft!='dashboard' && &ft!='WhichKey' && &ft!='lazy' && &ft!='mason' | call matchadd('ColorColumn', '\\%101v[^\n]')",
 })
 autocmd("FileType", {
     pattern = { "text", "markdown", "text" },

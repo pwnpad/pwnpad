@@ -3,7 +3,6 @@ local glo = vim.g
 
 -- Optimisation
 opt.foldmethod = "expr"
-opt.lazyredraw = true
 opt.ruler = false
 
 -- Colouring
@@ -28,6 +27,7 @@ opt.tabstop = 4
 opt.updatetime = 50
 opt.whichwrap = "b,s,<,>,h,l"
 opt.wrap = true
+opt.cmdheight = 0
 
 -- Copy Paste
 glo.clipboard = {

@@ -35,26 +35,10 @@ remap("n", ";", ":")
 remap("n", ";", ":")
 
 -- Cycling buffers
-remap(
-    "n",
-    "<Leader>bh",
-    "<Cmd>:bfirst<CR>"
-)
-remap(
-    "n",
-    "<Leader>bj",
-    "<Cmd>:bnext<CR>"
-)
-remap(
-    "n",
-    "<Leader>bk",
-    "<Cmd>:bprevious<CR>"
-)
-remap(
-    "n",
-    "<Leader>bl",
-    "<Cmd>:blast<CR>"
-)
+remap("n", "<Leader>bh", "<Cmd>:bfirst<CR>")
+remap("n", "<Leader>bj", "<Cmd>:bnext<CR>")
+remap("n", "<Leader>bk", "<Cmd>:bprevious<CR>")
+remap("n", "<Leader>bl", "<Cmd>:blast<CR>")
 remap("n", "<Leader>bq", "<Cmd>bdelete<CR>")
 
 -- Stops cursor from flying everywhere
@@ -77,11 +61,20 @@ remap("n", "<Leader>T", [[<Cmd>Transparency<CR>]])
 
 -- FZF-Lua
 remap("n", "<C-p>", function()
-    require('telescope.builtin').find_files()
+    require("telescope.builtin").find_files({
+        find_command = {
+            "rg",
+            "--files",
+            "--hidden",
+            "--no-ignore-vcs",
+            "-g",
+            "!.git/*",
+        },
+    })
 end)
 
 remap("n", "<C-g>", function()
-    require('telescope.builtin').live_grep()
+    require("telescope.builtin").live_grep()
 end)
 
 -- LSPSaga

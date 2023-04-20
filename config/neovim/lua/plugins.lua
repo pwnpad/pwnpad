@@ -47,6 +47,27 @@ return require("lazy").setup({
     },
 
     {
+        "folke/noice.nvim",
+        event = "CmdlineEnter",
+        opts = {
+            lsp = {
+                -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+                override = {
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    ["cmp.entry.get_documentation"] = true,
+                },
+            },
+            presets = {
+                long_message_to_split = true,
+            },
+        },
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+        },
+    },
+
+    {
         "nvimdev/dashboard-nvim",
         commit = "a36b3232c98616149784f2ca2654e77caea7a522",
         event = "VimEnter",
