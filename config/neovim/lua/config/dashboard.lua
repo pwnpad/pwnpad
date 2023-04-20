@@ -9,7 +9,7 @@ vim.g.dashboard_custom_header = {
     "    █  ▄▀  █    ▀██▀    ▀▀ ▀▀  ▄▀  ",
     "   █   █  █      ▄▄           ▄▀   ",
     "                                   ",
-    "               PikaVim             ",
+    "          Better Than VSCode       ",
 }
 
 vim.g.dashboard_custom_section = {
@@ -19,15 +19,15 @@ vim.g.dashboard_custom_section = {
     },
     b = {
         description = { "  Find files              ,ff" },
-        command = ':FzfLua files cmd=rg\\ --files\\ --hidden\\ --no-ignore-vcs\\ -g\\ "!.git/*"',
+        command = ':Telescope find_files',
     },
     c = {
-        description = { "  Find Word               .fr" },
-        command = ":FzfLua live_grep",
+        description = { "  Find Word               ,fr" },
+        command = ":Telescope live_grep",
     },
     d = {
         description = { "  Find Marks              ,fm" },
-        command = ":FzfLua marks",
+        command = ":Telescope marks",
     },
     e = {
         description = { "  File Explorer            ,o" },
@@ -39,4 +39,4 @@ vim.g.dashboard_custom_section = {
     },
 }
 
-vim.g.dashboard_custom_footer = { "Stay hydrated folks" }
+vim.g.dashboard_custom_footer = { "Stay Hydrated Folks" }

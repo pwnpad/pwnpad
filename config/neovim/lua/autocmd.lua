@@ -13,7 +13,7 @@ local highlights = augroup("highlights", { clear = true })
 autocmd("FileType", {
     pattern = "*",
     group = highlights,
-    command = "if &ft!='dashboard' && &ft!='WhichKey' && &ft!='packer' && &ft!='lsp-installer' | call matchadd('ColorColumn', '\\%101v[^\n]')",
+    command = "if &ft!='dashboard' && &ft!='WhichKey' && &ft!='lazy' && &ft!='mason' | call matchadd('ColorColumn', '\\%101v[^\n]')",
 })
 autocmd("FileType", {
     pattern = { "text", "markdown", "text" },
@@ -25,6 +25,13 @@ autocmd("FileType", {
     group = highlights,
     callback = function()
         vim.api.nvim_set_hl(0, "ColorColumn", {})
+    end,
+})
+
+autocmd("FileType", {
+    pattern = { "yaml" },
+    callback = function()
+        vim.o.shiftwidth = 4
     end,
 })
 
@@ -66,6 +73,5 @@ cmd([[
         autocmd VimEnter * highlight LspDiagnosticsDefaultError ctermfg=9
         autocmd VimEnter * highlight LspDiagnosticsDefaultWarning ctermfg=3
         autocmd VimEnter * highlight COQMarks guifg=#FFE37E guibg=#353B45
-        autocmd VimEnter * COQnow -s
     augroup END
 ]])

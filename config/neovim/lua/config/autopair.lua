@@ -43,32 +43,6 @@ npairs.add_rules({
         :use_key("]"),
 })
 
--- these mappings are coq recommended mappings unrelated to nvim-autopairs
-vim.api.nvim_set_keymap(
-    "i",
-    "<esc>",
-    [[pumvisible() ? "<c-e><esc>" : "<esc>"]],
-    { expr = true, noremap = true }
-)
-vim.api.nvim_set_keymap(
-    "i",
-    "<c-c>",
-    [[pumvisible() ? "<c-e><c-c>" : "<c-c>"]],
-    { expr = true, noremap = true }
-)
-vim.api.nvim_set_keymap(
-    "i",
-    "<tab>",
-    [[pumvisible() ? "<c-n>" : "<tab>"]],
-    { expr = true, noremap = true }
-)
-vim.api.nvim_set_keymap(
-    "i",
-    "<s-tab>",
-    [[pumvisible() ? "<c-p>" : "<bs>"]],
-    { expr = true, noremap = true }
-)
-
 -- skip it, if you use another global object
 _G.MUtils = {}
 

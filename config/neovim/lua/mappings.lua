@@ -38,28 +38,31 @@ remap("n", ";", ":")
 remap(
     "n",
     "<Leader>bh",
-    "<Cmd>if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bfirst<CR><CR>"
+    "<Cmd>:bfirst<CR>"
 )
 remap(
     "n",
     "<Leader>bj",
-    "<Cmd>if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bnext<CR><CR>"
+    "<Cmd>:bnext<CR>"
 )
 remap(
     "n",
     "<Leader>bk",
-    "<Cmd>if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bprevious<CR><CR>"
+    "<Cmd>:bprevious<CR>"
 )
 remap(
     "n",
     "<Leader>bl",
-    "<Cmd>if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:blast<CR><CR>"
+    "<Cmd>:blast<CR>"
 )
 remap("n", "<Leader>bq", "<Cmd>bdelete<CR>")
 
 -- Stops cursor from flying everywhere
 remap("n", "n", "nzzzv")
 remap("n", "N", "Nzzzv")
+
+-- Prevents pasted over text from replacing register
+remap("x", "p", "pgvy")
 
 -- Better undo breakpoints
 remap("i", ",", ",<C-g>u")
@@ -74,41 +77,25 @@ remap("n", "<Leader>T", [[<Cmd>Transparency<CR>]])
 
 -- FZF-Lua
 remap("n", "<C-p>", function()
-    require("fzf-lua").files({ cmd = 'rg --files --hidden --no-ignore-vcs -g "!.git/*"' })
+    require('telescope.builtin').find_files()
 end)
 
 remap("n", "<C-g>", function()
-    require("fzf-lua").live_grep_native()
+    require('telescope.builtin').live_grep()
 end)
 
 -- LSPSaga
 remap("n", "[g", function()
-    require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()
+    require("lspsaga.diagnostic"):goto_prev()
 end)
 remap("n", "]g", function()
-    require("lspsaga.diagnostic").lsp_jump_diagnostic_next()
+    require("lspsaga.diagnostic"):goto_next()
 end)
-remap("n", "ga", function()
-    require("lspsaga.codeaction").code_action()
-end)
-remap("n", "gd", function()
-    require("lspsaga.provider").preview_definition()
-end)
-remap("n", "gf", function()
-    require("lspsaga.provider").lsp_finder()
-end)
-remap("n", "gh", function()
-    require("lspsaga.hover").render_hover_doc()
-end)
-remap("n", "gr", function()
-    require("lspsaga.rename").rename()
-end)
-
--- COQ Autopairs
-remap("i", "<esc>", [[pumvisible() ? "<c-e><esc>" : "<esc>"]])
-remap("i", "<c-c>", [[pumvisible() ? "<c-e><c-c>" : "<c-c>"]])
-remap("i", "<tab>", [[pumvisible() ? "<c-n>" : "<tab>"]])
-remap("i", "<s-tab>", [[pumvisible() ? "<c-p>" : "<bs>"]])
+remap("n", "gc", "<Cmd>Lspsaga code_action<CR>")
+remap("n", "gp", "<Cmd>Lspsaga peek_definition<CR>")
+remap("n", "gf", "<Cmd>Lspsaga lsp_finder<CR>")
+remap("n", "gh", "<Cmd>Lspsaga hover_doc<CR>")
+remap("n", "gr", "<Cmd>Lspsaga rename<CR>")
 
 -- UndoTree
 remap("n", "<Tab>", "<Cmd>UndotreeToggle<CR>")

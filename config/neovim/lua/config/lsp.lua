@@ -1,73 +1,56 @@
--- Settings
-vim.g.coq_settings = {
-    auto_start = "shut-up",
-    display = {
-        mark_highlight_group = "COQMarks",
-    },
-    keymap = {
-        recommended = false,
-        jump_to_mark = "<C-s>",
-    },
+local servers = {
+    lua_ls = {},
+    pyright = {},
+    tsserver = {},
 }
 
-local coq = require("coq")
-local lspinstall = require("nvim-lsp-installer")
+if require("jit").arch == "x64" then
+    servers.clangd = {}
+end
 
+-- Setup neovim lua configuration
+require('neodev').setup()
+
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 capabilities.offsetEncoding = { "utf-16" }
 
-lspinstall.on_server_ready(function(server)
-    local config = {
-        capabilities = capabilities,
-        flags = { debounce_text_changes = 500 },
-        on_attach = function(client)
-            client.server_capabilities.documentFormattingProvider = false
-            client.server_capabilities.documentRangeFormattingProvider = false
+-- Setup mason so it can manage external tooling
+require('mason').setup()
 
-            if client.name == "jdtls" then
-                require("jdtls").setup_dap({ hotcodereplace = "auto" })
-                require("jdtls.dap").setup_dap_main_class_configs()
-            end
-        end,
-    }
+-- Ensure the servers above are installed
+local mason_lspconfig = require 'mason-lspconfig'
 
-    if server.name == "texlab" then
-        config.settings = {
-            texlab = {
-                build = {
-                    args = { "-halt-on-error", "%f" },
-                    executable = "pdflatex",
-                    onSave = true,
+mason_lspconfig.setup {
+    ensure_installed = vim.tbl_keys(servers),
+}
+
+mason_lspconfig.setup_handlers {
+    function(server_name)
+        require('lspconfig')[server_name].setup {
+            capabilities = capabilities,
+            settings = servers[server_name],
+        }
+    end,
+    ["jdtls"] = function()
+        require('lspconfig').jdtls.setup({
+            init_options = {
+                bundles = {
+                    vim.fn.glob(
+                        require("mason-registry").get_package("java-debug-adapter"):get_install_path() ..
+                        "/extension/server/com.microsoft.java.debug.plugin-*.jar"
+                    ),
                 },
             },
-        }
-    elseif server.name == "html" or server.name == "emmet_ls" then
-        config.filetypes = { "html", "css", "javascriptreact" }
-    elseif server.name == "jdtls" then
-        config.init_options = {
-            bundles = {
-                vim.fn.glob(
-                    vim.fn.stdpath("data")
-                        .. "/dapinstall/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
-                ),
-            },
             extendedCapabilities = require("jdtls").extendedClientCapabilities,
-        }
-    end
-
-    server:setup(coq.lsp_ensure_capabilities(config))
-end)
-
-require("lspsaga").init_lsp_saga({
-    finder_action_keys = {
-        open = { "<CR>", "o" },
-        quit = { "q", "<esc>", "<C-c>" },
-    },
-    code_action_keys = {
-        quit = { "q", "<esc>", "<C-c>" },
-    },
-    rename_action_keys = {
-        quit = { "<esc>", "<C-c>" },
-    },
-})
+            filetypes = { "java" },
+            on_attach = function(client)
+                client.server_capabilities.documentFormattingProvider = false
+                client.server_capabilities.documentRangeFormattingProvider = false
+                require("jdtls").setup_dap({ hotcodereplace = "auto" })
+                require("jdtls.dap").setup_dap_main_class_configs()
+            end,
+        })
+    end,
+}
