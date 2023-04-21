@@ -90,7 +90,8 @@ RUN yay -S --noconfirm autojump && \
     sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
 
 # Setup Neovim
-RUN nvim --headless -c "+Lazy! sync" +qa && \
+RUN nvim --headless "+Lazy! sync" +qa && \
+    nvim --headless "+Lazy! sync" +qa && \
     nvim --headless -c "TSInstallSync c javascript python" -c "qall"
 
 # Setup zgenom
