@@ -60,8 +60,16 @@ cmp.setup({
     },
 })
 
-cmp.setup({
+vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { link = "@boolean" })
 
-})
+vim.api.nvim_set_hl(0, "CmpItemKindClass", { link = "@lsp.types.class" })
+vim.api.nvim_set_hl(0, "CmpItemKindConstant", { link = "@constant" })
+vim.api.nvim_set_hl(0, "CmpItemKindField", { link = "@field" })
+vim.api.nvim_set_hl(0, "CmpItemKindFunction", { link = "@function" })
+vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { link = "@keyword" })
+vim.api.nvim_set_hl(0, "CmpItemKindMethod", { link = "@method" })
+vim.api.nvim_set_hl(0, "CmpItemKindModule", { link = "@include" })
+vim.api.nvim_set_hl(0, "CmpItemKindSnippet", { link = "@character" })
+vim.api.nvim_set_hl(0, "CmpItemKindVariable", { link = "@variable" })
 
 vim.api.nvim_set_hl(0, "ColorColumn", {})
