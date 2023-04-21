@@ -1,7 +1,6 @@
 -- nvim-cmp setup
 local cmp = require("cmp")
 local luasnip = require("luasnip")
-local lspkind = require("lspkind")
 
 require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -38,18 +37,8 @@ cmp.setup({
             end
         end, { "i", "s" }),
     }),
-    sources = {
-        { name = "nvim_lsp" },
-        { name = "async_path" },
-        { name = "treesitter" },
-        { name = "buffer" },
-        { name = "luasnip" },
-    },
-})
-
-cmp.setup({
     formatting = {
-        format = lspkind.cmp_format({
+        format = require("lspkind").cmp_format({
             mode = "symbol_text",
             maxwidth = 50,
             ellipsis_char = "...",
@@ -62,6 +51,17 @@ cmp.setup({
             },
         }),
     },
+    sources = {
+        { name = "nvim_lsp" },
+        { name = "async_path" },
+        { name = "treesitter" },
+        { name = "buffer" },
+        { name = "luasnip" },
+    },
+})
+
+cmp.setup({
+
 })
 
 vim.api.nvim_set_hl(0, "ColorColumn", {})

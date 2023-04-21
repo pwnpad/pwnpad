@@ -4,7 +4,7 @@ local servers = {
     tsserver = {},
 }
 
-if require("jit").arch == "x64" then
+if require("jit").os ~= "Linux" or require("jit").arch ~= "arm64" then
     servers.clangd = {}
 end
 
