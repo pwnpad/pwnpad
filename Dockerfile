@@ -44,7 +44,6 @@ USER $USER
 WORKDIR /home/$USER
 
 # Copy configuration files
-COPY --chown=$USER:users ./config/neovim /home/$USER/.config/nvim
 COPY --chown=$USER:users ./config/zsh /home/$USER
 COPY --chown=$USER:users ./config/tmux /home/$USER
 
@@ -90,7 +89,8 @@ RUN yay -S --noconfirm autojump && \
     sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
 
 # Setup Neovim
-RUN nvim --headless "+Lazy! sync" +qa && \
+RUN git clone --depth=1 https://github.com/PlatyPew/neovim-init.lua.git /home/$USER/.config/nvim && \
+    nvim --headless "+Lazy! sync" +qa && \
     nvim --headless "+Lazy! sync" +qa && \
     nvim --headless -c "TSInstallSync c javascript python" -c "qall"
 
