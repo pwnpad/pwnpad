@@ -1,16 +1,17 @@
+# vim: ft=dockerfile
 FROM platypew/pwnbox2:latest
 
 ENV USER pwnbox
 USER $USER
 
 RUN sudo pacman -R --noconfirm gnu-netcat && \
-    sudo pacman -Syu --noconfirm arp-scan autorecon commix creddump crunch dbd dns2tcp dnsenum \
-    dnsrecon enum4linux expect fping hashcat hashcat-utils hping i2c-tools ike-scan inetsim iodine \
-    john laudanum lbd masscan mimikatz mitmproxy nasm nbtscan ncrack netsed netsniff-ng ngrep nikto \
-    onesixtyone patator rbndr recon-ng redsocks samdump2 scalpel set sleuthkit snmpcheck socat \
-    spiderfoot spike swaks tcpreplay thc-ipv6 thc-pptp-bruter traceroute udptunnel \
-    unix-privesc-check upx wafw00f wce webshells whatweb whois windows-binaries && \
-    sudo pacman -Sdd --noconfirm autorecon && \
+    sudo pacman -Syu --noconfirm arp-scan autorecon commix crackmapexec creddump crunch dbd \
+    dns2tcp dnsenum dnsrecon enum4linux expect finalrecon fping hashcat hashcat-utils hping \
+    i2c-tools ike-scan inetsim iodine john laudanum lbd ldapenum masscan mimikatz mitmproxy nasm \
+    nbtscan ncrack netsed netsniff-ng ngrep nikto onesixtyone patator rbndr recon-ng redsocks \
+    responder samdump2 scalpel set sleuthkit smbmap snmpcheck socat spiderfoot spike swaks \
+    tcpreplay thc-ipv6 thc-pptp-bruter traceroute udptunnel unix-privesc-check upx wafw00f wce \
+    webshells whatweb whois windows-binaries && \
     yes | sudo pacman -Sdd gnu-netcat && \
     if [ "$(uname -m)" == "aarch64" ]; then \
         wget -O /tmp/donut.pkg.tar.zst \
