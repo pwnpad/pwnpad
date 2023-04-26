@@ -5,7 +5,7 @@ ENV USER pwnbox
 USER $USER
 
 RUN sudo pacman -R --noconfirm gnu-netcat && \
-    sudo pacman -Syu --noconfirm arp-scan autorecon commix crackmapexec creddump crunch dbd \
+    sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix crackmapexec creddump crunch dbd \
     dns2tcp dnsenum dnsrecon enum4linux expect finalrecon fping hashcat hashcat-utils hping \
     i2c-tools ike-scan inetsim iodine john laudanum lbd ldapenum masscan mimikatz mitmproxy nasm \
     nbtscan ncrack netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator rbndr recon-ng \
