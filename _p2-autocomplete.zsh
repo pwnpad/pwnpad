@@ -15,7 +15,7 @@ function _p2() {
     }
 
     _getcontainer() {
-        compadd `docker container ls -a --filter "ancestor=platypew/pwnbox2" --format "{{.Names}}" | tr "\n" " "`
+        compadd `docker container ls -a --filter "ancestor=platypew/pwnbox2" --filter "ancestor=platypew/pwnbox2:extra" --format "{{.Names}}" | tr "\n" " "`
     }
 
     local state
@@ -40,8 +40,7 @@ function _p2() {
                     ;;
                 build)
                     _arguments -s : \
-                        '-c[compress build context]' \
-                        '-s[squash layers (requries experimental mode)]' \
+                        '-i[image]' \
                         '-p[platform]'
                     ;;
                 rm)

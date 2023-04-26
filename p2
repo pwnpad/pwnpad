@@ -31,31 +31,34 @@ BUILD() {
         printf "USAGE:
   ${P2} build [OPTIONS]
 OPTIONS:
-  -c    compress build context
-  -s    squash layers (requries experimental mode)
-  -p    platform\n"
+  -p    platform
+  -i    select image (default: latest)
+          latest/extra\n"
         exit 1
     }
 
-    squash=""
-    compress=""
     platform=""
+    tag="latest"
+    dockerfile="dockerfile"
 
     shift
     while getopts ":scp:" options
     do
         case $options in
-            c) compress="--compress"
-                ;;
-            s) squash="--squash"
-                ;;
             p) platform="--platform $OPTARG"
+                ;;
+            i) tag="$OPTARG"
                 ;;
             *) BUSE
                 ;;
         esac
     done
-    docker image build $platform $squash $compress -t platypew/pwnbox2 $ROOT
+
+    if [ ${tag} == "extra" ]; then
+        dockerfile="dockerfile-extra"
+    fi
+
+    docker image build $platform -f ${dockerfile} -t platypew/pwnbox2:${tag} $ROOT
 }
 
 # Start and attach docker container
@@ -295,7 +298,12 @@ UPDATE() {
     DIR=$(dirname $0)
     git -C $DIR fetch origin master && git -C $DIR pull origin master --rebase
     docker pull platypew/pwnbox2:latest
-    id=`docker images platypew/pwnbox2 | grep none | awk '{print $3}'`
+    docker pull platypew/pwnbox2:extra
+    id=`docker images platypew/pwnbox2:latest | grep none | awk '{print $3}'`
+    if [ ! -z $id ]; then
+        docker rmi $id
+    fi
+    id=`docker images platypew/pwnbox2:extra | grep none | awk '{print $3}'`
     if [ ! -z $id ]; then
         docker rmi $id
     fi
