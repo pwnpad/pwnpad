@@ -18,7 +18,7 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
             "https://github.com/PlatyPew/pwnbox2-repo/blob/master/x86_64/donut-368.dafea17-3-x86_64.pkg.tar.zst?raw=true" && \
         sudo pacman -U --arch x86_64 --noconfirm /tmp/donut.pkg.tar.zst ; \
     fi && \
-    mkdir /etc/samba && \
+    sudo mkdir /etc/samba && \
     sudo wget -O /etc/samba/smb.conf \
         "https://raw.githubusercontent.com/samba-team/samba/master/examples/smb.conf.default" && \
     sudo pacman -S --noconfirm empire && \
