@@ -90,8 +90,8 @@ RUN yay -S --noconfirm autojump && \
 
 # Setup Neovim
 RUN git clone --depth=1 https://github.com/PlatyPew/neovim-init.lua.git /home/$USER/.config/nvim && \
-    nvim --headless "+Lazy! sync" +qa && \
-    nvim --headless "+Lazy! sync" +qa && \
+    nvim --headless "+Lazy! restore" +qa && \
+    nvim --headless "+Lazy! restore" +qa && \
     nvim --headless -c "TSInstallSync c javascript python" -c "qall"
 
 # Setup zgenom
