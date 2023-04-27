@@ -153,7 +153,7 @@ aslr() {
 ### GUI Controls ###########################################
 gui () {
     subcmd=${1}
-    if [[ -z $(which Xvfb) ]]
+    if [[ ! -f "/usr/sbin/Xvfb" ]]
     then
         printf "GUI only available in extra package\n"
         return 1
@@ -161,13 +161,13 @@ gui () {
     if [[ ${subcmd} == "start" ]]
     then
         tmux new-session -d -s novnc
-        tmux send-keys -t novnc "Xvfb :0 -screen 0 1920x1080x24" Enter
+        tmux send-keys -t novnc " Xvfb :0 -screen 0 1920x1080x24" Enter
         tmux new-window -t novnc
-        tmux send-keys -t novnc:1 "x11vnc -display :0" Enter
+        tmux send-keys -t novnc:1 " x11vnc -display :0" Enter
         tmux new-window -t novnc
-        tmux send-keys -t novnc:2 "novnc" Enter
+        tmux send-keys -t novnc:2 " novnc" Enter
         export DISPLAY=":0"
-        printf "http://$(hostname):6080/vnc.html?host=builder&port=6080\n"
+        printf "http://$(hostname):6080/vnc.html?host=$(hostname)&port=6080\n"
     elif [[ ${subcmd} == "stop" ]]
     then
         pkill Xvfb
@@ -204,7 +204,7 @@ gui () {
         xdotool windowmove ${xid} 0 0
         xdotool windowsize ${xid} 1920 1080
     else
-        printf "${subcmd} not found\n"
+        printf "gui <start|stop|left|right|full> [process]\n"
     fi
 }
 ############################################################
