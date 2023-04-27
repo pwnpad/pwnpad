@@ -17,11 +17,7 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
         wget -O /tmp/donut.pkg.tar.zst \
             "https://github.com/PlatyPew/pwnbox2-repo/blob/master/x86_64/donut-368.dafea17-3-x86_64.pkg.tar.zst?raw=true" && \
         sudo pacman -U --arch x86_64 --noconfirm /tmp/donut.pkg.tar.zst && \
-        wget -O nessus.deb \
-            "https://www.tenable.com/downloads/api/v2/pages/nessus/files/Nessus-10.5.1-ubuntu1804_aarch64.deb" && \
-        ar vx nessus.deb && tar xzf data.tar.gz && sudo cp -a opt/nessus /opt/nessus && \
-        echo "[Unit]\nDescription=The Nessus Vulnerability Scanner\nAfter=network.target\n\n[Service]\nType=simple\nPIDFile=/opt/nessus/var/nessus/nessus-service.pid\nExecStart=/opt/nessus/sbin/nessus-service -q\nRestart=on-abort\nExecReload=/usr/bin/pkill nessusd\nEnvironmentFile=-/etc/sysconfig/nessusd\n\n[Install]\nWantedBy=multi-user.target\nAlias=nessusd.service" | sudo tee /usr/lib/systemd/system/nessusd.service && \
-        rm -rf control.tar.gz data.tar.gz debian-binary nessus.deb opt ; \
+        sudo pacman -S --noconfirm nessus ; \
     else \
         yay -S --noconfirm nessus ; \
     fi && \
