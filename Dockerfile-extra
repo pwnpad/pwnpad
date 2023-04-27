@@ -23,7 +23,7 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
         echo "[Unit]\nDescription=The Nessus Vulnerability Scanner\nAfter=network.target\n\n[Service]\nType=simple\nPIDFile=/opt/nessus/var/nessus/nessus-service.pid\nExecStart=/opt/nessus/sbin/nessus-service -q\nRestart=on-abort\nExecReload=/usr/bin/pkill nessusd\nEnvironmentFile=-/etc/sysconfig/nessusd\n\n[Install]\nWantedBy=multi-user.target\nAlias=nessusd.service" | sudo tee /usr/lib/systemd/system/nessusd.service && \
         rm -rf control.tar.gz data.tar.gz debian-binary nessus.deb opt ; \
     else \
-        sudo pacman -S --noconfirm nessus ; \
+        yay -S --noconfirm nessus ; \
     fi && \
     sudo mkdir /etc/samba && \
     sudo wget -O /etc/samba/smb.conf \
