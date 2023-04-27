@@ -52,6 +52,8 @@ RUN mkdir -p /home/$USER/.local/bin && \
     sudo pacman -S --noconfirm bat exa fzf iputils mlocate neovim net-tools nodejs npm openssh \
          openvpn p7zip pigz procps-ng python-pip python-virtualenv ripgrep tmux unrar unzip \
          wget yay && \
+    mkdir /home/$USER/.ssh && touch /home/$USER/.ssh/authorized_keys && \
+    chmod 600 /home/$USER/.ssh/authorized_keys && \
     sudo pacman -S --noconfirm aflplusplus binwalk foremost exploitdb gdb-multiarch gnu-netcat \
          gobuster hexedit jadx ltrace metasploit nmap perl-image-exiftool pwndbg python-gmpy2 \
          python-pwntools ropper rsactftool rz-ghidra strace xortool z3 && \

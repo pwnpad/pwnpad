@@ -150,6 +150,65 @@ aslr() {
 }
 ############################################################
 
+### GUI Controls ###########################################
+gui () {
+    subcmd=${1}
+    if [[ -z $(which Xvfb) ]]
+    then
+        printf "GUI only available in extra package\n"
+        return 1
+    fi
+    if [[ ${subcmd} == "start" ]]
+    then
+        tmux new-session -d -s novnc
+        tmux send-keys -t novnc "Xvfb :0 -screen 0 1920x1080x24" Enter
+        tmux new-window -t novnc
+        tmux send-keys -t novnc:1 "x11vnc -display :0" Enter
+        tmux new-window -t novnc
+        tmux send-keys -t novnc:2 "novnc" Enter
+        export DISPLAY=":0"
+        printf "http://$(hostname):6080/vnc.html?host=builder&port=6080\n"
+    elif [[ ${subcmd} == "stop" ]]
+    then
+        pkill Xvfb
+        tmux kill-session -t novnc
+        export DISPLAY=""
+    elif [[ ${subcmd} == "left" ]]
+    then
+        program=${2}
+        xid=$(xdotool search --onlyvisible ${program} 2> /dev/null)
+        if [[ -z ${xid} ]]
+        then
+            printf "${program} not found\n"
+        fi
+        xdotool windowmove ${xid} 0 0
+        xdotool windowsize ${xid} 960 1080
+    elif [[ ${subcmd} == "right" ]]
+    then
+        program=${2}
+        xid=$(xdotool search --onlyvisible ${program} 2> /dev/null)
+        if [[ -z ${xid} ]]
+        then
+            printf "${program} not found\n"
+        fi
+        xdotool windowmove ${xid} 960 0
+        xdotool windowsize ${xid} 960 1080
+    elif [[ ${subcmd} == "full" ]]
+    then
+        program=${2}
+        xid=$(xdotool search --onlyvisible ${program} 2> /dev/null)
+        if [[ -z ${xid} ]]
+        then
+            printf "${program} not found\n"
+        fi
+        xdotool windowmove ${xid} 0 0
+        xdotool windowsize ${xid} 1920 1080
+    else
+        printf "${subcmd} not found\n"
+    fi
+}
+############################################################
+
 ## Aliases #################################################
 alias vi="nvim"
 alias :q='exit'
