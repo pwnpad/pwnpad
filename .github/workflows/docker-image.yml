@@ -5,6 +5,7 @@ on:
     branches: [ "master" ]
     paths-ignore:
       - 'README.md'
+      - 'p2'
   schedule:
     - cron: "0 8 * * 3"
 

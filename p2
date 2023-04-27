@@ -39,10 +39,10 @@ OPTIONS:
 
     platform=""
     tag="latest"
-    dockerfile="dockerfile"
+    dockerfile="Dockerfile"
 
     shift
-    while getopts ":scp:" options
+    while getopts ":i:p:" options
     do
         case $options in
             p) platform="--platform $OPTARG"
@@ -55,7 +55,7 @@ OPTIONS:
     done
 
     if [ ${tag} == "extra" ]; then
-        dockerfile="dockerfile-extra"
+        dockerfile="Dockerfile-extra"
     fi
 
     docker image build $platform -f ${dockerfile} -t platypew/pwnbox2:${tag} $ROOT
