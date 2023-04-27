@@ -101,9 +101,11 @@ RUN git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
 
 # Clean system
 RUN yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) || true && \
+    sudo mv /usr/share/locale/locale.alias /usr/share/locale/en_US /tmp && \
+    sudo rm -rf /usr/share/locale/* && sudo mv /tmp/locale.alias /tmp/en_US /usr/share/locale && \
     sudo rm -rf /home/$USER/.zshrc.pre-oh-my-zsh /home/$USER/.zsh_history /home/$USER/.bash_profile \
          /home/$USER/.wget-hsts /home/$USER/.bash_logout /home/$USER/.bundle /tmp/* /var/cache \
-         /home/$USER/.cache/pip /home/$USER/.cache/yay && \
+         /home/$USER/.cache/pip /home/$USER/.cache/yay /home/$USER/.npm && \
     sudo updatedb
 
 # Setup for systemd
