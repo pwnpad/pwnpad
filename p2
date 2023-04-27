@@ -159,8 +159,6 @@ OPTIONS:
         printf "Container exists, reattaching...\n"
         docker start ${box_name} > /dev/null
     else
-        printf "SSH tunneling to create a proxy\n"
-        printf "ssh -D localhost:<port of proxy> pwnbox@localhost -p <port of sshd>\n"
         docker run -it -d \
             -h ${box_name} \
             --name ${box_name} \
@@ -178,12 +176,15 @@ OPTIONS:
             ${xsupport} \
             ${priv} \
             $env $port $volume \
-            platypew/pwnbox2:${image} sh
+            platypew/pwnbox2:${image} sh > /dev/null
 
         if [ $? -ne 0 ]; then
             printf "An error has occured. Check arguments\n\n"
             AUSE
         fi
+
+        printf "SSH tunneling to create a proxy\n"
+        printf "sshuttle -vHNr pwnbox@localhost:$(docker port ${box_name} | grep 22/tcp | cut -d ":" -f 2)\n"
     fi
 
     if [ $detach -eq 0 ]; then
