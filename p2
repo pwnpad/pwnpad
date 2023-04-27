@@ -83,7 +83,7 @@ OPTIONS:
     }
 
     env=""
-    port="-p $(( ((RANDOM<<15)|RANDOM) % 10000 + 40000 )):22"
+    port="-p $(( ((RANDOM<<15) | RANDOM) % 10000 + 40000 )):22"
     volume=""
     priv=""
     xsupport=""
@@ -291,8 +291,7 @@ VOLUME() {
 }
 
 LIST() {
-    docker container ls -a --filter "ancestor=platypew/pwnbox2:latest" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}\t{{.Ports}}" | tail -n +2
-    docker container ls -a --filter "ancestor=platypew/pwnbox2:extra" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}\t{{.Ports}}" | tail -n +2
+    docker container ls -a --filter "ancestor=platypew/pwnbox2:latest" --filter "ancestor=platypew/pwnbox2:extra" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}\t{{.Ports}}"
 }
 
 UPDATE() {
@@ -308,7 +307,6 @@ UPDATE() {
     if [ ! -z $id ]; then
         docker rmi $id
     fi
-
 }
 
 if [ -z ${1} ]; then
