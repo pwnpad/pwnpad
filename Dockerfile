@@ -46,6 +46,7 @@ WORKDIR /home/$USER
 # Copy configuration files
 COPY --chown=$USER:users ./config/zsh /home/$USER
 COPY --chown=$USER:users ./config/tmux /home/$USER
+COPY --chown=$USER:users ./config/i3 /home/$USER/.config/i3
 
 # Download tools (Remove vanilla gdb)
 RUN mkdir -p /home/$USER/.local/bin && \
