@@ -8,9 +8,12 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
     pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
     sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     curl -fsSL https://blackarch.org/strap.sh | sh && \
-    printf '\n%s\n%s\n%s\n' \
+    printf '\n%s\n%s\n%s\n\n%s\n%s\n%s\n' \
            '[pwnbox]' 'SigLevel = Optional TrustedOnly' \
            'Server = https://raw.githubusercontent.com/platypew/pwnbox2-repo/master/$arch' \
+           '[pwnbox-lfs]' \
+           'SigLevel = Optional TrustedOnly' \
+           'Server = https://media.githubusercontent.com/media/PlatyPew/pwnbox2-lfs-repo/master/$arch' \
             >> /etc/pacman.conf
 
 # Setup better sources for x86
