@@ -6,7 +6,7 @@ USER $USER
 
 RUN sudo pacman -R --noconfirm gnu-netcat && \
     sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix crackmapexec creddump \
-    crunch dbd dns2tcp dnsenum dnsrecon enum4linux expect finalrecon fping hashcat hashcat-utils \
+    crunch dbd dns2tcp dnsenum dnsrecon enum4linux-ng expect finalrecon fping hashcat hashcat-utils \
     hping i2c-tools ike-scan inetsim iodine john laudanum lbd ldapenum mimikatz nasm nbtscan \
     ncrack netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator rbndr recon-ng redsocks \
     rustscan samdump2 scalpel seclists sleuthkit smbmap snmpcheck socat swaks tcpreplay thc-ipv6 \
