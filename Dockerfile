@@ -74,7 +74,7 @@ RUN if [ "$(uname -m)" == "aarch64" ]; then \
         sudo pacman -S --noconfirm qemu-user && cp /usr/sbin/qemu-i386 /usr/sbin/qemu-x86_64 /tmp && \
         sudo pacman -Rsc --noconfirm qemu-user && sudo pacman -S --noconfirm liburing && \
         sudo mv /tmp/qemu-i386 /tmp/qemu-x86_64 /usr/sbin && \
-        sudo pacman -S --noconfirm x86_64-elf-binutils ; \
+        sudo pacman -S --noconfirm x86_64-elf-binutils numactl ; \
     fi
 
 # Setup yafu
