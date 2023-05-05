@@ -1,7 +1,7 @@
 FROM lopsided/archlinux:devel as build
 
 # Define user
-ENV USER pwnbox
+ENV USER pwnpad
 
 # Setup base pacman repositories
 RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf && \
@@ -9,11 +9,11 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
     sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     curl -fsSL https://blackarch.org/strap.sh | sh && \
     printf '\n%s\n%s\n%s\n\n%s\n%s\n%s\n' \
-           '[pwnbox]' 'SigLevel = Optional TrustedOnly' \
-           'Server = https://raw.githubusercontent.com/platypew/pwnbox2-repo/master/$arch' \
-           '[pwnbox-lfs]' \
+           '[pwnpad]' 'SigLevel = Optional TrustedOnly' \
+           'Server = https://raw.githubusercontent.com/pwnpad/pwnpad-repo/master/$arch' \
+           '[pwnpad-lfs]' \
            'SigLevel = Optional TrustedOnly' \
-           'Server = https://media.githubusercontent.com/media/PlatyPew/pwnbox2-lfs-repo/master/$arch' \
+           'Server = https://media.githubusercontent.com/media/pwnpad/pwnpad-lfs-repo/master/$arch' \
             >> /etc/pacman.conf
 
 # Setup better sources for x86
@@ -122,7 +122,7 @@ COPY ./config/docker-entrypoint.sh /
 # Copy all files to new image to squash it
 FROM scratch
 
-ENV USER pwnbox
+ENV USER pwnpad
 COPY --from=build / /
 WORKDIR /home/$USER
 

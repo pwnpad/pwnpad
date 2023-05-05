@@ -15,7 +15,7 @@ SUBCOMMAND:
   rm        Remove container and its volumes
   kill      Stop container from running
   volume    Enter into container's volume
-  ls        List pwnboxes
+  ls        List pwnpad instances
   update    Update image to the latest build
 
 HELP:
@@ -58,7 +58,7 @@ OPTIONS:
         dockerfile="Dockerfile-extra"
     fi
 
-    docker image build $platform -f ${dockerfile} -t platypew/pwnbox2:${tag} $ROOT
+    docker image build $platform -f ${dockerfile} -t platypew/pwnpad:${tag} $ROOT
 }
 
 # Start and attach docker container
@@ -177,7 +177,7 @@ OPTIONS:
             ${xsupport} \
             ${priv} \
             $env $port $volume \
-            platypew/pwnbox2:${image} sh > /dev/null
+            platypew/pwnpad:${image} sh > /dev/null
 
         if [ $? -ne 0 ]; then
             printf "An error has occured. Check arguments\n\n"
@@ -185,15 +185,15 @@ OPTIONS:
         fi
 
         printf "SSH tunneling to create a proxy\n"
-        printf "sshuttle -vHNr pwnbox@localhost:$(docker port ${box_name} | grep 22/tcp | cut -d ":" -f 2)\n"
+        printf "sshuttle -vHNr pwnpad@localhost:$(docker port ${box_name} | grep 22/tcp | cut -d ":" -f 2)\n"
     fi
 
     if [ $detach -eq 0 ]; then
-        docker exec -it "${box_name}" su pwnbox
+        docker exec -it "${box_name}" su pwnpad
     fi
 }
 
-# Removes pwnbox
+# Removes pwnpad
 RM() {
     RUSE() {
         printf "USAGE:
@@ -292,23 +292,23 @@ VOLUME() {
 }
 
 LIST() {
-    docker container ls -a --filter "ancestor=platypew/pwnbox2:latest" --filter "ancestor=platypew/pwnbox2:extra" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}\t{{.Ports}}"
+    docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:extra" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}\t{{.Ports}}"
 }
 
 UPDATE() {
     DIR=$(dirname $0)
     git -C $DIR fetch origin master && git -C $DIR pull origin master --rebase
 
-    beforeid=$(docker images platypew/pwnbox2:latest | tail -n 1 | awk '{print $3}')
-    docker pull platypew/pwnbox2:latest
-    afterid=$(docker images platypew/pwnbox2 | grep none | awk '{print $3}')
+    beforeid=$(docker images platypew/pwnpad:latest | tail -n 1 | awk '{print $3}')
+    docker pull platypew/pwnpad:latest
+    afterid=$(docker images platypew/pwnpad | grep none | awk '{print $3}')
     if [[ $beforeid == $afterid ]]; then
         docker rmi $beforeid
     fi
 
-    beforeid=$(docker images platypew/pwnbox2:extra | tail -n 1 | awk '{print $3}')
-    docker pull platypew/pwnbox2:extra
-    afterid=$(docker images platypew/pwnbox2 | grep none | awk '{print $3}')
+    beforeid=$(docker images platypew/pwnpad:extra | tail -n 1 | awk '{print $3}')
+    docker pull platypew/pwnpad:extra
+    afterid=$(docker images platypew/pwnpad | grep none | awk '{print $3}')
     if [[ $beforeid == $afterid ]]; then
         docker rmi $beforeid
     fi

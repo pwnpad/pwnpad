@@ -8,14 +8,14 @@ function _p2() {
             'rm:Remove container and its volumes'
             'kill:Stop container from running'
             'volume:Enter into container volume'
-            'ls:List pwnboxes'
+            'ls:List pwnpad instances'
             'update:Update image to the latest build'
         )
         _describe 'command' commands
     }
 
     _getcontainer() {
-        compadd `docker container ls -a --filter "ancestor=platypew/pwnbox2" --filter "ancestor=platypew/pwnbox2:extra" --format "{{.Names}}" | tr "\n" " "`
+        compadd `docker container ls -a --filter "ancestor=platypew/pwnpad" --filter "ancestor=platypew/pwnpad:extra" --format "{{.Names}}" | tr "\n" " "`
     }
 
     local state

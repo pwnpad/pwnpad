@@ -1,20 +1,20 @@
 <div align="center">
-    <img src="images/logo-rectangle.png" style="width: 75%; height: auto;"/>
+    <img src="images/logo.png" style="width: 25%; height: auto;"/>
     <br/>
     <br/>
-    <a href="https://github.com/PlatyPew/PwnBox2/blob/master/LICENSE"><img src="https://img.shields.io/github/license/platypew/pwnbox2"></a>
+    <a href="https://github.com/pwnpad/pwnpad/blob/master/LICENSE"><img src="https://img.shields.io/github/license/pwnpad/pwnpad"></a>
     <a href="https://hub.docker.com/_/docker"><img src="https://img.shields.io/badge/docker-20.10.23-blue.svg"></a>
     <img src="https://img.shields.io/badge/Coded%20By%20Humans-100%25-brightgreen" />
-    <a href="https://github.com/PlatyPew/PwnBox2/actions"><img src="https://img.shields.io/github/actions/workflow/status/platypew/pwnbox2/docker-image.yml?label=docker%20build"></a>
+    <a href="https://github.com/pwnpad/pwnpad/actions"><img src="https://img.shields.io/github/actions/workflow/status/pwnpad/pwnpad/docker-image.yml?label=docker%20build"></a>
     <br/>
-    <a href="https://hub.docker.com/r/platypew/pwnbox2/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnbox2/latest?arch=amd64&label=latest-amd64"></a>
-    <a href="https://hub.docker.com/r/platypew/pwnbox2/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnbox2/latest?arch=arm64&label=latest-arm64"></a>
+    <a href="https://hub.docker.com/r/platypew/pwnpad/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnpad/latest?arch=amd64&label=latest-amd64"></a>
+    <a href="https://hub.docker.com/r/platypew/pwnpad/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnpad/latest?arch=arm64&label=latest-arm64"></a>
     <br/>
-    <a href="https://hub.docker.com/r/platypew/pwnbox2/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnbox2/extra?arch=amd64&label=extra-amd64"></a>
-    <a href="https://hub.docker.com/r/platypew/pwnbox2/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnbox2/extra?arch=arm64&label=extra-arm64"></a>
+    <a href="https://hub.docker.com/r/platypew/pwnpad/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnpad/extra?arch=amd64&label=extra-amd64"></a>
+    <a href="https://hub.docker.com/r/platypew/pwnpad/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnpad/extra?arch=arm64&label=extra-arm64"></a>
     <br/>
-    <h1>PwnBox2</h1>
-    <p>Perfect for doing Capture-The-Flag challenges and Pentesting on any platform, without needing a clunky, fat, resource hungry virtual machine. PwnBox2 provides a wide array of tools at your very own fingertips, powered by Arch Linux!</p>
+    <h1>PwnPad</h1>
+    <p>Perfect for doing Capture-The-Flag challenges and Pentesting on any platform, without needing a clunky, fat, resource hungry virtual machine. PwnPad provides a wide array of tools at your very own fingertips, powered by Arch Linux!</p>
     <br/>
 </div>
 
@@ -28,7 +28,7 @@
 
 <div align="center">
     <h1>Download</h1>
-    <p>How to Download and Install PwnBox2</p>
+    <p>How to Download and Install PwnPad</p>
 </div>
 
 #### Requirements
@@ -36,10 +36,10 @@
 -   Docker installed (Docker Desktop for Windows & Mac)
 -   Nerd Fonts installed
 
-PwnBox2 can be downloaded using the git command
+PwnPad can be downloaded using the git command
 
 ```
-git clone https://github.com/PlatyPew/PwnBox2.git
+git clone https://github.com/pwnpad/pwnpad.git
 ```
 
 ```bash
@@ -48,8 +48,8 @@ p2 build            # Base image
 p2 build -i extra   # Extra image
 
 # Or pull from Docker Hub
-docker pull platypew/pwnbox2:latest # Base image
-docker pull platypew/pwnbox2:extra  # Extra tools
+docker pull platypew/pwnpad:latest # Base image
+docker pull platypew/pwnpad:extra  # Extra tools
 ```
 
 You can get basic autocompletion by sourcing the `_p2-autocomplete.zsh` file in your zshrc or source it
@@ -61,7 +61,7 @@ source _p2-autocomplete.zsh
 <br/>
 <div align="center">
     <h1>Usage</h1>
-    <p>How to operate PwnBox2</p>
+    <p>How to operate PwnPad</p>
 </div>
 
 ### General
@@ -79,7 +79,7 @@ SUBCOMMAND:
   rm        Remove container and its volumes
   kill      Stop container from running
   volume    Enter into container's volume
-  ls        List pwnboxes
+  ls        List pwnpad instances
   update    Update image to the latest build
 
 HELP:
@@ -91,7 +91,7 @@ HELP:
 <br/>
 <div align="center">
     <h1>Features</h1>
-    <p>Why PwnBox2 over other Docker-based environments?</p>
+    <p>Why PwnPad over other Docker-based environments?</p>
 </div>
 <br/>
 
@@ -109,19 +109,19 @@ HELP:
 
 #### SSH
 
-You can ssh into PwnBox2 by doing these steps
+You can ssh into PwnPad by doing these steps
 
 1. `sudo systemctl start sshd`
 2. Insert your public key into `~/.ssh/authorized_keys`
 3. Use `p2 ls` to the port bound to port 22
-4. Do `ssh -p <port> pwnbox@localhost`
+4. Do `ssh -p <port> pwnpad@localhost`
 
 #### Proxy
 
-You can proxy your traffic through PwnBox2 by doing these steps
+You can proxy your traffic through PwnPad by doing these steps
 
 1. Use `p2 ls` to the port bound to port 22
-2. `sshuttle -vHNr pwnbox@localhost:<port>`
+2. `sshuttle -vHNr pwnpad@localhost:<port>`
 
 #### Publish Port to Public
 
@@ -176,7 +176,7 @@ Enabling VNC (you may need to run your system through a proxy to access the noVN
 ### Extra Tools
 
 <details>
-    <summary>Can only be found in platypew/pwnbox2:extra</summary>
+    <summary>Can only be found in platypew/pwnpad:extra</summary>
 
 | Tools              | Description                                                                                    |
 | ------------------ | ---------------------------------------------------------------------------------------------- |
@@ -251,5 +251,5 @@ Enabling VNC (you may need to run your system through a proxy to access the noVN
 
 <div align="center">
     <h1>License</h1>
-    <p>This project is released under the <a href="https://github.com/PlatyPew/PwnBox2/blob/master/LICENSE">MIT License</a></p>
+    <p>This project is released under the <a href="https://github.com/pwnpad/pwnpad/blob/master/LICENSE">MIT License</a></p>
 </div>

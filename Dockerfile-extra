@@ -1,7 +1,7 @@
 # vim: ft=dockerfile
-FROM platypew/pwnbox2:latest
+FROM platypew/pwnpad:latest
 
-ENV USER pwnbox
+ENV USER pwnpad
 USER $USER
 
 RUN sudo pacman -R --noconfirm gnu-netcat && \
@@ -17,7 +17,7 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
     yes | sudo pacman -Sdd gnu-netcat && \
     if [[ "$(uname -m)" == "aarch64" ]]; then \
         wget -O /tmp/donut.pkg.tar.zst \
-            "https://github.com/PlatyPew/pwnbox2-repo/blob/master/x86_64/donut-368.dafea17-3-x86_64.pkg.tar.zst?raw=true" && \
+            "https://github.com/pwnpad/pwnpad-repo/blob/master/x86_64/donut-368.dafea17-3-x86_64.pkg.tar.zst?raw=true" && \
         sudo pacman -U --arch x86_64 --noconfirm /tmp/donut.pkg.tar.zst && \
         sudo pacman -S --noconfirm nessus ; \
     else \
