@@ -11,9 +11,9 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
     printf '\n%s\n%s\n%s\n\n%s\n%s\n%s\n' \
            '[pwnpad]' 'SigLevel = Optional TrustedOnly' \
            'Server = https://raw.githubusercontent.com/pwnpad/pwnpad-repo/master/$arch' \
-           '[pwnpad-lfs]' \
+           '[pwnpad-large]' \
            'SigLevel = Optional TrustedOnly' \
-           'Server = https://media.githubusercontent.com/media/pwnpad/pwnpad-lfs-repo/master/$arch' \
+           'Server = https://github.com/pwnpad/pwnpad-repo/releases/download/$arch' \
             >> /etc/pacman.conf
 
 # Setup better sources for x86
