@@ -298,15 +298,19 @@ LIST() {
 UPDATE() {
     DIR=$(dirname $0)
     git -C $DIR fetch origin master && git -C $DIR pull origin master --rebase
+
+    beforeid=$(docker images platypew/pwnbox2:latest | tail -n 1 | awk '{print $3}')
     docker pull platypew/pwnbox2:latest
-    docker pull platypew/pwnbox2:extra
-    id=`docker images platypew/pwnbox2:latest | grep none | awk '{print $3}'`
-    if [ ! -z $id ]; then
-        docker rmi $id
+    afterid=$(docker images platypew/pwnbox2 | grep none | awk '{print $3}')
+    if [[ $beforeid == $afterid ]]; then
+        docker rmi $beforeid
     fi
-    id=`docker images platypew/pwnbox2:extra | grep none | awk '{print $3}'`
-    if [ ! -z $id ]; then
-        docker rmi $id
+
+    beforeid=$(docker images platypew/pwnbox2:extra | tail -n 1 | awk '{print $3}')
+    docker pull platypew/pwnbox2:extra
+    afterid=$(docker images platypew/pwnbox2 | grep none | awk '{print $3}')
+    if [[ $beforeid == $afterid ]]; then
+        docker rmi $beforeid
     fi
 }
 
