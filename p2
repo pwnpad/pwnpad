@@ -73,8 +73,9 @@ OPTIONS:
   -e    use environmental variables
           FOO=bar
   -d    display (use with -X)
-  -p    port range (default: 22, default port will map to random host port)
-          1337-31337
+  -p    port range (default: 22, default port will map to random host port between 40000 and 40999)
+          1337:1337
+          1337-31337:1337-31337
   -v    mount volumes
           /foo/bar:/foo/bar
   -i    select image (default: latest)
@@ -106,7 +107,7 @@ OPTIONS:
                 ;;
             e) env="-e $OPTARG"
                 ;;
-            p) port="-p $OPTARG:$OPTARG"
+            p) port="-p $OPTARG"
                 ;;
             v) volume="-v $OPTARG"
                 ;;
