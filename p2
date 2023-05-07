@@ -283,7 +283,7 @@ VOLUME() {
         VUSE
     fi
 
-    cd "$ROOT/$2" 2> /dev/null
+    cd "$ROOT/mounts/$2" 2> /dev/null
     exec $SHELL
 
     if [ $? -ne 0 ]; then
