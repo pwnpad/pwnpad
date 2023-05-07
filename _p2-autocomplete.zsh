@@ -15,10 +15,18 @@ function _p2() {
     }
 
     _getcontainer() {
-        compadd `docker container ls -a --filter "ancestor=platypew/pwnpad" --filter "ancestor=platypew/pwnpad:extra" --format "{{.Names}}" | tr "\n" " "`
+        local listed=${words[${#words[@]}-1]}
+        local containers=( $(docker container ls -a --filter "ancestor=platypew/pwnpad" --filter "ancestor=platypew/pwnpad:extra" --format "{{.Names}}") )
+
+        for con in "${containers[@]}"; do
+            if [[ "$con" == "$listed" ]]; then
+                return
+            fi
+        done
+
+        compadd $containers
     }
 
-    local state
     _arguments -C \
         '1: :_subcmd' \
         '*::arg:->args'
@@ -28,7 +36,7 @@ function _p2() {
             case $line[1] in
                 attach)
                     _getcontainer
-                    _arguments  -s : \
+                    _arguments -C \
                         '(-P)-P[use privileged mode (not recommended)]' \
                         '(-X)-X[support X11 forwarding]' \
                         '(-D)-D[run as daemon mode]' \
@@ -39,19 +47,16 @@ function _p2() {
                         '(-i)-i[select image]'
                     ;;
                 build)
-                    _arguments -s : \
+                    _arguments -C : \
                         '-i[image]' \
                         '-p[platform]'
                     ;;
                 rm)
                     _getcontainer
-                    _arguments -s : \
+                    _arguments -C : \
                         '-f[forcefully remove mounted shared directory]'
                     ;;
-                kill)
-                    _getcontainer
-                    ;;
-                volume)
+                kill | volume)
                     _getcontainer
                     ;;
             esac
