@@ -152,8 +152,8 @@ OPTIONS:
     fi
 
     printf "Making directory...\n"
-    mkdir $ROOT/${box_name} 2> /dev/null
-    printf "Directory located at: $ROOT/${box_name}\n"
+    mkdir $ROOT/mounts/${box_name} 2> /dev/null
+    printf "Directory located at: $ROOT/mounts/${box_name}\n"
 
     # Attaches if container exists
     if [ $(docker ps -a --filter "name=^/${box_name}$" --format '{{.Names}}') ]; then
@@ -167,7 +167,7 @@ OPTIONS:
             --cap-add=SYS_PTRACE \
             --cap-add=NET_ADMIN \
             --security-opt seccomp=unconfined \
-            --mount type=bind,source="$ROOT/${box_name}",target=/mnt/shared \
+            --mount type=bind,source="$ROOT/mounts/${box_name}",target=/mnt/shared \
             --sysctl net.ipv6.conf.all.disable_ipv6=0 \
             --device /dev/net/tun \
             --cgroupns=host \
@@ -240,13 +240,13 @@ OPTIONS:
 
     printf "Cleaning directory\n"
     if [ $force -eq 0 ]; then
-        rmdir $ROOT/${box_name} 2> /dev/null
+        rmdir $ROOT/mounts/${box_name} 2> /dev/null
 
         if [ $? -ne 0 ]; then
             printf "Directory not empty, not removing...\n"
         fi
     else
-        rm -rvf $ROOT/${box_name}
+        rm -rvf $ROOT/mounts/${box_name}
     fi
 
 }

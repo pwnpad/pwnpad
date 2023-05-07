@@ -1,6 +1,2 @@
-/*/
-!/config/
-!/images/
-!/.github
-
+mounts/
 .DS_Store
