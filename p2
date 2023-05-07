@@ -314,6 +314,12 @@ UPDATE() {
     fi
 }
 
+if ! docker version >/dev/null 2>&1; then
+    printf "NOTICE:
+  Cannot connect to the Docker daemon. Is the docker daemon running?\n\n"
+    USAGE
+fi
+
 if [ -z ${1} ]; then
     USAGE
 fi

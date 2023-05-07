@@ -1,5 +1,9 @@
 function _p2() {
 
+    if ! docker version >/dev/null 2>&1; then
+        return
+    fi
+
     _subcmd() {
         local commands
         commands=(
