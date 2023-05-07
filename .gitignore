@@ -1,2 +1,4 @@
-mounts/
+mounts/*
+!mounts/.gitkeep
+
 .DS_Store
