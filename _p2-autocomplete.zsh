@@ -42,6 +42,7 @@ function _p2() {
                     _getcontainer
                     _arguments -C \
                         '(-P)-P[use privileged mode (not recommended)]' \
+                        '(-S)-S[use sys_admin capability (required for chroot)]' \
                         '(-X)-X[support X11 forwarding]' \
                         '(-D)-D[run as daemon mode]' \
                         '(-d)-d[display]' \
