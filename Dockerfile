@@ -18,8 +18,7 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
 
 # Setup better sources for x86
 RUN if [ "$(uname -m)" == "x86_64" ]; then \
-        sed -i 's/^#\[\(multilib\)\]/[\1]/; s/^#\(Include = \/etc\/pacman.d\/mirrorlist\)/\1/' \
-            /etc/pacman.conf && \
+        sed -i 'N;s/#\[multilib\]\n#/\[multilib\]\n/' /etc/pacman.conf && \
         printf '%s\n%s\n%s\n%s\n' \
                'Server = http://mirror.rackspace.com/archlinux/$repo/os/$arch' \
                'Server = http://mirrors.acm.wpi.edu/archlinux/$repo/os/$arch' \
