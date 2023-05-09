@@ -29,7 +29,7 @@ chpwd() {
 }
 
 # Clipboard
-alias clip="base64 | xargs -0 printf '\e]52;c;%s\007'"
+alias clip="(base64 | xargs -0 printf '\e]52;c;%s\007')"
 
 ## FZF functions ###########################################
 f() {
