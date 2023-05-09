@@ -201,6 +201,9 @@ intel-pacman () {
         sudo mount -t proc proc $CHROOT/proc
         sudo mount -t sysfs sys $CHROOT/sys
         sudo mount -o bind /dev $CHROOT/dev
+
+        sudo mkdir -p $CHROOT/usr/lib/locale
+        sudo cp $HOME/.local/lib/locale-archive $CHROOT/usr/lib/locale/locale-archive
     fi
     sudo umount $CHROOT/sys
 
@@ -236,6 +239,9 @@ intel-run () {
         sudo mount -t proc proc $CHROOT/proc
         sudo mount -t sysfs sys $CHROOT/sys
         sudo mount -o bind /dev $CHROOT/dev
+
+        sudo mkdir -p $CHROOT/usr/lib/locale
+        sudo cp $HOME/.local/lib/locale-archive $CHROOT/usr/lib/locale/locale-archive
     fi
 
     sudo chroot $CHROOT $@

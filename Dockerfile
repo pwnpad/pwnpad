@@ -46,6 +46,7 @@ RUN if [ ! -d "/lib64" ]; then \
 
 COPY ./config/chroot/pacman64.conf /etc/pacman64.conf
 COPY --chown=$USER:users ./config/chroot/pacman64 /home/$USER/.local/bin/pacman64
+COPY --chown=$USER:users ./config/chroot/locale-archive /home/$USER/.local/lib/locale-archive
 
 USER $USER
 WORKDIR /home/$USER
