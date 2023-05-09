@@ -109,7 +109,7 @@ HELP:
 
 #### SSH
 
-You can ssh into PwnPad by doing these steps
+You can ssh into PwnPad by doing these steps.
 
 1. `sudo systemctl start sshd`
 2. Insert your public key into `~/.ssh/authorized_keys`
@@ -118,14 +118,14 @@ You can ssh into PwnPad by doing these steps
 
 #### Proxy
 
-You can proxy your traffic through PwnPad by doing these steps
+You can proxy your traffic through PwnPad by doing these steps.
 
 1. Use `p2 ls` to the port bound to port 22
 2. `sshuttle -vHNr pwnpad@localhost:<port>`
 
 #### Publish Port to Public
 
-You can use ngrok to publish a port to the public
+You can use ngrok to publish a port to the public.
 
 - Start: `publish start <port>` (Insert api key if prompted)
 - Stop: `publish stop`
@@ -133,17 +133,25 @@ You can use ngrok to publish a port to the public
 
 #### Toggle ASLR
 
-You can turn ASLR on and off
+You can turn ASLR on and off.
 
 - On: `aslr on`
 - Off: `aslr off`
 
 #### Enable noVNC (only in extra image)
 
-Enabling VNC (you may need to run your system through a proxy to access the noVNC server)
+Enabling VNC (you may need to run your system through a proxy to access the noVNC server).
 
 - Start: `gui start`
 - Stop: `gui stop`
+
+#### Create intel environment (only in arm64 image)
+
+Creates a chroot environment to run purely intel binaries.
+You can still run intel binaries that uses only glibc within the regular context.
+
+- Use pacman: `intel-pacman`
+- Run command: `intel-run`
 
 ### Included Infosec Tools
 
