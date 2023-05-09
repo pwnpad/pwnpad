@@ -453,7 +453,7 @@ shift $(( OPTIND - 1 ))
 
 (( $# )) || die "No root directory specified"
 newroot=$1; shift
-pacman_args+=("$pacmode" "${@:-base}" --config="$pacman_config")
+pacman_args+=("$pacmode" "${@}" --config="$pacman_config")
 
 if (( ! hostcache )); then
   pacman_args+=(--cachedir="$newroot/var/cache/pacman/pkg")
