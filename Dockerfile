@@ -44,6 +44,9 @@ RUN if [ ! -d "/lib64" ]; then \
         sudo pacman -S lib32-gcc-libs --noconfirm ; \
     fi
 
+COPY ./config/chroot/pacman64.conf /etc/pacman64.conf
+COPY --chown=$USER:users ./config/chroot/pacman64 /home/$USER/.local/bin/pacman64
+
 USER $USER
 WORKDIR /home/$USER
 
