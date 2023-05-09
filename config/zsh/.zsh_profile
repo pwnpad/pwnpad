@@ -221,6 +221,12 @@ intel-pacman () {
 }
 
 intel-run () {
+    if [[ $(uname -m) != "aarch64" ]]; then
+        printf "Only available on arm64\n"
+        return 1
+    fi
+
+    CHROOT="/intel"
     if [[ ! -d $CHROOT ]]; then
         sudo mkdir -p $CHROOT
         sudo mkdir -p $CHROOT/proc
@@ -232,12 +238,6 @@ intel-run () {
         sudo mount -o bind /dev $CHROOT/dev
     fi
 
-    if [[ $(uname -m) != "aarch64" ]]; then
-        printf "Only available on arm64\n"
-        return 1
-    fi
-
-    CHROOT="/intel"
     sudo chroot $CHROOT $@
 }
 ############################################################
