@@ -32,8 +32,9 @@ BUILD() {
   ${P2} build [OPTIONS]
 OPTIONS:
   -p    platform
+          linux/amd64, linux/arm64
   -i    select image (default: latest)
-          latest/extra\n"
+          latest, extra\n"
         exit 1
     }
 
@@ -79,7 +80,7 @@ OPTIONS:
   -v    mount volumes
           /foo/bar:/foo/bar
   -i    select image (default: latest)
-          latest/extra\n"
+          latest, extra\n"
         exit 1
     }
 
