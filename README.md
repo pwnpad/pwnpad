@@ -3,7 +3,7 @@
     <br/>
     <br/>
     <a href="https://github.com/pwnpad/pwnpad/blob/master/LICENSE"><img src="https://img.shields.io/github/license/pwnpad/pwnpad"></a>
-    <a href="https://hub.docker.com/_/docker"><img src="https://img.shields.io/badge/docker-20.10.23-blue.svg"></a>
+    <a href="https://hub.docker.com/_/docker"><img src="https://img.shields.io/badge/docker-23.0.5-blue.svg"></a>
     <img src="https://img.shields.io/badge/Coded%20By%20Humans-100%25-brightgreen" />
     <a href="https://github.com/pwnpad/pwnpad/actions"><img src="https://img.shields.io/github/actions/workflow/status/pwnpad/pwnpad/docker-image.yml?label=docker%20build"></a>
     <br/>
