@@ -198,13 +198,14 @@ intel-pacman () {
         sudo mkdir -p $CHROOT/sys
         sudo mkdir -p $CHROOT/dev
 
-        sudo mount -t proc proc $CHROOT/proc
-        sudo mount -t sysfs sys $CHROOT/sys
-        sudo mount -o bind /dev $CHROOT/dev
-
         sudo mkdir -p $CHROOT/usr/lib/locale
         sudo cp $HOME/.local/lib/locale-archive $CHROOT/usr/lib/locale/locale-archive
     fi
+
+    findmnt /intel/proc > /dev/null || sudo mount -t proc proc $CHROOT/proc
+    findmnt /intel/sys > /dev/null || sudo mount -t sysfs sys $CHROOT/sys
+    findmnt /intel/dev > /dev/null || sudo mount -o bind /dev $CHROOT/dev
+
     sudo umount $CHROOT/sys
 
     if [[ -z $1 ]]; then
@@ -236,15 +237,28 @@ intel-run () {
         sudo mkdir -p $CHROOT/sys
         sudo mkdir -p $CHROOT/dev
 
-        sudo mount -t proc proc $CHROOT/proc
-        sudo mount -t sysfs sys $CHROOT/sys
-        sudo mount -o bind /dev $CHROOT/dev
-
         sudo mkdir -p $CHROOT/usr/lib/locale
         sudo cp $HOME/.local/lib/locale-archive $CHROOT/usr/lib/locale/locale-archive
     fi
 
+    findmnt /intel/proc > /dev/null || sudo mount -t proc proc $CHROOT/proc
+    findmnt /intel/sys > /dev/null || sudo mount -t sysfs sys $CHROOT/sys
+    findmnt /intel/dev > /dev/null || sudo mount -o bind /dev $CHROOT/dev
+
     sudo chroot $CHROOT $@
+}
+
+intel-remove () {
+    if [[ $(uname -m) != "aarch64" ]]; then
+        printf "Only available on arm64\n"
+        return 1
+    fi
+
+    CHROOT="/intel"
+    if [[ -d $CHROOT ]]; then
+        sudo umount $CHROOT/sys $CHROOT/dev $CHROOT/proc
+        sudo rm -rf $CHROOT
+    fi
 }
 ############################################################
 
