@@ -17,10 +17,7 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
     if [[ "$(uname -m)" == "aarch64" ]]; then \
         wget -O /tmp/donut.pkg.tar.zst \
             "https://github.com/pwnpad/pwnpad-repo/blob/master/x86_64/donut-368.dafea17-3-x86_64.pkg.tar.zst?raw=true" && \
-        sudo pacman -U --arch x86_64 --noconfirm /tmp/donut.pkg.tar.zst && \
-        sudo pacman -S --noconfirm nessus ; \
-    else \
-        yay -S --noconfirm nessus ; \
+        sudo pacman -U --arch x86_64 --noconfirm /tmp/donut.pkg.tar.zst ; \
     fi && \
     sudo mkdir /etc/samba && \
     sudo wget -O /etc/samba/smb.conf \
