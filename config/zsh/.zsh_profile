@@ -199,7 +199,7 @@ intel-pacman () {
         sudo mkdir -p $CHROOT/dev
 
         sudo mkdir -p $CHROOT/usr/lib/locale
-        sudo cp $HOME/.local/lib/locale-archive $CHROOT/usr/lib/locale/locale-archive
+        sudo cp /usr/lib/locale/locale-archive $CHROOT/usr/lib/locale/locale-archive
     fi
 
     findmnt /intel/proc > /dev/null || sudo mount -t proc proc $CHROOT/proc
@@ -238,7 +238,7 @@ intel-run () {
         sudo mkdir -p $CHROOT/dev
 
         sudo mkdir -p $CHROOT/usr/lib/locale
-        sudo cp $HOME/.local/lib/locale-archive $CHROOT/usr/lib/locale/locale-archive
+        sudo cp /usr/lib/locale/locale-archive $CHROOT/usr/lib/locale/locale-archive
     fi
 
     findmnt /intel/proc > /dev/null || sudo mount -t proc proc $CHROOT/proc
