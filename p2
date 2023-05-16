@@ -308,18 +308,34 @@ UPDATE() {
     DIR=$(dirname $0)
     git -C $DIR fetch origin master && git -C $DIR pull origin master --rebase
 
+    boxexists=$(docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:extra" --format "table {{.Names}}\t{{.Status}}" | tail -n +2)
+    if [ ! -z $boxexists ]; then
+        printf "You have existing instances running:\n"
+        printf $boxexists
+
+        printf "\nUpdating will leave dangling images which may take up space and instances will no longer be tracked\n"
+        printf "Updating will NOT delete any instances you have\n"
+        printf "Are you sure you want to update? This cannot be undone! (y/n) "
+        read confirmation
+
+        if [ -z $confirmation ] || [ $confirmation != "y" ]; then
+            exit 0
+        fi
+    fi
+
+
     beforeid=$(docker image ls platypew/pwnpad:latest | tail -n 1 | awk '{print $3}')
     docker image pull platypew/pwnpad:latest
     afterid=$(docker image ls platypew/pwnpad | grep none | awk '{print $3}')
     if [[ $beforeid == $afterid ]]; then
-        docker image rm $beforeid
+        docker image rm -f $beforeid
     fi
 
     beforeid=$(docker image ls platypew/pwnpad:extra | tail -n 1 | awk '{print $3}')
     docker image pull platypew/pwnpad:extra
     afterid=$(docker image ls platypew/pwnpad | grep none | awk '{print $3}')
     if [[ $beforeid == $afterid ]]; then
-        docker image rm $beforeid
+        docker image rm -f $beforeid
     fi
 }
 
