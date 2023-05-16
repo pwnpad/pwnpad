@@ -164,11 +164,11 @@ OPTIONS:
     printf "Directory located at: $ROOT/mounts/${box_name}\n"
 
     # Attaches if container exists
-    if [ $(docker ps -a --filter "name=^/${box_name}$" --format '{{.Names}}') ]; then
+    if [ $(docker container ls -a --filter "name=^/${box_name}$" --format '{{.Names}}') ]; then
         printf "Container exists, reattaching...\n"
-        docker start ${box_name} > /dev/null
+        docker container start ${box_name} > /dev/null
     else
-        docker run -it -d \
+        docker container run -it -d \
             -h ${box_name} \
             --name ${box_name} \
             -e TZ=${tz} \
@@ -198,7 +198,7 @@ OPTIONS:
     fi
 
     if [ $detach -eq 0 ]; then
-        docker exec -it "${box_name}" su pwnpad
+        docker container exec -it "${box_name}" su pwnpad
     fi
 }
 
@@ -240,7 +240,7 @@ OPTIONS:
     fi
 
     printf "Attempting to remove container\n"
-    docker rm ${box_name} -f &> /dev/null
+    docker container rm ${box_name} -f &> /dev/null
 
     if [ $? -ne 0 ]; then
         printf "Container does not exist\n\n"
@@ -279,7 +279,7 @@ KILL() {
         exit 0
     fi
 
-    docker stop "${box_name}"
+    docker container stop "${box_name}"
 }
 
 VOLUME() {
@@ -308,18 +308,18 @@ UPDATE() {
     DIR=$(dirname $0)
     git -C $DIR fetch origin master && git -C $DIR pull origin master --rebase
 
-    beforeid=$(docker images platypew/pwnpad:latest | tail -n 1 | awk '{print $3}')
-    docker pull platypew/pwnpad:latest
-    afterid=$(docker images platypew/pwnpad | grep none | awk '{print $3}')
+    beforeid=$(docker image ls platypew/pwnpad:latest | tail -n 1 | awk '{print $3}')
+    docker image pull platypew/pwnpad:latest
+    afterid=$(docker image ls platypew/pwnpad | grep none | awk '{print $3}')
     if [[ $beforeid == $afterid ]]; then
-        docker rmi $beforeid
+        docker image rm $beforeid
     fi
 
-    beforeid=$(docker images platypew/pwnpad:extra | tail -n 1 | awk '{print $3}')
-    docker pull platypew/pwnpad:extra
-    afterid=$(docker images platypew/pwnpad | grep none | awk '{print $3}')
+    beforeid=$(docker image ls platypew/pwnpad:extra | tail -n 1 | awk '{print $3}')
+    docker image pull platypew/pwnpad:extra
+    afterid=$(docker image ls platypew/pwnpad | grep none | awk '{print $3}')
     if [[ $beforeid == $afterid ]]; then
-        docker rmi $beforeid
+        docker image rm $beforeid
     fi
 }
 
