@@ -309,7 +309,7 @@ UPDATE() {
     git -C $DIR fetch origin master && git -C $DIR pull origin master --rebase
 
     boxexists=$(docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:extra" --format "table {{.Names}}\t{{.Status}}" | tail -n +2)
-    if [ ! -z $boxexists ]; then
+    if [[ ! -z $boxexists ]]; then
         printf "You have existing instances running:\n"
         printf $boxexists
 
