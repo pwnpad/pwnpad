@@ -311,7 +311,7 @@ UPDATE() {
     boxexists=$(docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:extra" --format "table {{.Names}}\t{{.Status}}" | tail -n +2)
     if [[ ! -z $boxexists ]]; then
         printf "You have existing instances running:\n"
-        printf $boxexists
+        echo "$boxexists"
 
         printf "\nUpdating will leave dangling images which may take up space and instances will no longer be tracked\n"
         printf "Updating will NOT delete any instances you have\n"
