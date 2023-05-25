@@ -6,23 +6,17 @@ USER $USER
 
 RUN sudo pacman -R --noconfirm gnu-netcat && \
     sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix crackmapexec creddump \
-    crunch dbd dns2tcp dnsenum dnsrecon enum4linux-ng expect finalrecon fping hashcat hashcat-utils \
-    hping i2c-tools ike-scan inetsim iodine pwnpad/john laudanum lbd ldapenum mimikatz nasm nbtscan \
-    ncrack netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator rbndr recon-ng redsocks \
-    rustscan samdump2 scalpel seclists sleuthkit smbmap snmpcheck socat swaks tcpreplay thc-ipv6 \
-    thc-pptp-bruter traceroute udptunnel unix-privesc-check upx wafw00f wce webshells whatweb \
-    whois windows-binaries && \
+    crunch dbd dns2tcp dnsenum dnsrecon empire enum4linux-ng expect finalrecon fping hashcat \
+    hashcat-utils hping i2c-tools ike-scan inetsim iodine pwnpad/john laudanum lbd ldapenum \
+    mimikatz nasm nbtscan ncrack netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator rbndr \
+    recon-ng redsocks rustscan samdump2 scalpel seclists sleuthkit smbmap snmpcheck socat swaks \
+    tcpreplay thc-ipv6 thc-pptp-bruter traceroute udptunnel unix-privesc-check upx wafw00f wce \
+    webshells whatweb whois windows-binaries && \
     sudo pacman -Rdd --noconfirm impacket && yay -S --noconfirm python-impacket-git && \
     yes | sudo pacman -Sdd gnu-netcat && \
-    if [[ "$(uname -m)" == "aarch64" ]]; then \
-        wget -O /tmp/donut.pkg.tar.zst \
-            "https://github.com/pwnpad/pwnpad-repo/blob/master/x86_64/donut-368.dafea17-3-x86_64.pkg.tar.zst?raw=true" && \
-        sudo pacman -U --arch x86_64 --noconfirm /tmp/donut.pkg.tar.zst ; \
-    fi && \
     sudo mkdir /etc/samba && \
     sudo wget -O /etc/samba/smb.conf \
         "https://raw.githubusercontent.com/samba-team/samba/master/examples/smb.conf.default" && \
-    sudo pacman -S --noconfirm empire && \
     sudo pacman -S --noconfirm xorg-server-xvfb x11vnc novnc xdotool gnu-free-fonts i3-wm i3status && \
     pip install websockify && \
     yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) || true && \
