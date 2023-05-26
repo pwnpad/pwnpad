@@ -8,10 +8,10 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
     sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix crackmapexec creddump \
     crunch dbd dns2tcp dnsenum dnsrecon empire enum4linux-ng expect finalrecon fping hashcat \
     hashcat-utils hping i2c-tools ike-scan inetsim iodine pwnpad/john laudanum lbd ldapenum \
-    mimikatz nasm nbtscan ncrack netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator rbndr \
-    recon-ng redsocks rustscan samdump2 scalpel seclists sleuthkit smbmap snmpcheck socat swaks \
-    tcpreplay thc-ipv6 thc-pptp-bruter traceroute udptunnel unix-privesc-check upx wafw00f wce \
-    webshells whatweb whois windows-binaries && \
+    mimikatz nasm nbtscan ncrack netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator \
+    proxychains-ng rbndr recon-ng redsocks rustscan samdump2 scalpel seclists sleuthkit smbmap \
+    snmpcheck socat swaks tcpreplay thc-ipv6 thc-pptp-bruter traceroute udptunnel \
+    unix-privesc-check upx wafw00f wce webshells whatweb whois windows-binaries && \
     sudo pacman -Rdd --noconfirm impacket && yay -S --noconfirm python-impacket-git && \
     yes | sudo pacman -Sdd gnu-netcat && \
     sudo mkdir /etc/samba && \
