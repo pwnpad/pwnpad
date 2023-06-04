@@ -5,7 +5,7 @@ ENV USER pwnpad
 USER $USER
 
 RUN sudo pacman -R --noconfirm gnu-netcat && \
-    sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix crackmapexec creddump \
+    sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix creddump \
     crunch dbd dns2tcp dnsenum dnsrecon empire enum4linux-ng expect finalrecon fping hashcat \
     hashcat-utils hping i2c-tools ike-scan inetsim iodine pwnpad/john laudanum lbd ldapenum \
     mimikatz nasm nbtscan ncrack netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator \
@@ -18,7 +18,7 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
     sudo wget -O /etc/samba/smb.conf \
         "https://raw.githubusercontent.com/samba-team/samba/master/examples/smb.conf.default" && \
     sudo pacman -S --noconfirm xorg-server-xvfb x11vnc novnc xdotool gnu-free-fonts i3-wm i3status && \
-    pip install websockify && \
+    pip install websockify crackmapexec && \
     yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) || true && \
     sudo mv /usr/share/locale/locale.alias /usr/share/locale/en_US /tmp && \
     sudo rm -rf /usr/share/locale/* && sudo mv /tmp/locale.alias /tmp/en_US /usr/share/locale && \
