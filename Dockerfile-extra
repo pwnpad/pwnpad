@@ -14,7 +14,7 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
     sudo pacman -Rdd --noconfirm impacket && yay -S --noconfirm python-impacket-git && \
     sudo ln -s /opt/ligolo-ng/agent /usr/bin/ligolo-proxy && \
     yes | sudo pacman -Sdd gnu-netcat && \
-    sudo pacman -Sdd responder && \
+    sudo pacman -Sdd --noconfirm responder && \
     git clone --depth=1 https://github.com/cwinfosec/revshellgen.git ~/.local/share/revshellgen && \
     chmod +x  ~/.local/share/revshellgen/revshellgen.py && \
     ln -s ~/.local/share/revshellgen/revshellgen.py ~/.local/bin/revshellgen.py && \
