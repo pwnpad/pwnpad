@@ -5,18 +5,22 @@ ENV USER pwnpad
 USER $USER
 
 RUN sudo pacman -R --noconfirm gnu-netcat && \
-    sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix creddump \
-    crunch dbd dns2tcp dnsenum dnsrecon empire enum4linux-ng expect finalrecon fping hashcat \
-    hashcat-utils hping i2c-tools ike-scan inetsim iodine pwnpad/john laudanum lbd ldapenum \
-    mimikatz nasm nbtscan ncrack netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator \
-    proxychains-ng rbndr recon-ng redsocks rustscan samdump2 scalpel seclists sleuthkit smbmap \
-    snmpcheck socat swaks tcpreplay thc-ipv6 thc-pptp-bruter traceroute udptunnel \
-    unix-privesc-check upx wafw00f wce webshells whatweb whois windows-binaries && \
+    sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix creddump crunch \
+         dbd dns2tcp dnsenum dnsrecon empire enum4linux-ng expect fping hashcat-utils hping \
+         i2c-tools ike-scan inetsim iodine pwnpad/john lbd ligolo-ng ldapenum mimikatz nasm nbtscan \
+         ncrack netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator proxychains-ng rbndr \
+         rustscan samdump2 scalpel seclists sleuthkit smbmap snmpcheck socat swaks tcpreplay \
+         traceroute unix-privesc-check upx wafw00f wce webshells whatweb whois windows-binaries && \
     sudo pacman -Rdd --noconfirm impacket && yay -S --noconfirm python-impacket-git && \
+    sudo ln -s /opt/ligolo-ng/agent /usr/bin/ligolo-proxy && \
     yes | sudo pacman -Sdd gnu-netcat && \
+    sudo pacman -Sdd responder && \
+    git clone --depth=1 https://github.com/cwinfosec/revshellgen.git ~/.local/share/revshellgen && \
+    chmod +x  ~/.local/share/revshellgen/revshellgen.py && \
+    ln -s ~/.local/share/revshellgen/revshellgen.py ~/.local/bin/revshellgen.py && \
     sudo mkdir /etc/samba && \
     sudo wget -O /etc/samba/smb.conf \
-        "https://raw.githubusercontent.com/samba-team/samba/master/examples/smb.conf.default" && \
+         "https://raw.githubusercontent.com/samba-team/samba/master/examples/smb.conf.default" && \
     sudo pacman -S --noconfirm xorg-server-xvfb x11vnc novnc xdotool gnu-free-fonts i3-wm i3status && \
     pip install websockify crackmapexec && \
     yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) || true && \
