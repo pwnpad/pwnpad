@@ -3,7 +3,7 @@
     <br/>
     <br/>
     <a href="https://github.com/pwnpad/pwnpad/blob/master/LICENSE"><img src="https://img.shields.io/github/license/pwnpad/pwnpad"></a>
-    <a href="https://hub.docker.com/_/docker"><img src="https://img.shields.io/badge/docker-23.0.5-blue.svg"></a>
+    <a href="https://hub.docker.com/_/docker"><img src="https://img.shields.io/badge/docker-24.0.2-blue.svg"></a>
     <img src="https://img.shields.io/badge/Coded%20By%20Humans-100%25-brightgreen" />
     <a href="https://github.com/pwnpad/pwnpad/actions"><img src="https://img.shields.io/github/actions/workflow/status/pwnpad/pwnpad/docker-image.yml?label=docker%20build"></a>
     <br/>
@@ -120,38 +120,37 @@ You can ssh into PwnPad by doing these steps.
 
 You can proxy your traffic through PwnPad by doing these steps.
 
-1. Use `p2 ls` to the port bound to port 22
-2. `sshuttle -vHNr pwnpad@localhost:<port>`
+. Use `p2 ls` to the port bound to port 22 2. `sshuttle -vHNr pwnpad@localhost:<port>`
 
 #### Publish Port to Public
 
 You can use ngrok to publish a port to the public.
 
-- Start: `publish start <port>` (Insert api key if prompted)
-- Stop: `publish stop`
-- Status: `publish status`
+-   Start: `publish start <port>` (Insert api key if prompted)
+-   Stop: `publish stop`
+-   Status: `publish status`
 
 #### Toggle ASLR
 
 You can turn ASLR on and off.
 
-- On: `aslr on`
-- Off: `aslr off`
+-   On: `aslr on`
+-   Off: `aslr off`
 
 #### Enable noVNC (only in extra image)
 
 Enabling VNC (you may need to run your system through a proxy to access the noVNC server).
 
-- Start: `gui start`
-- Stop: `gui stop`
+-   Start: `gui start`
+-   Stop: `gui stop`
 
 #### Create intel environment (only in arm64 image)
 
 Creates a chroot environment to run purely intel binaries.
 You can still run intel binaries that uses only glibc within the regular context.
 
-- Use pacman: `intel-pacman`
-- Run command: `intel-run`
+-   Use pacman: `intel-pacman`
+-   Run command: `intel-run`
 
 ### Included Infosec Tools
 
@@ -186,71 +185,70 @@ You can still run intel binaries that uses only glibc within the regular context
 <details>
     <summary>Can only be found in platypew/pwnpad:extra</summary>
 
-| Tools              | Description                                                                                    |
-| ------------------ | ---------------------------------------------------------------------------------------------- |
-| arp-scan           | A tool that uses ARP to discover and fingerprint IP hosts on the local network                 |
-| autorecon          | A multi-threaded network reconnaissance tool which performs automated enumeration of services  |
-| commix             | Automated All-in-One OS Command Injection and Exploitation Tool                                |
-| crackmapexec       | A swiss army knife for pentesting Windows/Active Directory environments                        |
-| creddump           | A python tool to extract various credentials and secrets from Windows registry hives           |
-| crunch             | A wordlist generator for all combinations/permutations of a given character set                |
-| dbd                | A Netcat-clone, designed to be portable and offer strong encryption                            |
-| dns2tcp            | A tool for relaying TCP connections over DNS                                                   |
-| dnsenum            | Script that enumerates DNS information from a domain                                           |
-| empire             | A PowerShell and Python post-exploitation agent                                                |
-| enum4linux         | A tool for enumerating information from Windows and Samba systems                              |
-| expect             | A tool for automating interactive applications                                                 |
-| finalrecon         | OSINT Tool for All-In-One Web Reconnaissance                                                   |
-| fping              | Utility to ping multiple hosts at once                                                         |
-| hashcat            | Multithreaded advanced password recovery utility                                               |
-| hping              | A command-line oriented TCP/IP packet assembler/analyzer                                       |
-| i2c-tools          | Heterogeneous set of I2C tools for Linux that used to be part of lm-sensors                    |
-| ike-scan           | A tool that uses IKE protocol to discover, fingerprint and test IPSec VPN servers              |
-| inetsim            | A software suite for simulating common internet services in a lab environment                  |
-| iodine             | Tunnel IPv4 data through a DNS server                                                          |
-| john               | John the Ripper password cracker                                                               |
-| laudanum           | A collection of injectable files                                                               |
-| mimikatz           | A little tool to play with Windows security                                                    |
-| mitmproxy          | SSL-capable man-in-the-middle HTTP proxy                                                       |
-| nbtscan            | Scan networks searching for NetBIOS information                                                |
-| ncrack             | High-speed network authentication cracking tool                                                |
-| nikto              | A web server scanner which performs comprehensive tests against web servers                    |
-| onesixtyone        | An SNMP scanner that sends multiple SNMP requests to multiple IP addresses                     |
-| patator            | A multi-purpose bruteforcer                                                                    |
-| recon-ng           | A full-featured Web Reconnaissance framework written in Python                                 |
-| redsocks           | Transparent redirector of any TCP connection to proxy.                                         |
-| rustscan           | A modern port scanner                                                                          |
-| samdump2           | Dump password hashes from a Windows NT/2k/XP installation                                      |
-| scalpel            | A frugal, high performance file carver                                                         |
-| sleuthkit          | File system and media management forensic analysis tools                                       |
-| smbmap             | A handy SMB enumeration tool                                                                   |
-| snmpcheck          | A free open source utility to get information via SNMP protocols                               |
-| swaks              | Swiss Army Knife SMTP; Command line SMTP testing, including TLS and AUTH                       |
-| udptunnel          | Tunnels TCP over UDP packets                                                                   |
-| unix-privesc-check | Allow local unprivilged users to escalate privileges to other users                            |
-| wafw00f            | Identify and fingerprint Web Application Firewall (WAF) products protecting a website          |
-| wce                | A security tool to list logon sessions and add, change, list and delete associated credentials |
-| webshells          | Web backdoors                                                                                  |
-| whatweb            | Next generation web scanner that identifies what websites are running                          |
-| whois              | Intelligent WHOIS client                                                                       |
-| windows-binaries   | A collection of pentesting Windows binaries                                                    |
+| Tools              | Description                                                                                     |
+| ------------------ | ----------------------------------------------------------------------------------------------- |
+| arp-scan           | A tool that uses ARP to discover and fingerprint IP hosts on the local network                  |
+| autorecon          | A multi-threaded network reconnaissance tool which performs automated enumeration of services   |
+| commix             | Automated All-in-One OS Command Injection and Exploitation Tool                                 |
+| crackmapexec       | A swiss army knife for pentesting Windows/Active Directory environments                         |
+| creddump           | A python tool to extract various credentials and secrets from Windows registry hives            |
+| crunch             | A wordlist generator for all combinations/permutations of a given character set                 |
+| dbd                | A Netcat-clone, designed to be portable and offer strong encryption                             |
+| dns2tcp            | A tool for relaying TCP connections over DNS                                                    |
+| dnsenum            | Script that enumerates DNS information from a domain                                            |
+| dnsrecon           | Python script for enumeration of hosts, subdomains and emails from a given domain using google. |
+| empire             | A PowerShell and Python post-exploitation agent                                                 |
+| enum4linux-ng      | A tool for enumerating information from Windows and Samba systems                               |
+| expect             | A tool for automating interactive applications                                                  |
+| fping              | Utility to ping multiple hosts at once                                                          |
+| hashcat            | Multithreaded advanced password recovery utility                                                |
+| hping              | A command-line oriented TCP/IP packet assembler/analyzer                                        |
+| impacket           | Collection of classes for working with network protocols                                        |
+| inetsim            | A software suite for simulating common internet services in a lab environment                   |
+| iodine             | Tunnel IPv4 data through a DNS server                                                           |
+| john               | John the Ripper password cracker                                                                |
+| lbd                | Load Balancing detector                                                                         |
+| ligolo-ng          | An advanced, yet simple, tunneling tool that uses a TUN interface                               |
+| ldapenum           | Enumerate domain controllers using LDAP                                                         |
+| nbtscan            | Scan networks searching for NetBIOS information                                                 |
+| ncrack             | High-speed network authentication cracking tool                                                 |
+| nikto              | A web server scanner which performs comprehensive tests against web servers                     |
+| onesixtyone        | An SNMP scanner that sends multiple SNMP requests to multiple IP addresses                      |
+| patator            | A multi-purpose bruteforcer                                                                     |
+| redsocks           | Transparent redirector of any TCP connection to proxy                                           |
+| revshellgen        | Simple script to generate commands to achieve reverse shells                                    |
+| rustscan           | A modern port scanner                                                                           |
+| samdump2           | Dump password hashes from a Windows NT/2k/XP installation                                       |
+| scalpel            | A frugal, high performance file carver                                                          |
+| sleuthkit          | File system and media management forensic analysis tools                                        |
+| smbmap             | A handy SMB enumeration tool                                                                    |
+| snmpcheck          | A free open source utility to get information via SNMP protocols                                |
+| swaks              | Swiss Army Knife SMTP; Command line SMTP testing, including TLS and AUTH                        |
+| unix-privesc-check | Allow local unprivilged users to escalate privileges to other users                             |
+| wafw00f            | Identify and fingerprint Web Application Firewall (WAF) products protecting a website           |
+| wce                | A security tool to list logon sessions and add, change, list and delete associated credentials  |
+| webshells          | Web backdoors                                                                                   |
+| whatweb            | Next generation web scanner that identifies what websites are running                           |
+| whois              | Intelligent WHOIS client                                                                        |
+| windows-binaries   | A collection of pentesting Windows binaries                                                     |
 
 </details>
 
 ### Included QoL Tools
 
-| Software      | Description                                                                        |
-| ------------- | ---------------------------------------------------------------------------------- |
-| autojump      | A cd command that learns                                                           |
-| bat           | Cat clone with syntax highlighting and git integration                             |
-| exa           | ls replacement                                                                     |
-| fzf           | A fuzzy finder                                                                     |
-| neovim        | A fully-fleged personal development environment                                    |
-| openvpn       | An easy-to-use, robust and highly configurable VPN                                 |
-| powerlevel10k | Beautiful zsh shell using powerlevel10k theme                                      |
-| qemu-user     | Allows emulation of i386 and x86\_64 binaries (Only for arm64 builds)              |
-| ripgrep       | Grep but fasstttt                                                                  |
-| tmux          | Allows multiple terminal sessions to be accessed simultaneously in a single window |
+| Software     | Description                                                                        |
+| ------------ | ---------------------------------------------------------------------------------- |
+| autojump     | A cd command that learns                                                           |
+| bat          | Cat clone with syntax highlighting and git integration                             |
+| exa          | ls replacement                                                                     |
+| fzf          | A fuzzy finder                                                                     |
+| neovim       | A fully-fledged personal development environment                                   |
+| openvpn      | An easy-to-use, robust and highly configurable VPN                                 |
+| powerlevel0k | Beautiful zsh shell using powerlevel10k theme                                      |
+| qemu-user    | Allows emulation of i386 and x86_64 binaries (Only for arm64 builds)               |
+| ripgrep      | Grep but fasstttt                                                                  |
+| tmux         | Allows multiple terminal sessions to be accessed simultaneously in a single window |
+| zsh          | A modern shell with a bunch a plugins powered by zgenom                            |
 
 <div align="center">
     <h3>And many more!</h1>
