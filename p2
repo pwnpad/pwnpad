@@ -255,7 +255,11 @@ OPTIONS:
             printf "Directory not empty, not removing...\n"
         fi
     else
-        rm -rvf $ROOT/mounts/${box_name}
+        if type trash &> /dev/null; then
+            trash -F $ROOT/mounts/${box_name}
+        else
+            rm -rvf $ROOT/mounts/${box_name}
+        fi
     fi
 
 }
