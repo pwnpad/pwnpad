@@ -11,7 +11,8 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
          netsniff-ng net-snmp ngrep nikto onesixtyone patator proxychains-ng rbndr rustscan \
          samdump2 scalpel seclists sleuthkit smbmap snmpcheck socat swaks tcpreplay traceroute \
          unix-privesc-check upx wafw00f wce webshells whatweb whois windows-binaries && \
-    sudo pacman -Rdd --noconfirm impacket && yes | pip uninstall impacket && \
+    sudo pacman -Rdd --noconfirm impacket && \
+    sudo pip uninstall --break-system-packages -y impacket && \
     yay -S --noconfirm python-impacket-git && \
     sudo ln -s /opt/ligolo-ng/agent /usr/bin/ligolo-proxy && \
     yes | sudo pacman -Sdd gnu-netcat && \
