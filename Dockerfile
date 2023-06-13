@@ -66,7 +66,7 @@ RUN mkdir -p /home/$USER/.local/bin && \
          gobuster hexedit jadx ltrace metasploit nmap perl-image-exiftool pwndbg python-gmpy2 \
          python-pwntools ropper rsactftool rz-ghidra strace xortool z3 && \
     sudo npm install -g ngrok && \
-    sudo pip install sqlmap && \
+    sudo pip install --break-system-packages sqlmap && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \
