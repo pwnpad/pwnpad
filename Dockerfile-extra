@@ -14,19 +14,17 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
     sudo pacman -Rdd --noconfirm impacket && \
     sudo pip uninstall --break-system-packages -y impacket && \
     yay -S --noconfirm python-impacket-git && \
-    for cmd in $(echo "addcomputer.py" "atexec.py" "dcomexec.py" "dpapi.py" "esentutl.py" \
-                        "exchanger.py" "findDelegation.py" "GetADUsers.py" "getArch.py" \
-                        "Get-GPPPassword.py" "GetNPUsers.py" "getPac.py" "getST.py" "getTGT.py" \
-                        "GetUserSPNs.py" "goldenPac.py" "karmaSMB.py" "keylistattack.py" \
-                        "kintercept.py" "lookupsid.py" "machine_role.py" "mimikatz.py" \
-                        "mqtt_check.py" "mssqlclient.py" "mssqlinstance.py" "netview.py" \
-                        "nmapAnswerMachine.py" "ntfs-read.py" "ntlmrelayx.py" "ping.py" "ping6.py" \
-                        "psexec.py" "raiseChild.py" "rbcd.py" "rdp_check.py" "reg.py" \
-                        "registry-read.py" "rpcdump.py" "rpcmap.py" "sambaPipe.py" "samrdump.py" \
-                        "secretsdump.py" "services.py" "smbclient.py" "smbexec.py" "smbpasswd.py" \
-                        "smbrelayx.py" "smbserver.py" "sniff.py" "sniffer.py" "split.py" \
-                        "ticketConverter.py" "ticketer.py" "wmiexec.py" "wmipersist.py" "wmiquery.py"); do \
-        ln -s /usr/bin/$cmd /home/$USER/.local/bin/impacket-$cmd ; \
+    for cmd in $(echo "addcomputer" "atexec" "dcomexec" "dpapi" "esentutl" "exchanger" \
+                      "findDelegation" "GetADUsers" "getArch" "Get-GPPPassword" "GetNPUsers" \
+                      "getPac" "getST" "getTGT" "GetUserSPNs" "goldenPac" "karmaSMB" \
+                      "keylistattack" "kintercept" "lookupsid" "machine_role" "mimikatz" \
+                      "mqtt_check" "mssqlclient" "mssqlinstance" "netview" "nmapAnswerMachine" \
+                      "ntfs-read" "ntlmrelayx" "ping" "ping6" "psexec" "raiseChild" "rbcd" \
+                      "rdp_check" "reg" "registry-read" "rpcdump" "rpcmap" "sambaPipe" "samrdump" \
+                      "secretsdump" "services" "smbclient" "smbexec" "smbpasswd" "smbrelayx" \
+                      "smbserver" "sniff" "sniffer" "split" "ticketConverter" "ticketer" "wmiexec" \
+                      "wmipersist" "wmiquery"); do \
+        ln -s /usr/bin/$cmd.py /home/$USER/.local/bin/impacket-$cmd ; \
     done ; \
     sudo pip install --break-system-packages charset_normalizer dsinternals && \
     if [[ "$(uname -m)" == "aarch64" ]]; then \
