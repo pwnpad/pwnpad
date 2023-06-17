@@ -106,9 +106,7 @@ RUN mkdir -p /home/$USER/.local/bin && \
 \
 # Setup Neovim
     git clone --depth=1 https://github.com/PlatyPew/neovim-init.lua.git /home/$USER/.config/nvim && \
-    nvim --headless "+Lazy! restore" +qa && \
-    nvim --headless "+Lazy! restore" +qa && \
-    nvim --headless -c "TSInstallSync c javascript python" -c "qall" && \
+    nvim -c "lua require('lazy').restore({wait = true})" +qa && \
 \
 # Setup zgenom
     git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
