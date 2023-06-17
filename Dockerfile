@@ -14,10 +14,10 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
            '[pwnpad-large]' \
            'SigLevel = Optional TrustedOnly' \
            'Server = https://github.com/pwnpad/pwnpad-repo/releases/download/$arch' \
-            >> /etc/pacman.conf
-
+            >> /etc/pacman.conf && \
+\
 # Setup better sources for x86
-RUN if [ "$(uname -m)" == "x86_64" ]; then \
+    if [ "$(uname -m)" == "x86_64" ]; then \
         sed -i 'N;s/#\[multilib\]\n#/\[multilib\]\n/' /etc/pacman.conf && \
         printf '%s\n%s\n%s\n%s\n' \
                'Server = http://mirror.rackspace.com/archlinux/$repo/os/$arch' \
@@ -26,14 +26,14 @@ RUN if [ "$(uname -m)" == "x86_64" ]; then \
                'Server = http://mirror.0x.sg/archlinux/$repo/os/$arch' \
                 > /etc/pacman.d/mirrorlist ; \
     fi && \
-    sudo pacman -Sy
-
+    sudo pacman -Sy && \
+\
 # Setup users
-RUN useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
-    touch /home/$USER/.zshrc
-
+    useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
+    touch /home/$USER/.zshrc && \
+\
 # Download i386 and x86_64 glibc
-RUN if [ ! -d "/lib64" ]; then \
+    if [ ! -d "/lib64" ]; then \
         mkdir /tmp/glibc && \
         curl -fsSL https://archlinux.org/packages/core/x86_64/glibc/download | \
             bsdtar -C /tmp/glibc -xf - && \
@@ -41,7 +41,7 @@ RUN if [ ! -d "/lib64" ]; then \
         curl -fsSL https://archlinux.org/packages/core/x86_64/lib32-glibc/download \
             | bsdtar -C / -xf - ; \
     else \
-        sudo pacman -S lib32-gcc-libs --noconfirm ; \
+        sudo pacman -S --noconfirm lib32-gcc-libs ; \
     fi
 
 COPY ./config/chroot/pacman64.conf /etc/pacman64.conf
@@ -69,54 +69,54 @@ RUN mkdir -p /home/$USER/.local/bin && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \
     sudo ln -s /usr/bin/yafu /usr/share/rsactftool/attacks/single_key/yafu && \
-    sudo ln -s /usr/sbin/rizin /usr/sbin/radare2
-
+    sudo ln -s /usr/sbin/rizin /usr/sbin/radare2 && \
+\
 # Install ngrok
-RUN if [ "$(uname -m)" == "aarch64" ]; then \
+    if [ "$(uname -m)" == "aarch64" ]; then \
         yay -S --noconfirm aur/ngrok ; \
     else \
         sudo pacman -S --noconfirm ngrok ; \
-    fi
-
+    fi && \
+\
 # Install qemu user and binutils for x86 if on arm
-RUN if [ "$(uname -m)" == "aarch64" ]; then \
+    if [ "$(uname -m)" == "aarch64" ]; then \
         sudo pacman -S --noconfirm qemu-user && cp /usr/sbin/qemu-i386 /usr/sbin/qemu-x86_64 /tmp && \
         sudo pacman -Rsc --noconfirm qemu-user && sudo pacman -S --noconfirm liburing && \
         sudo mv /tmp/qemu-i386 /tmp/qemu-x86_64 /usr/sbin && \
         sudo pacman -S --noconfirm x86_64-elf-binutils numactl ; \
-    fi
-
+    fi && \
+\
 # Setup yafu
-RUN wget -O /tmp/yafu.tgz https://github.com/PlatyPew/yafu-docker/releases/download/v2.09/yafu.tgz && \
+    wget -O /tmp/yafu.tgz https://github.com/PlatyPew/yafu-docker/releases/download/v2.09/yafu.tgz && \
     sudo tar -xzf /tmp/yafu.tgz -C / && \
     sudo sed -i 's/ecm_path=\.\.\\gmp-ecm\\bin\\x64\\Release\\ecm.exe/ecm_path=\/usr\/sbin\/ecm/g' \
          /etc/yafu/yafu.ini && \
-    sudo pacman -S --noconfirm gmp-ecm --overwrite \*
-
+    sudo pacman -S --noconfirm gmp-ecm --overwrite '*' && \
+\
 # Install Villain
-RUN git clone --depth=1 https://github.com/t3l3machus/Villain.git /home/$USER/.local/share/villain && \
+    git clone --depth=1 https://github.com/t3l3machus/Villain.git /home/$USER/.local/share/villain && \
     sudo pip install --break-system-packages -r /home/$USER/.local/share/villain/requirements.txt && \
     printf "%s\n%s\n%s\n" '#!/bin/sh' "cd /home/$USER/.local/share/villain" 'python3 Villain.py' \
            > /home/$USER/.local/bin/villain && \
-    chmod +x /home/$USER/.local/bin/villain
-
+    chmod +x /home/$USER/.local/bin/villain && \
+\
 # Setup Qol tools
-RUN yay -S --noconfirm autojump && \
-    sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared
-
+    yay -S --noconfirm autojump && \
+    sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared && \
+\
 # Setup Neovim
-RUN git clone --depth=1 https://github.com/PlatyPew/neovim-init.lua.git /home/$USER/.config/nvim && \
+    git clone --depth=1 https://github.com/PlatyPew/neovim-init.lua.git /home/$USER/.config/nvim && \
     nvim --headless "+Lazy! restore" +qa && \
     nvim --headless "+Lazy! restore" +qa && \
-    nvim --headless -c "TSInstallSync c javascript python" -c "qall"
-
+    nvim --headless -c "TSInstallSync c javascript python" -c "qall" && \
+\
 # Setup zgenom
-RUN git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
+    git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
     touch /home/$USER/.hushlogin && \
-    zsh -c "source /home/$USER/.zshrc && /home/$USER/.zgenom/sources/romkatv/powerlevel10k/___/gitstatus/install"
-
+    zsh -c "source /home/$USER/.zshrc && /home/$USER/.zgenom/sources/romkatv/powerlevel10k/___/gitstatus/install" && \
+\
 # Clean system
-RUN yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) || true && \
+    yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) || true && \
     sudo mv /usr/share/locale/locale.alias /usr/share/locale/en_US /tmp && \
     sudo rm -rf /usr/share/locale/* && sudo mv /tmp/locale.alias /tmp/en_US /usr/share/locale && \
     sudo rm -rf /home/$USER/.zshrc.pre-oh-my-zsh /home/$USER/.zsh_history /home/$USER/.bash_profile \
