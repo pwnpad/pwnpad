@@ -59,7 +59,7 @@ OPTIONS:
         dockerfile="Dockerfile-extra"
     fi
 
-    docker image build $platform -f ${dockerfile} -t platypew/pwnpad:${tag} $ROOT
+    docker image build $platform -f $ROOT/${dockerfile} -t platypew/pwnpad:${tag} $ROOT
 }
 
 # Start and attach docker container
