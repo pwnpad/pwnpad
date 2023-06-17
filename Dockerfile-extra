@@ -16,6 +16,18 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
          unix-privesc-check upx wafw00f wce webshells whatweb whois windows-binaries && \
     sudo ln -s /opt/ligolo-ng/agent /usr/bin/ligolo-proxy && \
 \
+# Fix empire
+    printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
+           '#!/bin/sh' \
+           "sudo systemctl start mariadb.service || exit" \
+           "mysql -u root -e \"CREATE USER IF NOT EXISTS 'empire_user'@'localhost' IDENTIFIED BY 'empire_password';\"" \
+           "mysql -u root -e \"GRANT ALL PRIVILEGES ON *.* TO 'empire_user'@'localhost' WITH GRANT OPTION;\"" \
+           'mysql -u root -e "FLUSH PRIVILEGES;"' \
+           "cd /usr/share/empire" 'exec python empire.py server "$@"' | \
+               sudo tee /usr/sbin/empire-server && \
+    sudo pip install --break-system-packages \
+         uvicorn git+https://github.com/BC-SECURITY/PySecretSOCKS.git donut && \
+\
 # Fix smbclient
     sudo mkdir /etc/samba && \
     sudo wget -O /etc/samba/smb.conf \
