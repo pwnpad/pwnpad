@@ -63,8 +63,8 @@ RUN mkdir -p /home/$USER/.local/bin && \
     mkdir /home/$USER/.ssh && touch /home/$USER/.ssh/authorized_keys && \
     chmod 600 /home/$USER/.ssh/authorized_keys && \
     sudo pacman -S --noconfirm aflplusplus binwalk foremost exploitdb gdb-multiarch gnu-netcat \
-         gobuster hexedit jadx ltrace metasploit nmap perl-image-exiftool pwndbg python-gmpy2 \
-         python-pwntools ropper rsactftool rz-ghidra sqlmap strace xortool z3 && \
+         gobuster hexedit jadx ltrace metasploit nmap perl-image-exiftool blackarch/pwndbg \
+         python-gmpy2 python-pwntools ropper rsactftool rz-ghidra sqlmap strace xortool z3 && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \
