@@ -67,9 +67,8 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
     sudo pacman -Sdd --noconfirm responder && \
 \
 # Install reverse shell generator
-    git clone --depth=1 https://github.com/cwinfosec/revshellgen.git ~/.local/share/revshellgen && \
-    chmod +x  ~/.local/share/revshellgen/revshellgen.py && \
-    ln -s ~/.local/share/revshellgen/revshellgen.py ~/.local/bin/revshellgen.py && \
+    git clone --depth=1 https://github.com/pwnpad/revshellgen.git ~/.local/share/revshellgen && \
+    ln -s ~/.local/share/revshellgen/revshellgen ~/.local/bin/revshellgen && \
 \
 # Install gui stuff
     sudo pacman -S --noconfirm xorg-server-xvfb x11vnc novnc xdotool gnu-free-fonts i3-wm i3status && \
