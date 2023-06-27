@@ -10,11 +10,10 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
 # Install extra software
     sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix crackmapexec creddump \
          crunch dbd dns2tcp dnsenum dnsrecon empire enum4linux-ng expect fping hashcat-utils hping \
-         inetsim iodine pwnpad/john lbd ligolo-ng ldapenum mimikatz nasm nbtscan ncrack netsed \
-         netsniff-ng net-snmp ngrep nikto onesixtyone patator proxychains-ng rbndr rustscan \
+         inetsim iodine pwnpad/john lbd pwnpad/ligolo-ng ldapenum mimikatz nasm nbtscan ncrack \
+         netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator proxychains-ng rbndr rustscan \
          samdump2 scalpel seclists sleuthkit smbmap snmpcheck socat swaks tcpreplay traceroute \
          unix-privesc-check upx wafw00f wce webshells whatweb whois windows-binaries && \
-    sudo ln -s /opt/ligolo-ng/agent /usr/bin/ligolo-proxy && \
 \
 # Fix empire
     printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
