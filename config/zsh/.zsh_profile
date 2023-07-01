@@ -107,7 +107,8 @@ export BAT_THEME='TwoDark'
 # Publish a port online using ngrok
 publish() {
     local USAGE() {
-        printf "publish <start|stop|status> [port]\n"
+        printf "publish <start|status|stop>\n"
+        printf "publish <set|del> [port]\n"
     }
 
     if [ -z ${1} ]; then
@@ -116,29 +117,42 @@ publish() {
     fi
 
     if [ ${1} = "start" ]; then
+        if [ ! -f "$HOME/.ngrok2/ngrok.yml" ]; then
+            printf "Enter auth token: "
+            read token
+            ngrok config add-authtoken $token
+        fi
+
+        ngrok start --none --log=stdout > /dev/null &
+        export NGROK_PID=$!
+        sleep 2
+    elif [ ${1} = "stop" ]; then
+        kill $NGROK_PID
+        unset NGROK_PID
+    elif [ ${1} = "status" ]; then
+        if [ -z $NGROK_PID ]; then
+            return 1
+        fi
+
+        printf "Ports forwarding:\n"
+        curl -s http://localhost:4040/api/tunnels | python3 -c "import json;import sys;conns=json.load(sys.stdin)['tunnels'];[print(f\"{c['config']['addr']} -> {c['public_url'][6:]}\") for c in conns]"
+    elif [ ${1} = "set" ]; then
         if [ -z ${2} ]; then
             USAGE
             return 1
         fi
 
-        if [ ! -f "$HOME/.ngrok2/ngrok.yml" ]; then
-            printf "Enter auth token: "
-            read token
-            ngrok authtoken $token
+        PORT=${2}
+        curl -s -X POST http://localhost:4040/api/tunnels -H 'Content-Type: application/json' -d "{\"addr\": \"${PORT}\", \"proto\": \"tcp\", \"name\": \"${PORT}\"}" > /dev/null
+    elif [ ${1} = "del" ]; then
+        if [ -z ${2} ]; then
+            USAGE
+            return 1
         fi
 
-        ngrok tcp --log=stdout ${2} > /dev/null &
-        export NGROK_PID=$!
-        sleep 2
-        export NGROK_PORT=${2}
-        printf "Port forwarding 0.0.0.0:${NGROK_PORT} -> "
-        curl -s http://localhost:4040/api/tunnels | python3 -c "import sys, json; print(json.load(sys.stdin)['tunnels'][0]['public_url'])" | cut -f 3 -d '/'
-    elif [ ${1} = "stop" ]; then
-        kill $NGROK_PID
-        export NGROK_PORT=""
-    elif [ ${1} = "status" ]; then
-        printf "Port forwrding 0.0.0.0:${NGROK_PORT} -> "
-        curl -s http://localhost:4040/api/tunnels | python3 -c "import sys, json; print(json.load(sys.stdin)['tunnels'][0]['public_url'])" | cut -f 3 -d '/'
+        PORT=${2}
+
+        curl -s -X DELETE http://localhost:4040/api/tunnels/${PORT}
     else
         USAGE
         return 1
