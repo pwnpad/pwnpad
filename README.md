@@ -126,9 +126,11 @@ You can proxy your traffic through PwnPad by doing these steps.
 
 You can use ngrok to publish a port to the public.
 
--   Start: `publish start <port>` (Insert api key if prompted)
+-   Start: `publish start` (Insert api key if prompted)
 -   Stop: `publish stop`
 -   Status: `publish status`
+-   Set a port to tunnel: `publish set <port>`
+-   Delete a tunnelling port: `publish del <port>`
 
 #### Toggle ASLR
 
