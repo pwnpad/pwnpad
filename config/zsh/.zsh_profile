@@ -183,13 +183,13 @@ gui () {
     fi
     if [[ ${subcmd} == "start" ]]; then
         tmux new-session -d -s novnc
-        tmux send-keys -t novnc " Xvfb :0 -screen 0 1920x1080x24" Enter
+        tmux send-keys -t novnc:1 " Xvfb :0 -screen 0 1920x1080x24" Enter
         tmux new-window -t novnc
-        tmux send-keys -t novnc:1 " x11vnc -display :0" Enter
+        tmux send-keys -t novnc:2 " x11vnc -display :0" Enter
         tmux new-window -t novnc
-        tmux send-keys -t novnc:2 " novnc" Enter
+        tmux send-keys -t novnc:3 " novnc" Enter
         tmux new-window -t novnc
-        tmux send-keys -t novnc:3 " sleep 3; DISPLAY=:0 i3" Enter
+        tmux send-keys -t novnc:4 " sleep 3; DISPLAY=:0 i3" Enter
         export DISPLAY=":0"
         printf "http://$(hostname):6080/vnc.html?host=$(hostname)&port=6080\n"
     elif [[ ${subcmd} == "stop" ]]; then

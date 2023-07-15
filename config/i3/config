@@ -108,6 +108,19 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
+# Colours
+# target                 title   bg      text    indicator border
+client.focused           #f5c2e7 #1e1e2e #cdd6f4 #f5e0dc   #f5c2e7
+client.focused_inactive  #cba6f7 #1e1e2e #cdd6f4 #f5e0dc   #cba6f7
+client.unfocused         #cba6f7 #1e1e2e #cdd6f4 #f5e0dc   #cba6f7
+client.urgent            #fab387 #1e1e2e #fab387 #6c7086   #fab387
+client.placeholder       #6c7086 #1e1e2e #cdd6f4 #6c7086   #6c7086
+client.background        #1e1e2e
+
+# Remove title bar
+default_border pixel 3
+default_floating_border pixel 3
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -138,5 +151,19 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+    status_command i3status
+
+    position top
+
+    colors {
+        background #313244
+        statusline #f5e0dc
+        separator  #585b70
+
+        focused_workspace  #585b70 #585b70 #f5e0dc
+        active_workspace   #313244 #585b70 #f5e0dc
+        inactive_workspace #313244 #313244 #cdd6f4
+        urgent_workspace   #f38ba8 #f38ba8 #f5e0dc
+        binding_mode       #f38ba8 #f38ba8 #f5e0dc
+    }
 }
