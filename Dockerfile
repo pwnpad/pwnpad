@@ -104,6 +104,10 @@ RUN mkdir -p /home/$USER/.local/bin && \
     yay -S --noconfirm autojump && \
     sudo mkdir -p /mnt/shared && ln -s /mnt/shared /home/$USER/shared && \
 \
+# Setup tmux
+\
+    git clone --depth=1 https://github.com/tmux-plugins/tpm /home/$USER/.tmux/plugins/tpm && \
+    /home/$USER/.tmux/plugins/tpm/scripts/install_plugins.sh && \
 # Setup Neovim
     git clone --depth=1 https://github.com/PlatyPew/neovim-init.lua.git /home/$USER/.config/nvim && \
     nvim -c "lua require('lazy').restore({wait = true})" +qa && \
@@ -112,6 +116,13 @@ RUN mkdir -p /home/$USER/.local/bin && \
     git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
     touch /home/$USER/.hushlogin && \
     zsh -c "source /home/$USER/.zshrc && /home/$USER/.zgenom/sources/romkatv/powerlevel10k/___/gitstatus/install" && \
+    mkdir -p /home/$USER/.config/bat/themes /home/$USER/.config/f-sy-h && \
+    wget https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme -O \
+         /home/$USER/.config/bat/themes/Catppuccin-mocha.tmTheme && \
+    bat cache --build && \
+    wget https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-mocha.ini -O \
+         /home/$USER/.config/f-sy-h/catppuccin-mocha.ini && \
+    zsh -c "source /home/$USER/.zshrc && fast-theme CONFIG:catppuccin-mocha" && \
 \
 # Clean system
     yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) ; \
