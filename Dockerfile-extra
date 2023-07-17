@@ -76,7 +76,8 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
     yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) ; \
     sudo rm -rf /home/$USER/.zshrc.pre-oh-my-zsh /home/$USER/.zsh_history /home/$USER/.bash_profile \
          /home/$USER/.wget-hsts /home/$USER/.bash_logout /home/$USER/.bundle /tmp/* /var/cache \
-         /home/$USER/.cache/pip /home/$USER/.cache/yay /home/$USER/.npm /var/log/* ; \
+         /home/$USER/.cache/pip /home/$USER/.cache/yay /home/$USER/.npm /var/log/* \
+         /home/$USER/.zcompdump-buildkitsandbox* ; \
 \
     sudo updatedb
 
