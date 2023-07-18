@@ -94,9 +94,9 @@ RUN mkdir -p /home/$USER/.local/bin && \
     sudo pacman -S --noconfirm gmp-ecm --overwrite '*' && \
 \
 # Install Villain
-    git clone --depth=1 https://github.com/PlatyPew/Villain.git /home/$USER/.local/share/villain && \
+    git clone --depth=1 https://github.com/pwnpad/Villain.git /home/$USER/.local/share/villain && \
     sudo pip install --break-system-packages -r /home/$USER/.local/share/villain/requirements.txt && \
-    printf "%s\n%s\n%s\n" '#!/bin/sh' "cd /home/$USER/.local/share/villain" 'python3 Villain.py' \
+    printf "%s\n%s\n%s\n" '#!/bin/sh' "cd /home/$USER/.local/share/villain" 'python3 Villain.py $@' \
            > /home/$USER/.local/bin/villain && \
     chmod +x /home/$USER/.local/bin/villain && \
 \
