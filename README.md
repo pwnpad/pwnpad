@@ -16,6 +16,7 @@
     <h1>PwnPad</h1>
     <p>Perfect for doing Capture-The-Flag challenges and Pentesting on any platform, without needing a clunky, fat, resource hungry virtual machine. PwnPad provides a wide array of tools at your very own fingertips, powered by Arch Linux!</p>
     <br/>
+    <img src="images/moneyshot.png" style="width: 100%; height: auto;"/>
 </div>
 
 ## Contents
