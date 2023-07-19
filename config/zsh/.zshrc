@@ -42,6 +42,7 @@ fi
 
 # Plugins ####################################################
 ZSH_DISABLE_COMPFIX=true
+DISABLE_AUTO_UPDATE=true
 
 source "${HOME}/.zgenom/zgenom.zsh"
 
@@ -58,6 +59,7 @@ if ! zgenom saved; then
     zgenom load z-shell/F-Sy-H
     zgenom load b4b4r07/zsh-vimode-visual
     zgenom load romkatv/zsh-defer
+    zgenom load zsh-users/zsh-autosuggestions
 
     zgenom load romkatv/powerlevel10k powerlevel10k
 
@@ -72,6 +74,7 @@ source $HOME/.p10k.zsh
 ## Autosuggestions config ##################################
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_USE_ASYNC=true
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#585b70"
 # Disables lag
 zstyle ':bracketed-paste-magic' active-widgets '.self-*'
 ############################################################
