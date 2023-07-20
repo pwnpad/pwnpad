@@ -113,11 +113,11 @@ OPTIONS:
                 ;;
             d) display="$OPTARG"
                 ;;
-            e) env="-e $OPTARG"
+            e) env="${env} -e $OPTARG"
                 ;;
-            p) port="-p $OPTARG"
+            p) port="${port} -p $OPTARG"
                 ;;
-            v) volume="-v $OPTARG"
+            v) volume="${volume} -v $OPTARG"
                 ;;
             i) image="$OPTARG"
                 ;;
