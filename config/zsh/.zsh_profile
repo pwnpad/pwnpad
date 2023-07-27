@@ -281,7 +281,7 @@ alias gdb='gdb-multiarch -q'
 alias r2='rizin'
 alias nmap='nmap --privileged'
 
-alias clip="base64 | xargs -0 printf '\e]52;c;%s\007'"
+alias clip="(base64 | xargs -0 printf '\e]52;c;%s\007')"
 ############################################################
 
 # Set ls colours ###########################################
