@@ -8,7 +8,7 @@ USER $USER
 RUN sudo pacman -R --noconfirm gnu-netcat && \
 \
 # Install extra software
-    sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix creddump \
+    sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix creddump pwnpad/crackmapexec \
          crunch dbd dns2tcp dnsenum dnsrecon empire enum4linux-ng expect fping hashcat-utils hping \
          inetsim iodine pwnpad/john lbd pwnpad/ligolo-ng ldapenum mimikatz nasm nbtscan ncrack \
          netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator proxychains-ng rbndr rustscan \
@@ -32,33 +32,6 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
     sudo wget -O /etc/samba/smb.conf \
          "https://raw.githubusercontent.com/samba-team/samba/master/examples/smb.conf.default" && \
 \
-# Install latest version of impacket
-    sudo pacman -Rdd --noconfirm impacket && \
-    sudo pip uninstall --break-system-packages -y impacket && \
-    yay -S --noconfirm python-impacket-git && \
-    for cmd in $(echo "addcomputer" "atexec" "dcomexec" "dpapi" "esentutl" "exchanger" \
-                      "findDelegation" "GetADUsers" "getArch" "Get-GPPPassword" "GetNPUsers" \
-                      "getPac" "getST" "getTGT" "GetUserSPNs" "goldenPac" "karmaSMB" \
-                      "keylistattack" "kintercept" "lookupsid" "machine_role" "mimikatz" \
-                      "mqtt_check" "mssqlclient" "mssqlinstance" "netview" "nmapAnswerMachine" \
-                      "ntfs-read" "ntlmrelayx" "ping" "ping6" "psexec" "raiseChild" "rbcd" \
-                      "rdp_check" "reg" "registry-read" "rpcdump" "rpcmap" "sambaPipe" "samrdump" \
-                      "secretsdump" "services" "smbclient" "smbexec" "smbpasswd" "smbrelayx" \
-                      "smbserver" "sniff" "sniffer" "split" "ticketConverter" "ticketer" "wmiexec" \
-                      "wmipersist" "wmiquery"); do \
-        ln -s /usr/bin/$cmd.py /home/$USER/.local/bin/impacket-$cmd ; \
-    done && \
-\
-# Install latest version of crackmapexec
-    if [[ "$(uname -m)" == "aarch64" ]]; then \
-        sudo pacman -S --noconfirm rust && \
-        sudo pacman -S --noconfirm crackmapexec && \
-        sudo pacman -Rsc --noconfirm rust ; \
-    else \
-        sudo pacman -S --noconfirm crackmapexec ; \
-    fi && \
-    sudo touch /usr/share/crackmapexec/virtualenvs/envs.toml && \
-    sudo chmod 666 /usr/share/crackmapexec/virtualenvs/envs.toml && \
 # Reinstall gnu netcat
     yes | sudo pacman -Sdd gnu-netcat && \
 \
