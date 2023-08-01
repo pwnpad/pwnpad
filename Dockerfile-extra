@@ -9,7 +9,7 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
 \
 # Install extra software
     sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix creddump pwnpad/crackmapexec \
-         crunch dbd dns2tcp dnsenum dnsrecon empire enum4linux-ng expect fping hashcat-utils hping \
+         crunch dbd dns2tcp dnsenum dnsrecon empire enum4linux-ng expect evil-winrm fping hashcat-utils hping \
          inetsim iodine pwnpad/john lbd pwnpad/ligolo-ng ldapenum mimikatz nasm nbtscan ncrack \
          netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator proxychains-ng rbndr rustscan \
          samdump2 scalpel seclists sleuthkit smbmap snmpcheck socat swaks tcpreplay traceroute \
