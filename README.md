@@ -172,7 +172,6 @@ You can still run intel binaries that uses only glibc within the regular context
 | netcat        | Network piping application                                                                       |
 | ngrok         | Secure introspectable tunnels to localhost webhook development tool and debugging tool           |
 | nmap          | Utility for network discovery and security auditing                                              |
-| pwncat        | A post-exploitation platform for Linux targets                                                   |
 | pwndbg        | Makes debugging with GDB suck less                                                               |
 | pwntools      | Useful CTF utilities.                                                                            |
 | rizin         | Open-source tools to disasm, debug, analyze and manipulate binary files (With Ghidra Decompiler) |
@@ -196,8 +195,6 @@ You can still run intel binaries that uses only glibc within the regular context
 | crackmapexec       | A swiss army knife for pentesting Windows/Active Directory environments                         |
 | creddump           | A python tool to extract various credentials and secrets from Windows registry hives            |
 | crunch             | A wordlist generator for all combinations/permutations of a given character set                 |
-| dbd                | A Netcat-clone, designed to be portable and offer strong encryption                             |
-| dns2tcp            | A tool for relaying TCP connections over DNS                                                    |
 | dnsenum            | Script that enumerates DNS information from a domain                                            |
 | dnsrecon           | Python script for enumeration of hosts, subdomains and emails from a given domain using google. |
 | empire             | A PowerShell and Python post-exploitation agent                                                 |
@@ -207,7 +204,6 @@ You can still run intel binaries that uses only glibc within the regular context
 | hashcat            | Multithreaded advanced password recovery utility                                                |
 | hping              | A command-line oriented TCP/IP packet assembler/analyzer                                        |
 | impacket           | Collection of classes for working with network protocols                                        |
-| inetsim            | A software suite for simulating common internet services in a lab environment                   |
 | iodine             | Tunnel IPv4 data through a DNS server                                                           |
 | john               | John the Ripper password cracker                                                                |
 | lbd                | Load Balancing detector                                                                         |
@@ -217,20 +213,15 @@ You can still run intel binaries that uses only glibc within the regular context
 | ncrack             | High-speed network authentication cracking tool                                                 |
 | nikto              | A web server scanner which performs comprehensive tests against web servers                     |
 | onesixtyone        | An SNMP scanner that sends multiple SNMP requests to multiple IP addresses                      |
-| patator            | A multi-purpose bruteforcer                                                                     |
-| redsocks           | Transparent redirector of any TCP connection to proxy                                           |
 | revshellgen        | Simple script to generate commands to achieve reverse shells                                    |
 | rustscan           | A modern port scanner                                                                           |
-| samdump2           | Dump password hashes from a Windows NT/2k/XP installation                                       |
 | scalpel            | A frugal, high performance file carver                                                          |
 | sleuthkit          | File system and media management forensic analysis tools                                        |
 | smbmap             | A handy SMB enumeration tool                                                                    |
 | snmpcheck          | A free open source utility to get information via SNMP protocols                                |
 | swaks              | Swiss Army Knife SMTP; Command line SMTP testing, including TLS and AUTH                        |
-| unix-privesc-check | Allow local unprivilged users to escalate privileges to other users                             |
 | wafw00f            | Identify and fingerprint Web Application Firewall (WAF) products protecting a website           |
 | wce                | A security tool to list logon sessions and add, change, list and delete associated credentials  |
-| webshells          | Web backdoors                                                                                   |
 | whatweb            | Next generation web scanner that identifies what websites are running                           |
 | whois              | Intelligent WHOIS client                                                                        |
 | windows-binaries   | A collection of pentesting Windows binaries                                                     |

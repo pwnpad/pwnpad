@@ -9,11 +9,10 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
 \
 # Install extra software
     sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix creddump pwnpad/crackmapexec \
-         crunch dbd dns2tcp dnsenum dnsrecon enum4linux-ng expect evil-winrm fping hashcat-utils hping \
-         inetsim iodine pwnpad/john lbd pwnpad/ligolo-ng ldapenum mimikatz nasm nbtscan ncrack \
-         netsed netsniff-ng net-snmp ngrep nikto onesixtyone patator proxychains-ng rbndr rustscan \
-         samdump2 scalpel seclists sleuthkit smbmap snmpcheck socat swaks tcpreplay traceroute \
-         unix-privesc-check upx wafw00f wce webshells whatweb whois windows-binaries && \
+         crunch dnsenum dnsrecon enum4linux-ng expect evil-winrm fping hashcat-utils hping hydra iodine \
+         pwnpad/john lbd pwnpad/ligolo-ng ldapenum mimikatz nasm nbtscan ncrack netsed netsniff-ng net-snmp \
+         ngrep nikto onesixtyone proxychains-ng rustscan scalpel seclists sleuthkit smbmap snmpcheck socat \
+         swaks tcpreplay traceroute wafw00f wce whatweb whois windows-binaries && \
 \
 # Fix smbclient
     sudo mkdir /etc/samba && \
