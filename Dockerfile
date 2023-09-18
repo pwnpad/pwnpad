@@ -57,8 +57,8 @@ COPY --chown=$USER:users ./config/i3 /home/$USER/.config/i3
 
 # Download tools (Remove vanilla gdb)
 RUN mkdir -p /home/$USER/.local/bin && \
-    sudo pacman -S --noconfirm bat exa fzf iproute2 iputils mlocate neovim net-tools nodejs npm \
-         openssh openvpn p7zip pigz procps-ng python-pip python-virtualenv ripgrep rlwrap tmux \
+    sudo pacman -S --noconfirm bat exa fzf iproute2 iputils less mlocate neovim net-tools nodejs
+         npm openssh openvpn p7zip pigz procps-ng python-pip python-virtualenv ripgrep rlwrap tmux \
          unrar unzip wget yay && \
     mkdir /home/$USER/.ssh && touch /home/$USER/.ssh/authorized_keys && \
     chmod 600 /home/$USER/.ssh/authorized_keys && \
