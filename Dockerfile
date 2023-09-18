@@ -96,7 +96,7 @@ RUN mkdir -p /home/$USER/.local/bin && \
 # Install Villain
     git clone --depth=1 https://github.com/pwnpad/Villain.git /home/$USER/.local/share/villain && \
     sudo pip install --break-system-packages -r /home/$USER/.local/share/villain/requirements.txt && \
-    printf "%s\n%s\n%s\n" '#!/bin/sh' "cd /home/$USER/.local/share/villain" 'python3 Villain.py $@' \
+    printf "%s\n%s\n%s\n" '#!/bin/sh' "cd /home/$USER/.local/share/villain" 'python3 Villain.py -qs $@' \
            > /home/$USER/.local/bin/villain && \
     chmod +x /home/$USER/.local/bin/villain && \
 \
