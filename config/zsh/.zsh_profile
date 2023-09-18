@@ -278,7 +278,6 @@ alias cls='clear'
 alias ls='exa --icons'
 alias cat='bat'
 alias gdb='gdb-multiarch -q'
-alias r2='rizin'
 alias nmap='nmap --privileged'
 
 alias clip="(base64 | xargs -0 printf '\e]52;c;%s\007')"
