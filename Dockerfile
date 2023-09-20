@@ -64,13 +64,20 @@ RUN mkdir -p /home/$USER/.local/bin && \
     chmod 600 /home/$USER/.ssh/authorized_keys && \
     sudo pacman -S --noconfirm aflplusplus binwalk foremost exploitdb gdb-multiarch gnu-netcat \
          gobuster hexedit jadx ltrace metasploit nmap perl-image-exiftool blackarch/pwndbg \
-         python-gmpy2 python-pwntools ropper rsactftool rz-ghidra strace xortool z3 && \
+         python-gmpy2 python-pwntools ropper rsactftool strace xortool z3 && \
     echo "source /usr/share/pwndbg/gdbinit.py" >> /home/$USER/.gdbinit && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \
     sudo ln -s /usr/bin/yafu /usr/share/rsactftool/attacks/single_key/yafu && \
-    sudo ln -s /usr/sbin/rizin /usr/sbin/radare2 && \
 \
+# Install rizin ghidra
+    if [ "$(uname -m)" == "aarch64" ]; then \
+        sudo pacman -S --noconfirm pwnpad/rz-ghidra ; \
+    else \
+        sudo pacman -S --noconfirm rz-ghidra ; \
+    fi && \
+    sudo ln -s /usr/bin/rizin /usr/bin/radare2 && \
+    sudo ln -s /usr/bin/rizin /usr/bin/r2 && \
 # Install sqlmap
     pip install --break-system-packages sqlmap && \
 # Install ngrok
