@@ -198,7 +198,6 @@ You can still run intel binaries that uses only glibc within the regular context
 | crunch             | A wordlist generator for all combinations/permutations of a given character set                 |
 | dnsenum            | Script that enumerates DNS information from a domain                                            |
 | dnsrecon           | Python script for enumeration of hosts, subdomains and emails from a given domain using google. |
-| empire             | A PowerShell and Python post-exploitation agent                                                 |
 | enum4linux-ng      | A tool for enumerating information from Windows and Samba systems                               |
 | expect             | A tool for automating interactive applications                                                  |
 | fping              | Utility to ping multiple hosts at once                                                          |
