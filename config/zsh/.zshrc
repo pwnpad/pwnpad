@@ -88,6 +88,7 @@ AUTOPAIR_INIT_INHIBIT=1
 ## Vi mode config ##########################################
 ZVM_VI_HIGHLIGHT_BACKGROUND=#585b70
 ZVM_VI_HIGHLIGHT_FOREGROUND=#b4befe
+ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
 ############################################################
 
 ## Vi-Mode ZSH #############################################
