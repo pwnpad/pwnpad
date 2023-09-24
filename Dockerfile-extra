@@ -25,6 +25,9 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
 # Install responder
     sudo pacman -Sdd --noconfirm responder && \
 \
+# Uninstall old version of impacket
+    sudo pacman -Rdd --noconfirm impacket && \
+\
 # Install reverse shell generator
     git clone --depth=1 https://github.com/pwnpad/revshellgen.git ~/.local/share/revshellgen && \
     ln -s ~/.local/share/revshellgen/revshellgen ~/.local/bin/revshellgen && \
