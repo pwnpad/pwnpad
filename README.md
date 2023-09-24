@@ -122,7 +122,8 @@ You can ssh into PwnPad by doing these steps.
 
 You can proxy your traffic through PwnPad by doing these steps.
 
-. Use `p2 ls` to the port bound to port 22 2. `sshuttle -vHNr pwnpad@localhost:<port>`
+1. Use `p2 ls` to the port bound to port 22
+2. `sshuttle -vHNr pwnpad@localhost:<port>`
 
 #### Publish Port to Public
 
@@ -201,7 +202,6 @@ You can still run intel binaries that uses only glibc within the regular context
 | enum4linux-ng      | A tool for enumerating information from Windows and Samba systems                               |
 | expect             | A tool for automating interactive applications                                                  |
 | fping              | Utility to ping multiple hosts at once                                                          |
-| hashcat            | Multithreaded advanced password recovery utility                                                |
 | hping              | A command-line oriented TCP/IP packet assembler/analyzer                                        |
 | impacket           | Collection of classes for working with network protocols                                        |
 | iodine             | Tunnel IPv4 data through a DNS server                                                           |
