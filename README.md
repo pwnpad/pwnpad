@@ -3,7 +3,7 @@
     <br/>
     <br/>
     <a href="https://github.com/pwnpad/pwnpad/blob/master/LICENSE"><img src="https://img.shields.io/github/license/pwnpad/pwnpad"></a>
-    <a href="https://hub.docker.com/_/docker"><img src="https://img.shields.io/badge/docker-24.0.2-blue.svg"></a>
+    <a href="https://hub.docker.com/_/docker"><img src="https://img.shields.io/badge/docker-24.0.7-blue.svg"></a>
     <img src="https://img.shields.io/badge/Coded%20By%20Humans-100%25-brightgreen" />
     <a href="https://github.com/pwnpad/pwnpad/actions"><img src="https://img.shields.io/github/actions/workflow/status/pwnpad/pwnpad/docker-image.yml?label=docker%20build"></a>
     <br/>
@@ -97,15 +97,14 @@ HELP:
 </div>
 <br/>
 
-1. It's powered by Arch (which means you have the power of the AUR)
-2. It runs on MacOS and Linux (Windows using WSL2)
-3. It runs Systemd as its init process (controversial, but here you go anyways)
-4. It's built for both amd64 and arm64
-5. It's super lightweight taking a little over 3GB of space (7.5GB for the extra image)
-6. You can spawn as many instances as you want and remove them just as quick (does not pollute your system)
-7. Supports X11 forwarding, which means you don't need the whole desktop environment just to run GUI programs when you can just forward it your host
-8. Supports VNC and noVNC with i3, which means you have a super lightweight window manager
-9. Customised Neovim and Zsh so you look _super_ cool using it
+1. It's powered by Arch, giving you access to the AUR and Blackarch (with systemd enabled)
+2. It runs on Windows (WSL2), MacOS and Linux
+3. It's built for both amd64 and arm64
+4. It's super lightweight taking over 3GB of space (7.5GB for the extra image)
+5. You can spawn as many independent instances as you want and remove them just as quick
+6. Supports X11 forwarding
+7. Supports VNC and noVNC with i3
+8. Customised Neovim and Zsh so you look _super_ cool using it
 
 ### Integrated Features
 
@@ -113,21 +112,31 @@ HELP:
 
 You can ssh into PwnPad by doing these steps.
 
+<details>
+
 1. `sudo systemctl start sshd`
 2. Insert your public key into `~/.ssh/authorized_keys`
 3. Use `p2 ls` to the port bound to port 22
 4. Do `ssh -p <port> pwnpad@localhost`
 
+</details>
+
 #### Proxy
 
 You can proxy your traffic through PwnPad by doing these steps.
 
+<details>
+
 1. Use `p2 ls` to the port bound to port 22
 2. `sshuttle -vHNr pwnpad@localhost:<port>`
+
+</details>
 
 #### Publish Port to Public
 
 You can use ngrok to publish a port to the public.
+
+<details>
 
 -   Start: `publish start` (Insert api key if prompted)
 -   Stop: `publish stop`
@@ -135,27 +144,41 @@ You can use ngrok to publish a port to the public.
 -   Set a port to tunnel: `publish set <port>`
 -   Delete a tunnelling port: `publish del <port>`
 
+</details>
+
 #### Toggle ASLR
 
 You can turn ASLR on and off.
 
+<details>
+
 -   On: `aslr on`
 -   Off: `aslr off`
 
+</details>
+
 #### Enable noVNC (only in extra image)
+
+<details>
 
 Enabling VNC (you may need to run your system through a proxy to access the noVNC server).
 
 -   Start: `gui start`
 -   Stop: `gui stop`
 
+</details>
+
 #### Create intel environment (only in arm64 image)
 
 Creates a chroot environment to run purely intel binaries.
 You can still run intel binaries that uses only glibc within the regular context.
 
+<details>
+
 -   Use pacman: `intel-pacman`
 -   Run command: `intel-run`
+
+</details>
 
 ### Included Infosec Tools
 
@@ -189,42 +212,42 @@ You can still run intel binaries that uses only glibc within the regular context
 <details>
     <summary>Can only be found in platypew/pwnpad:extra</summary>
 
-| Tools              | Description                                                                                     |
-| ------------------ | ----------------------------------------------------------------------------------------------- |
-| arp-scan           | A tool that uses ARP to discover and fingerprint IP hosts on the local network                  |
-| autorecon          | A multi-threaded network reconnaissance tool which performs automated enumeration of services   |
-| commix             | Automated All-in-One OS Command Injection and Exploitation Tool                                 |
-| crackmapexec       | A swiss army knife for pentesting Windows/Active Directory environments                         |
-| creddump           | A python tool to extract various credentials and secrets from Windows registry hives            |
-| crunch             | A wordlist generator for all combinations/permutations of a given character set                 |
-| dnsenum            | Script that enumerates DNS information from a domain                                            |
-| dnsrecon           | Python script for enumeration of hosts, subdomains and emails from a given domain using google. |
-| enum4linux-ng      | A tool for enumerating information from Windows and Samba systems                               |
-| expect             | A tool for automating interactive applications                                                  |
-| fping              | Utility to ping multiple hosts at once                                                          |
-| hping              | A command-line oriented TCP/IP packet assembler/analyzer                                        |
-| impacket           | Collection of classes for working with network protocols                                        |
-| iodine             | Tunnel IPv4 data through a DNS server                                                           |
-| john               | John the Ripper password cracker                                                                |
-| lbd                | Load Balancing detector                                                                         |
-| ligolo-ng          | An advanced, yet simple, tunneling tool that uses a TUN interface                               |
-| ldapenum           | Enumerate domain controllers using LDAP                                                         |
-| nbtscan            | Scan networks searching for NetBIOS information                                                 |
-| ncrack             | High-speed network authentication cracking tool                                                 |
-| nikto              | A web server scanner which performs comprehensive tests against web servers                     |
-| onesixtyone        | An SNMP scanner that sends multiple SNMP requests to multiple IP addresses                      |
-| revshellgen        | Simple script to generate commands to achieve reverse shells                                    |
-| rustscan           | A modern port scanner                                                                           |
-| scalpel            | A frugal, high performance file carver                                                          |
-| sleuthkit          | File system and media management forensic analysis tools                                        |
-| smbmap             | A handy SMB enumeration tool                                                                    |
-| snmpcheck          | A free open source utility to get information via SNMP protocols                                |
-| swaks              | Swiss Army Knife SMTP; Command line SMTP testing, including TLS and AUTH                        |
-| wafw00f            | Identify and fingerprint Web Application Firewall (WAF) products protecting a website           |
-| wce                | A security tool to list logon sessions and add, change, list and delete associated credentials  |
-| whatweb            | Next generation web scanner that identifies what websites are running                           |
-| whois              | Intelligent WHOIS client                                                                        |
-| windows-binaries   | A collection of pentesting Windows binaries                                                     |
+| Tools            | Description                                                                                     |
+| ---------------- | ----------------------------------------------------------------------------------------------- |
+| arp-scan         | A tool that uses ARP to discover and fingerprint IP hosts on the local network                  |
+| autorecon        | A multi-threaded network reconnaissance tool which performs automated enumeration of services   |
+| commix           | Automated All-in-One OS Command Injection and Exploitation Tool                                 |
+| creddump         | A python tool to extract various credentials and secrets from Windows registry hives            |
+| crunch           | A wordlist generator for all combinations/permutations of a given character set                 |
+| dnsenum          | Script that enumerates DNS information from a domain                                            |
+| dnsrecon         | Python script for enumeration of hosts, subdomains and emails from a given domain using google. |
+| enum4linux-ng    | A tool for enumerating information from Windows and Samba systems                               |
+| evil-winrm       | The ultimate WinRM shell for hacking/pentesting                                                 |
+| fping            | Utility to ping multiple hosts at once                                                          |
+| hashcat-utils    | Set of small utilities that are useful in advanced password cracking                            |
+| hping            | A command-line oriented TCP/IP packet assembler/analyzer                                        |
+| impacket         | Collection of classes for working with network protocols                                        |
+| john             | John the Ripper password cracker                                                                |
+| lbd              | Load Balancing detector                                                                         |
+| ldapenum         | Enumerate domain controllers using LDAP                                                         |
+| ligolo-ng        | An advanced, yet simple, tunneling tool that uses a TUN interface                               |
+| nbtscan          | Scan networks searching for NetBIOS information                                                 |
+| ncrack           | High-speed network authentication cracking tool                                                 |
+| netexec          | A swiss army knife for pentesting Windows/Active Directory environments                         |
+| nikto            | A web server scanner which performs comprehensive tests against web servers                     |
+| onesixtyone      | An SNMP scanner that sends multiple SNMP requests to multiple IP addresses                      |
+| revshellgen      | Simple script to generate commands to achieve reverse shells                                    |
+| rustscan         | A modern port scanner                                                                           |
+| scalpel          | A frugal, high performance file carver                                                          |
+| sleuthkit        | File system and media management forensic analysis tools                                        |
+| smbmap           | A handy SMB enumeration tool                                                                    |
+| snmpcheck        | A free open source utility to get information via SNMP protocols                                |
+| swaks            | Swiss Army Knife SMTP; Command line SMTP testing, including TLS and AUTH                        |
+| wafw00f          | Identify and fingerprint Web Application Firewall (WAF) products protecting a website           |
+| wce              | A security tool to list logon sessions and add, change, list and delete associated credentials  |
+| whatweb          | Next generation web scanner that identifies what websites are running                           |
+| whois            | Intelligent WHOIS client                                                                        |
+| windows-binaries | A collection of pentesting Windows binaries                                                     |
 
 </details>
 
