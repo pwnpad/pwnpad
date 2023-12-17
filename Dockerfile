@@ -5,9 +5,9 @@ ENV USER pwnpad
 
 # Setup base pacman repositories
 RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf && \
+    curl -fsSL https://blackarch.org/strap.sh | sed '/^\s*if \[ $gpg_install -lt $gpg_expected \]; then$/,/^\s*fi$/ s/^/#/' | sh && \
     pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
     sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
-    curl -fsSL https://blackarch.org/strap.sh | sh && \
     printf '\n%s\n%s\n%s\n\n%s\n%s\n%s\n' \
            '[pwnpad]' 'SigLevel = Optional TrustedOnly' \
            'Server = https://raw.githubusercontent.com/pwnpad/pwnpad-repo/master/$arch' \
