@@ -48,10 +48,12 @@ git clone https://github.com/pwnpad/pwnpad.git
 # Build image locally
 p2 build            # Base image
 p2 build -i extra   # Extra image
+p2 build -i bare    # Bare image (Extra image without the user interface)
 
 # Or pull from Docker Hub
 docker pull platypew/pwnpad:latest # Base image
-docker pull platypew/pwnpad:extra  # Extra tools
+docker pull platypew/pwnpad:extra  # Extra image
+docker pull platypew/pwnpad:bare   # Bare image (Extra image without the user interface)
 ```
 
 You can get basic autocompletion by sourcing the `_p2-autocomplete.zsh` file in your zshrc or source it
@@ -65,6 +67,20 @@ source _p2-autocomplete.zsh
     <h1>Usage</h1>
     <p>How to operate PwnPad</p>
 </div>
+
+### Quick Start
+
+```bash
+# Using Base Image
+p2 attach ctf
+
+# Using Extra Image
+p2 attach -i extra ctf
+
+# Using Bare Image
+# Using the privileged flag is not recommended, however, it solves a lot of manual adding of capabilities
+docker run --privileged -it platypew/pwnpad:bare <tool name>
+```
 
 ### General
 

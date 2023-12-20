@@ -34,7 +34,7 @@ OPTIONS:
   -p    platform
           linux/amd64, linux/arm64
   -i    select image (default: latest)
-          latest, extra\n"
+          latest, extra, bare\n"
         exit 1
     }
 
@@ -57,6 +57,10 @@ OPTIONS:
 
     if [ ${tag} == "extra" ]; then
         dockerfile="Dockerfile-extra"
+    fi
+
+    if [ ${tag} == "bare" ]; then
+        dockerfile="Dockerfile-bare"
     fi
 
     docker image build $platform -f $ROOT/${dockerfile} -t platypew/pwnpad:${tag} $ROOT
