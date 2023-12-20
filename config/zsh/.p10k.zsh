@@ -24,7 +24,7 @@
     dir
     vcs
     newline
-    os_icon
+    my_cpu_arch_joined
     prompt_char_joined
   )
 
@@ -90,6 +90,13 @@
   function prompt_my_aslr_status() {
     [[ $ASLR_DISABLE == 1 ]] && p10k segment -b 9 -f 0 -i $'\uF074 ' -t 'ASLR' || \
       p10k segment -b 10 -f 0 -i $'\uF074 ' -t 'ASLR'
+  }
+
+  function prompt_my_cpu_arch() {
+    [[ -z "$ARCH" ]] && export ARCH=$(uname -m)
+
+    [[ "$ARCH" = "aarch64" ]] &&  p10k segment -b '' -f 15 -i $'\uF303' -t 'rm' || \
+      p10k segment -b '' -f 15 -i $'\uF303' -t 'md'
   }
 
   function p10k-on-pre-prompt() {
