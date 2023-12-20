@@ -88,8 +88,8 @@
   typeset -g POWERLEVEL9K_TIME_FORMAT="%D{%H:%M}"
 
   function prompt_my_aslr_status() {
-      [[ $ASLR_DISABLE == 1 ]] && p10k segment -b 9 -f 15 -i $'\uF074 ' -t 'ASLR' || \
-          p10k segment -b 10 -f 0 -i $'\uF074 ' -t 'ASLR'
+    [[ $ASLR_DISABLE == 1 ]] && p10k segment -b 9 -f 0 -i $'\uF074 ' -t 'ASLR' || \
+      p10k segment -b 10 -f 0 -i $'\uF074 ' -t 'ASLR'
   }
 
   function p10k-on-pre-prompt() {
