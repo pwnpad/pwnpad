@@ -6,6 +6,7 @@ on:
     paths:
       - "Dockerfile"
       - "Dockerfile-extra"
+      - "Dockerfile-bare"
       - "config/**"
   schedule:
     - cron: "0 4 * * 3"
@@ -58,4 +59,28 @@ jobs:
         run: |
           docker buildx build --push -f Dockerfile-extra \
           --tag ${{ secrets.DOCKER_USERNAME }}/pwnpad:extra \
+          --platform linux/amd64,linux/arm64 .
+  build-extra:
+    needs: build-base
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      -
+        name: Build images
+        run: |
+          docker buildx build --push -f Dockerfile-bare \
+          --tag ${{ secrets.DOCKER_USERNAME }}/pwnpad:bare \
           --platform linux/amd64,linux/arm64 .

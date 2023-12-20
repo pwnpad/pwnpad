@@ -1,0 +1,40 @@
+# vim: ft=dockerfile
+FROM platypew/pwnpad:extra as build
+
+ENV USER pwnpad
+
+RUN cd /home/$USER && rm -rf .p10k.zsh shared .ssh/ .tmux/ .tmux.conf .zgenom/ && \
+    echo "export LC_ALL=en_US.UTF-8" > .zshrc && \
+    cd /home/$USER/.cache && rm -rf bat/ f-sy-h/ gitstatus/ nvim/ p10k-dump-pwnpad.zsh \
+       p10k-dump-pwnpad.zsh.zwc p10k-instant-prompt-pwnpad.zsh \
+       p10k-instant-prompt-pwnpad.zsh.zwc p10k-pwnpad/ && \
+    cd /home/$USER/.config && rm -rf bat/ f-sy-h/ i3/ nvim/ yay/ && \
+    cd /home/$USER/.local/share && rm -rf nvim/ && \
+    cd /home/$USER/.local/state && rm -rf nvim/ && \
+    rm -rf /docker-entrypoint.sh /mnt/shared
+
+USER $USER
+
+RUN yay -Rsc --noconfirm autojump tmux neovim
+
+RUN yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) ; \
+    sudo mv /usr/share/locale/locale.alias /usr/share/locale/en_US /tmp ; \
+    sudo rm -rf /usr/share/locale/* ; sudo mv /tmp/locale.alias /tmp/en_US /usr/share/locale ; \
+    sudo rm -rf /home/$USER/.zshrc.pre-oh-my-zsh /home/$USER/.zsh_history /home/$USER/.bash_profile \
+         /home/$USER/.wget-hsts /home/$USER/.bash_logout /home/$USER/.bundle /tmp/* /var/cache \
+         /home/$USER/.cache/pip /home/$USER/.cache/yay /home/$USER/.npm /var/log/* \
+         /home/$USER/.zcompdump-buildkitsandbox* ; \
+\
+    sudo updatedb
+
+
+# Copy all files to new image to squash it
+FROM scratch
+
+ENV USER pwnpad
+COPY --from=build / /
+WORKDIR /home/$USER
+
+USER $USER
+
+CMD "/bin/zsh"
