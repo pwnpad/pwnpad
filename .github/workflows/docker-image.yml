@@ -6,7 +6,7 @@ on:
     paths:
       - "Dockerfile"
       - "Dockerfile-extra"
-      # - "Dockerfile-bare"
+      - "Dockerfile-bare"
       - "config/**"
   schedule:
     - cron: "0 4 * * 3"
