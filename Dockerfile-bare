@@ -15,7 +15,8 @@ RUN cd /home/$USER && rm -rf .p10k.zsh shared .ssh/ .tmux/ .tmux.conf .zgenom/ &
 
 USER $USER
 
-RUN yay -Rsc --noconfirm autojump bat eza fzf less neovim tmux
+RUN yay -Rsc --noconfirm autojump bat eza fzf less neovim tmux && \
+    yay -Rsc --noconfirm xorg-server-xvfb x11vnc novnc xdotool gnu-free-fonts i3-wm i3status
 
 RUN yay -Scc --noconfirm && yay -Rsc --noconfirm $(yay -Qtdq) ; \
     sudo mv /usr/share/locale/locale.alias /usr/share/locale/en_US /tmp ; \
