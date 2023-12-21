@@ -4,9 +4,9 @@ on:
   push:
     branches: [ "master" ]
     paths:
-      - "Dockerfile"
-      - "Dockerfile-extra"
-      - "Dockerfile-bare"
+      - "docker/Dockerfile"
+      - "docker/Dockerfile-extra"
+      - "docker/Dockerfile-bare"
       - "config/**"
   schedule:
     - cron: "0 4 * * 3"
@@ -33,7 +33,7 @@ jobs:
       -
         name: Build images
         run: |
-          docker buildx build --push \
+          docker buildx build --push -f docker/Dockerfile \
           --tag ${{ secrets.DOCKER_USERNAME }}/pwnpad:latest \
           --platform linux/amd64,linux/arm64 .
   build-extra:
@@ -57,7 +57,7 @@ jobs:
       -
         name: Build images
         run: |
-          docker buildx build --push -f Dockerfile-extra \
+          docker buildx build --push -f docker/Dockerfile-extra \
           --tag ${{ secrets.DOCKER_USERNAME }}/pwnpad:extra \
           --platform linux/amd64,linux/arm64 .
   build-bare:
@@ -91,6 +91,6 @@ jobs:
       -
         name: Build images
         run: |
-          docker buildx build --push -f Dockerfile-bare \
+          docker buildx build --push -f docker/Dockerfile-bare \
           --tag ${{ secrets.DOCKER_USERNAME }}/pwnpad:bare \
           --platform linux/amd64,linux/arm64 .
