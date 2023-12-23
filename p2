@@ -19,10 +19,12 @@ SUBCOMMAND:
   volume    Enter into container's volume
   ls        List pwnpad instances
   update    Update image to the latest build
+  version   Show version number of PwnPad
 
 HELP:
   ${P2} build -h
   ${P2} attach -h
+  ${P2} ls -h
   ${P2} rm -h\n"
   exit 1
 }
@@ -314,7 +316,31 @@ VOLUME() {
 }
 
 LIST() {
-    docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:extra" --format "table {{.Names}}\t{{.Status}}\t{{.Size}}\t{{.RunningFor}}\t{{.Ports}}"
+    LUSE() {
+        printf "USAGE:
+  ${P2} ls [OPTIONS]
+OPTIONS:
+  -l    list verbosely\n"
+        exit 1
+    }
+
+    shift
+    while getopts ":l" options
+    do
+        case $options in
+            l) long=1
+                ;;
+            *) LUSE
+                ;;
+        esac
+    done
+    shift $(($OPTIND - 1))
+
+    if [[ -z $long ]]; then
+        docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:extra" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+    else
+        docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:extra" --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Size}}\t{{.Mounts}}\t{{.RunningFor}}\t{{.Ports}}"
+    fi
 }
 
 UPDATE() {
@@ -377,7 +403,7 @@ case ${1} in
         ;;
     volume) VOLUME $@
         ;;
-    ls) LIST
+    ls) LIST $@
         ;;
     update) UPDATE
         ;;
