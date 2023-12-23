@@ -12,6 +12,7 @@ USAGE() {
   ${P2} <SUBCOMMAND>
 
 SUBCOMMAND:
+  help      You're looking at the help page
   build     Build Docker image
   attach    Attach into container
   rm        Remove container and its volumes
@@ -34,6 +35,7 @@ BUILD() {
         printf "USAGE:
   ${P2} build [OPTIONS]
 OPTIONS:
+  -h    You're looking at the help page
   -p    platform
           linux/amd64, linux/arm64
   -i    select image (default: latest)
@@ -87,6 +89,7 @@ ATTACH() {
         printf "USAGE:
   ${P2} attach [OPTIONS] <BOX>
 OPTIONS:
+  -h    You're looking at the help page
   -P    use privileged mode (not recommended)
   -S    use sys_admin capability (required for chroot)
   -X    support X11 forwarding
@@ -230,6 +233,7 @@ RM() {
         printf "USAGE:
   ${P2} rm [OPTIONS] <BOX>
 OPTIONS:
+  -h    You're looking at the help page
   -f    forcefully remove mounted shared directory\n"
     }
 
@@ -339,6 +343,7 @@ LIST() {
         printf "USAGE:
   ${P2} ls [OPTIONS]
 OPTIONS:
+  -h    You're looking at the help page
   -l    list verbosely\n"
     }
 
@@ -435,7 +440,7 @@ case ${1} in
         ;;
     version) printf "${VERSION}\n"
         ;;
-    -h)
+    help)
         USAGE
         exit 0
         ;;

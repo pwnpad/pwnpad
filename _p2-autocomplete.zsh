@@ -43,6 +43,7 @@
                 attach)
                     _getcontainer
                     _arguments -C \
+                        '(-h)-h[help]' \
                         '(-P)-P[use privileged mode (not recommended)]' \
                         '(-S)-S[use sys_admin capability (required for chroot)]' \
                         '(-X)-X[support X11 forwarding]' \
@@ -55,13 +56,20 @@
                     ;;
                 build)
                     _arguments -C : \
+                        '-h[help]' \
                         '-i[image]' \
                         '-p[platform]'
                     ;;
                 rm)
                     _getcontainer
                     _arguments -C : \
+                        '-h[help]' \
                         '-f[forcefully remove mounted shared directory]'
+                    ;;
+                ls)
+                    _arguments -C : \
+                        '-h[help]' \
+                        '-l[verbose]'
                     ;;
                 kill | volume)
                     _getcontainer
