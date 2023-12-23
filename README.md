@@ -41,14 +41,24 @@
 -   Docker installed (Docker Desktop for Windows & Mac)
 -   Nerd Fonts installed
 
-PwnPad can be downloaded using the git command
+#### Homebrew (macOS)
+
+```
+brew install pwnpad/tap/pwnpad
+```
+
+#### Git
+
+PwnPad can also be downloaded directly from GitHub
 
 ```
 git clone https://github.com/pwnpad/pwnpad.git
 ```
 
+#### Getting Images
+
 ```bash
-# Build image locally
+# Build image locally (Only works if you installed through cloning)
 p2 build            # Base image
 p2 build -i extra   # Extra image
 p2 build -i bare    # Bare image (Extra image without the user interface)
@@ -57,12 +67,6 @@ p2 build -i bare    # Bare image (Extra image without the user interface)
 docker pull platypew/pwnpad:latest # Base image
 docker pull platypew/pwnpad:extra  # Extra image
 docker pull platypew/pwnpad:bare   # Bare image (Extra image without the user interface)
-```
-
-You can get basic autocompletion by sourcing the `_p2-autocomplete.zsh` file in your zshrc or source it
-
-```bash
-source _p2-autocomplete.zsh
 ```
 
 <br/>
