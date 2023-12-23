@@ -2,7 +2,7 @@
 
 # Constant variables
 P2=`basename "$0"`
-ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+MOUNTPOINT="$HOME/.local/share/pwnpad/mounts"
 
 # Print general usage and exits
 USAGE() {
@@ -38,6 +38,8 @@ OPTIONS:
         exit 1
     }
 
+    root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
     platform=""
     tag="latest"
     dockerfile="Dockerfile"
@@ -63,7 +65,7 @@ OPTIONS:
         dockerfile="Dockerfile-bare"
     fi
 
-    docker image build $platform -f $ROOT/${dockerfile} -t platypew/pwnpad:${tag} $ROOT
+    docker image build $platform -f $root/${dockerfile} -t platypew/pwnpad:${tag} $root
 }
 
 # Start and attach docker container
@@ -163,8 +165,8 @@ OPTIONS:
     fi
 
     printf "Making directory...\n"
-    mkdir $ROOT/mounts/${box_name} 2> /dev/null
-    printf "Directory located at: $ROOT/mounts/${box_name}\n"
+    mkdir $MOUNTPOINT/${box_name} 2> /dev/null
+    printf "Directory located at: $MOUNTPOINT/${box_name}\n"
 
     # Attaches if container exists
     if [ $(docker container ls -a --filter "name=^/${box_name}$" --format '{{.Names}}') ]; then
@@ -179,7 +181,7 @@ OPTIONS:
             --cap-add=NET_ADMIN \
             $admin \
             --security-opt seccomp=unconfined \
-            --mount type=bind,source="$ROOT/mounts/${box_name}",target=/mnt/shared \
+            --mount type=bind,source="$MOUNTPOINT/${box_name}",target=/mnt/shared \
             --sysctl net.ipv6.conf.all.disable_ipv6=0 \
             --device /dev/net/tun \
             --cgroupns=host \
@@ -249,16 +251,16 @@ OPTIONS:
 
     printf "Cleaning directory\n"
     if [ $force -eq 0 ]; then
-        rmdir $ROOT/mounts/${box_name} 2> /dev/null
+        rmdir $MOUNTPOINT/${box_name} 2> /dev/null
 
         if [ $? -ne 0 ]; then
             printf "Directory not empty, not removing...\n"
         fi
     else
         if type trash &> /dev/null; then
-            trash -F $ROOT/mounts/${box_name}
+            trash -F $MOUNTPOINT/${box_name}
         else
-            rm -rvf $ROOT/mounts/${box_name}
+            rm -rvf $MOUNTPOINT/${box_name}
         fi
     fi
 
@@ -296,7 +298,7 @@ VOLUME() {
         VUSE
     fi
 
-    cd "$ROOT/mounts/$2" 2> /dev/null
+    cd "$MOUNTPOINT/$2" 2> /dev/null
     exec $SHELL
 
     if [ $? -ne 0 ]; then
@@ -351,6 +353,10 @@ fi
 
 if [ -z ${1} ]; then
     USAGE
+fi
+
+if [ ! -d ${MOUNTPOINT} ]; then
+    mkdir -p ${MOUNTPOINT}
 fi
 
 case ${1} in
