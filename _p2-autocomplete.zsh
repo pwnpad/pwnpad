@@ -1,4 +1,6 @@
-function _p2() {
+#compdef p2
+
+ _p2() {
 
     if ! docker version >/dev/null 2>&1; then
         return
@@ -69,4 +71,4 @@ function _p2() {
     esac
 }
 
-compdef _p2 p2
+_p2
