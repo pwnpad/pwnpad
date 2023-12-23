@@ -26,7 +26,6 @@ HELP:
   ${P2} attach -h
   ${P2} ls -h
   ${P2} rm -h\n"
-  exit 1
 }
 
 # Build docker image
@@ -39,7 +38,6 @@ OPTIONS:
           linux/amd64, linux/arm64
   -i    select image (default: latest)
           latest, extra, bare\n"
-        exit 1
     }
 
     root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -49,14 +47,20 @@ OPTIONS:
     dockerfile="Dockerfile"
 
     shift
-    while getopts ":i:p:" options
+    while getopts ":i:p:h" options
     do
         case $options in
             p) platform="--platform $OPTARG"
                 ;;
             i) tag="$OPTARG"
                 ;;
-            *) BUSE
+            h)
+                BUSE
+                exit 0
+                ;;
+            *)
+                BUSE
+                exit 1
                 ;;
         esac
     done
@@ -97,7 +101,6 @@ OPTIONS:
           /foo/bar:/foo/bar
   -i    select image (default: latest)
           latest, extra\n"
-        exit 1
     }
 
     env=""
@@ -111,7 +114,7 @@ OPTIONS:
     detach=0
 
     shift
-    while getopts ":PSXDe:d:p:v:i:" options
+    while getopts ":PSXDe:d:p:v:i:h" options
     do
         case $options in
             P) priv="--privileged"
@@ -135,7 +138,13 @@ OPTIONS:
                 ;;
             i) image="$OPTARG"
                 ;;
-            *) AUSE
+            h)
+                AUSE
+                exit 0
+                ;;
+            *)
+                AUSE
+                exit 1
                 ;;
         esac
     done
@@ -145,6 +154,7 @@ OPTIONS:
 
     if [ -z ${box_name} ]; then
         AUSE
+        exit 1
     fi
 
 
@@ -205,6 +215,7 @@ OPTIONS:
         if [ $? -ne 0 ]; then
             printf "An error has occured. Check arguments\n\n"
             AUSE
+            exit 1
         fi
     fi
 
@@ -220,18 +231,23 @@ RM() {
   ${P2} rm [OPTIONS] <BOX>
 OPTIONS:
   -f    forcefully remove mounted shared directory\n"
-        exit 1
     }
 
     force=0
 
     shift
-    while getopts ":f" options
+    while getopts ":fh" options
     do
         case $options in
             f) force=1
                 ;;
-            *) RUSE
+            h)
+                RUSE
+                exit 0
+                ;;
+            *)
+                RUSE
+                exit 1
                 ;;
         esac
     done
@@ -248,6 +264,7 @@ OPTIONS:
 
     if [ -z ${box_name} ]; then
         RUSE
+        exit 1
     fi
 
     printf "Attempting to remove container\n"
@@ -256,6 +273,7 @@ OPTIONS:
     if [ $? -ne 0 ]; then
         printf "Container does not exist\n\n"
         RUSE
+        exit 1
     fi
 
     printf "Cleaning directory\n"
@@ -301,10 +319,10 @@ VOLUME() {
     VUSE() {
         printf "USAGE:
   ${P2} volume <BOX>\n"
-        exit 1
     }
     if [ -z $2 ]; then
         VUSE
+        exit 1
     fi
 
     cd "$MOUNTPOINT/$2" 2> /dev/null
@@ -312,6 +330,7 @@ VOLUME() {
 
     if [ $? -ne 0 ]; then
         VUSE
+        exit 1
     fi
 }
 
@@ -321,16 +340,21 @@ LIST() {
   ${P2} ls [OPTIONS]
 OPTIONS:
   -l    list verbosely\n"
-        exit 1
     }
 
     shift
-    while getopts ":l" options
+    while getopts ":lh" options
     do
         case $options in
             l) long=1
                 ;;
-            *) LUSE
+            h)
+                LUSE
+                exit 0
+                ;;
+            *)
+                LUSE
+                exit 1
                 ;;
         esac
     done
@@ -382,10 +406,12 @@ if ! docker version >/dev/null 2>&1; then
     printf "NOTICE:
   Cannot connect to the Docker daemon. Is the docker daemon running?\n\n"
     USAGE
+    exit 1
 fi
 
 if [ -z ${1} ]; then
     USAGE
+    exit 1
 fi
 
 if [ ! -d ${MOUNTPOINT} ]; then
@@ -409,6 +435,12 @@ case ${1} in
         ;;
     version) printf "${VERSION}\n"
         ;;
-    *) USAGE
+    -h)
+        USAGE
+        exit 0
+        ;;
+    *)
+        USAGE
+        exit 1
         ;;
 esac
