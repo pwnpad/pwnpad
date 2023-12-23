@@ -38,7 +38,7 @@ OPTIONS:
         exit 1
     }
 
-    root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+    dockerbuildfiles="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/docker"
 
     platform=""
     tag="latest"
@@ -65,7 +65,7 @@ OPTIONS:
         dockerfile="Dockerfile-bare"
     fi
 
-    docker image build $platform -f $root/${dockerfile} -t platypew/pwnpad:${tag} $root
+    docker image build $platform -f $dockerbuildfiles/${dockerfile} -t platypew/pwnpad:${tag} $root
 }
 
 # Start and attach docker container
