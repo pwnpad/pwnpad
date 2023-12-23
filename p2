@@ -38,7 +38,7 @@ OPTIONS:
         exit 1
     }
 
-    dockerbuildfiles="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/docker"
+    root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
     platform=""
     tag="latest"
@@ -65,7 +65,12 @@ OPTIONS:
         dockerfile="Dockerfile-bare"
     fi
 
-    docker image build $platform -f $dockerbuildfiles/${dockerfile} -t platypew/pwnpad:${tag} $root
+    if [ ! -d "${root}/docker" ]; then
+        printf "You may not have the full Git repository installed\n"
+        exit 1
+    fi
+
+    docker image build $platform -f $root/docker/${dockerfile} -t platypew/pwnpad:${tag} $root
 }
 
 # Start and attach docker container
