@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+VERSION="v1.0.0"
+
 # Constant variables
 P2=`basename "$0"`
 MOUNTPOINT="$HOME/.local/share/pwnpad/mounts"
@@ -378,6 +380,8 @@ case ${1} in
     ls) LIST
         ;;
     update) UPDATE
+        ;;
+    version) printf "${VERSION}\n"
         ;;
     *) USAGE
         ;;
