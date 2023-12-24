@@ -259,16 +259,16 @@ OPTIONS:
 
     box_name=${1}
 
+    if [ -z ${box_name} ]; then
+        RUSE
+        exit 1
+    fi
+
     printf "Are you sure you want to remove ${box_name}? This cannot be undone! (y/n) "
     read confirmation
 
     if [ -z $confirmation ] || [ $confirmation != "y" ]; then
         exit 0
-    fi
-
-    if [ -z ${box_name} ]; then
-        RUSE
-        exit 1
     fi
 
     printf "Attempting to remove container\n"
