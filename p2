@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="v1.0.1"
+VERSION="v1.0.4"
 
 # Constant variables
 P2=`basename "$0"`
@@ -374,7 +374,10 @@ OPTIONS:
 
 UPDATE() {
     DIR=$(dirname $0)
-    git -C $DIR fetch origin master && git -C $DIR pull origin master --rebase
+
+    if [[ ${DIR} != "/opt/homebrew"* ]]; then
+        git -C $DIR fetch origin master && git -C $DIR pull origin master --rebase
+    fi
 
     boxexists=$(docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:extra" --format "table {{.Names}}\t{{.Status}}" | tail -n +2)
     if [[ ! -z $boxexists ]]; then
