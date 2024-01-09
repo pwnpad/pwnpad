@@ -5,7 +5,15 @@ ENV USER pwnpad
 
 # Setup base pacman repositories
 RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf && \
-    curl -fsSL https://blackarch.org/strap.sh | sed '/^\s*if \[ $gpg_install -lt $gpg_expected \]; then$/,/^\s*fi$/ s/^/#/' | sh && \
+    if [ "$(uname -m)" == "aarch64" ]; then \
+        curl -fsSL -o /tmp/gnupg-2.2.41-2-aarch64.pkg.tar.xz https://github.com/pwnpad/pwnpad-repo/releases/download/gnupg/gnupg-2.2.41-2-aarch64.pkg.tar.xz && \
+        curl -fsSL https://blackarch.org/strap.sh | \
+            sed 's|https://archive.archlinux.org/packages/g/gnupg/gnupg-2.2.41-2-x86_64.pkg.tar.zst|/tmp/gnupg-2.2.41-2-aarch64.pkg.tar.xz|' | \
+            sh && \
+        rm /tmp/gnupg-2.2.41-2-aarch64.pkg.tar.xz ; \
+    else \
+        curl -fsSL https://blackarch.org/strap.sh | sh ; \
+    fi && \
     pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
     sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     printf '\n%s\n%s\n%s\n\n%s\n%s\n%s\n' \
