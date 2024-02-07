@@ -33,7 +33,7 @@ jobs:
       -
         name: Build images
         run: |
-          docker buildx build --push -f docker/Dockerfile \
+          docker buildx build --push -f docker/Dockerfile-lite \
           --tag ${{ secrets.DOCKER_USERNAME }}/pwnpad:lite \
           --platform linux/amd64,linux/arm64 .
   build-latest:
@@ -57,7 +57,7 @@ jobs:
       -
         name: Build images
         run: |
-          docker buildx build --push -f docker/Dockerfile-extra \
+          docker buildx build --push -f docker/Dockerfile \
           --tag ${{ secrets.DOCKER_USERNAME }}/pwnpad:latest \
           --platform linux/amd64,linux/arm64 .
   build-bare:
