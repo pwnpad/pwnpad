@@ -22,7 +22,7 @@
 
     _getcontainer() {
         local listed=${words[${#words[@]}-1]}
-        local containers=( $(docker container ls -a --filter "ancestor=platypew/pwnpad" --filter "ancestor=platypew/pwnpad:extra" --format "{{.Names}}") )
+        local containers=( $(docker container ls -a --filter "ancestor=platypew/pwnpad" --filter "ancestor=platypew/pwnpad:lite" --format "{{.Names}}") )
 
         for con in "${containers[@]}"; do
             if [[ "$con" == "$listed" ]]; then
