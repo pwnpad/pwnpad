@@ -5,7 +5,7 @@ on:
     branches: [ "master" ]
     paths:
       - "docker/Dockerfile"
-      - "docker/Dockerfile-extra"
+      - "docker/Dockerfile-lite"
       - "docker/Dockerfile-bare"
       - "config/**"
   schedule:
@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-base:
+  build-lite:
     runs-on: ubuntu-latest
     steps:
       -
@@ -34,10 +34,10 @@ jobs:
         name: Build images
         run: |
           docker buildx build --push -f docker/Dockerfile \
-          --tag ${{ secrets.DOCKER_USERNAME }}/pwnpad:latest \
+          --tag ${{ secrets.DOCKER_USERNAME }}/pwnpad:lite \
           --platform linux/amd64,linux/arm64 .
-  build-extra:
-    needs: build-base
+  build-latest:
+    needs: build-lite
     runs-on: ubuntu-latest
     steps:
       -
@@ -58,10 +58,10 @@ jobs:
         name: Build images
         run: |
           docker buildx build --push -f docker/Dockerfile-extra \
-          --tag ${{ secrets.DOCKER_USERNAME }}/pwnpad:extra \
+          --tag ${{ secrets.DOCKER_USERNAME }}/pwnpad:latest \
           --platform linux/amd64,linux/arm64 .
   build-bare:
-    needs: build-extra
+    needs: build-latest
     runs-on: ubuntu-latest
     steps:
       -
