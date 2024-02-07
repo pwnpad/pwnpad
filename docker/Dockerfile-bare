@@ -1,5 +1,5 @@
 # vim: ft=dockerfile
-FROM platypew/pwnpad:extra as build
+FROM platypew/pwnpad:latest as build
 
 ENV USER pwnpad
 
