@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="v1.0.5"
+VERSION="v1.0.6"
 
 # Constant variables
 P2=`basename "$0"`
@@ -39,7 +39,7 @@ OPTIONS:
   -p    platform
           linux/amd64, linux/arm64
   -i    select image (default: latest)
-          latest, extra, bare\n"
+          lite, latest, bare\n"
     }
 
     root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -67,8 +67,8 @@ OPTIONS:
         esac
     done
 
-    if [ ${tag} == "extra" ]; then
-        dockerfile="Dockerfile-extra"
+    if [ ${tag} == "lite" ]; then
+        dockerfile="Dockerfile-lite"
     fi
 
     if [ ${tag} == "bare" ]; then
@@ -103,7 +103,7 @@ OPTIONS:
   -v    mount volumes
           /foo/bar:/foo/bar
   -i    select image (default: latest)
-          latest, extra\n"
+          lite, latest\n"
     }
 
     env=""
@@ -366,9 +366,9 @@ OPTIONS:
     shift $(($OPTIND - 1))
 
     if [[ -z $long ]]; then
-        docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:extra" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+        docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:lite" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
     else
-        docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:extra" --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Size}}\t{{.Mounts}}\t{{.RunningFor}}\t{{.Ports}}"
+        docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:lite" --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Size}}\t{{.Mounts}}\t{{.RunningFor}}\t{{.Ports}}"
     fi
 }
 
@@ -379,7 +379,7 @@ UPDATE() {
         git -C $DIR fetch origin master && git -C $DIR pull origin master --rebase
     fi
 
-    boxexists=$(docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:extra" --format "table {{.Names}}\t{{.Status}}" | tail -n +2)
+    boxexists=$(docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:lite" --format "table {{.Names}}\t{{.Status}}" | tail -n +2)
     if [[ ! -z $boxexists ]]; then
         printf "You have existing instances running:\n"
         echo "$boxexists"
@@ -402,8 +402,8 @@ UPDATE() {
         docker image rm -f $beforeid
     fi
 
-    beforeid=$(docker image ls platypew/pwnpad:extra | tail -n 1 | awk '{print $3}')
-    docker image pull platypew/pwnpad:extra
+    beforeid=$(docker image ls platypew/pwnpad:lite | tail -n 1 | awk '{print $3}')
+    docker image pull platypew/pwnpad:lite
     afterid=$(docker image ls platypew/pwnpad | grep none | awk '{print $3}')
     if [[ $beforeid == $afterid ]]; then
         docker image rm -f $beforeid
