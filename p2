@@ -395,15 +395,15 @@ UPDATE() {
     fi
 
 
-    beforeid=$(docker image ls platypew/pwnpad:latest | tail -n 1 | awk '{print $3}')
-    docker image pull platypew/pwnpad:latest
+    beforeid=$(docker image ls platypew/pwnpad:lite | tail -n 1 | awk '{print $3}')
+    docker image pull platypew/pwnpad:lite
     afterid=$(docker image ls platypew/pwnpad | grep none | awk '{print $3}')
     if [[ $beforeid == $afterid ]]; then
         docker image rm -f $beforeid
     fi
 
-    beforeid=$(docker image ls platypew/pwnpad:lite | tail -n 1 | awk '{print $3}')
-    docker image pull platypew/pwnpad:lite
+    beforeid=$(docker image ls platypew/pwnpad:latest | tail -n 1 | awk '{print $3}')
+    docker image pull platypew/pwnpad:latest
     afterid=$(docker image ls platypew/pwnpad | grep none | awk '{print $3}')
     if [[ $beforeid == $afterid ]]; then
         docker image rm -f $beforeid
