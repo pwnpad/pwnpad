@@ -47,6 +47,15 @@
 brew install pwnpad/tap/pwnpad
 ```
 
+### Wget (Linux)
+
+```
+sudo wget https://raw.githubusercontent.com/pwnpad/pwnpad/master/p2 \
+    -O /usr/local/bin/p2 && \
+sudo wget https://raw.githubusercontent.com/pwnpad/pwnpad/master/_p2-autocomplete.zsh \
+    -O /usr/local/share/zsh/site-functions/_p2
+```
+
 #### Git
 
 PwnPad can also be downloaded directly from GitHub
