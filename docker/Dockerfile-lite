@@ -1,3 +1,4 @@
+# vim: ft=dockerfile
 FROM lopsided/archlinux:devel as build
 
 # Define user
@@ -5,15 +6,7 @@ ENV USER pwnpad
 
 # Setup base pacman repositories
 RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf && \
-    if [ "$(uname -m)" == "aarch64" ]; then \
-        curl -fsSL -o /tmp/gnupg-2.2.41-2-aarch64.pkg.tar.xz https://github.com/pwnpad/pwnpad-repo/releases/download/gnupg/gnupg-2.2.41-2-aarch64.pkg.tar.xz && \
-        curl -fsSL https://blackarch.org/strap.sh | \
-            sed 's|https://archive.archlinux.org/packages/g/gnupg/gnupg-2.2.41-2-x86_64.pkg.tar.zst|/tmp/gnupg-2.2.41-2-aarch64.pkg.tar.xz|' | \
-            sh && \
-        rm /tmp/gnupg-2.2.41-2-aarch64.pkg.tar.xz ; \
-    else \
-        curl -fsSL https://blackarch.org/strap.sh | sh ; \
-    fi && \
+    curl -fsSL https://blackarch.org/strap.sh | sh && \
     pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
     sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     printf '\n%s\n%s\n%s\n\n%s\n%s\n%s\n' \
@@ -34,7 +27,7 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
                'Server = http://mirror.0x.sg/archlinux/$repo/os/$arch' \
                 > /etc/pacman.d/mirrorlist ; \
     fi && \
-    sudo pacman -Sy && \
+    pacman -Sy && \
 \
 # Setup users
     useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
@@ -77,6 +70,9 @@ RUN mkdir -p /home/$USER/.local/bin && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \
     sudo ln -s /usr/bin/yafu /usr/share/rsactftool/attacks/single_key/yafu && \
+\
+# Fix yay libalpm.so
+    sudo ln /usr/lib/libalpm.so.14 /usr/lib/libalpm.so.13 && \
 \
 # Install rizin ghidra
     if [ "$(uname -m)" == "aarch64" ]; then \
@@ -134,7 +130,7 @@ RUN mkdir -p /home/$USER/.local/bin && \
     touch /home/$USER/.hushlogin && \
     zsh -c "source /home/$USER/.zshrc && /home/$USER/.zgenom/sources/romkatv/powerlevel10k/___/gitstatus/install" && \
     mkdir -p /home/$USER/.config/bat/themes /home/$USER/.config/f-sy-h && \
-    wget https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme -O \
+    wget https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Mocha.tmTheme -O \
          /home/$USER/.config/bat/themes/Catppuccin-mocha.tmTheme && \
     bat cache --build && \
     wget https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-mocha.ini -O \
