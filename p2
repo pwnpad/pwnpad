@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="v1.1.1"
+VERSION="v1.1.2"
 
 # Constant variables
 P2=`basename "$0"`
