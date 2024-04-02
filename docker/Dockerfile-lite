@@ -34,16 +34,7 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
     touch /home/$USER/.zshrc && \
 \
 # Download i386 and x86_64 glibc
-    if [ ! -d "/lib64" ]; then \
-        mkdir /tmp/glibc && \
-        curl -fsSL https://archlinux.org/packages/core/x86_64/glibc/download | \
-            bsdtar -C /tmp/glibc -xf - && \
-        mv /tmp/glibc/usr/lib /lib64 ; \
-        curl -fsSL https://archlinux.org/packages/core/x86_64/lib32-glibc/download \
-            | bsdtar -C / -xf - ; \
-    else \
-        sudo pacman -S --noconfirm lib32-gcc-libs ; \
-    fi
+    sudo pacman -S --noconfirm lib32-gcc-libs && \
 
 COPY ./config/chroot/pacman64.conf /etc/pacman64.conf
 COPY --chown=$USER:users ./config/chroot/pacman64 /home/$USER/.local/bin/pacman64
