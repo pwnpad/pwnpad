@@ -12,7 +12,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+Ctrl+Shift+q kill
 
 # change focus
 bindsym $mod+j focus left
