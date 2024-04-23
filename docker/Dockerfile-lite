@@ -19,14 +19,20 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
 \
 # Setup better sources for x86
     if [ "$(uname -m)" == "x86_64" ]; then \
-        sed -i 'N;s/#\[multilib\]\n#/\[multilib\]\n/' /etc/pacman.conf && \
+        sed -i '/#\[multilib\]/{N;s/#//g}' /etc/pacman.conf && \
         printf '%s\n%s\n%s\n%s\n' \
-               'Server = http://mirror.rackspace.com/archlinux/$repo/os/$arch' \
-               'Server = http://mirrors.acm.wpi.edu/archlinux/$repo/os/$arch' \
-               'Server = http://archlinux.uk.mirror.allworldit.com/archlinux/$repo/os/$arch' \
-               'Server = http://mirror.0x.sg/archlinux/$repo/os/$arch' \
+               'Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch' \
+               'Server = https://mirrors.acm.wpi.edu/archlinux/$repo/os/$arch' \
+               'Server = https://archlinux.uk.mirror.allworldit.com/archlinux/$repo/os/$arch' \
+               'Server = https://mirror.0x.sg/archlinux/$repo/os/$arch' \
+                > /etc/pacman.d/mirrorlist ; \
+    else \
+        printf '%s\n%s\n' \
+               'Server = http://mirror.archlinuxarm.org/$arch/$repo' \
+               'Server = https://sg.mirror.archlinuxarm.org/$arch/$repo' \
                 > /etc/pacman.d/mirrorlist ; \
     fi && \
+    sed -i '/Singapore/{n;s/^#//;n;s/^#//;n;s/^#//;n;s/^#//;}' /etc/pacman.d/blackarch-mirrorlist && \
     pacman -Sy && \
 \
 # Setup users
