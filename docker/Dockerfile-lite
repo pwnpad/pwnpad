@@ -104,7 +104,7 @@ RUN mkdir -p /home/$USER/.local/bin && \
     nvim -c "lua require('lazy').restore({wait = true})" +qa && \
 \
 # Setup zgenom
-    git clone https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
+    git clone --depth=1 https://github.com/jandamm/zgenom.git "${HOME}/.zgenom" && \
     touch /home/$USER/.hushlogin && \
     zsh -c "source /home/$USER/.zshrc && /home/$USER/.zgenom/sources/romkatv/powerlevel10k/___/gitstatus/install" && \
     mkdir -p /home/$USER/.config/bat/themes /home/$USER/.config/f-sy-h && \
