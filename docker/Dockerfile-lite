@@ -6,18 +6,6 @@ ENV USER pwnpad
 
 # Setup base pacman repositories
 RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf && \
-    curl -fsSL https://raw.githubusercontent.com/pwnpad/blackarch-mirror/master/strap.sh | sh && \
-    pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
-    sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
-    printf '\n%s\n%s\n%s\n\n%s\n%s\n%s\n' \
-           '[pwnpad]' 'SigLevel = Optional TrustedOnly' \
-           'Server = https://raw.githubusercontent.com/pwnpad/pwnpad-repo/master/$arch' \
-           '[pwnpad-large]' \
-           'SigLevel = Optional TrustedOnly' \
-           'Server = https://github.com/pwnpad/pwnpad-repo/releases/download/$arch' \
-            >> /etc/pacman.conf && \
-\
-# Setup better sources for x86
     if [ "$(uname -m)" == "x86_64" ]; then \
         sed -i '/#\[multilib\]/{N;s/#//g}' /etc/pacman.conf && \
         printf '%s\n%s\n%s\n%s\n' \
@@ -32,10 +20,24 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
                'Server = https://sg.mirror.archlinuxarm.org/$arch/$repo' \
                 > /etc/pacman.d/mirrorlist ; \
     fi && \
-    sed -i '/Singapore/{n;s/^#//;n;s/^#//;n;s/^#//;n;s/^#//;}' /etc/pacman.d/blackarch-mirrorlist && \
-    pacman -Sy && \
+\
+# Setup pwnpad repositories
+    printf '\n%s\n%s\n%s\n\n%s\n%s\n%s\n' \
+           '[pwnpad]' 'SigLevel = Optional TrustedOnly' \
+           'Server = https://raw.githubusercontent.com/pwnpad/pwnpad-repo/master/$arch' \
+           '[pwnpad-large]' \
+           'SigLevel = Optional TrustedOnly' \
+           'Server = https://github.com/pwnpad/pwnpad-repo/releases/download/$arch' \
+            >> /etc/pacman.conf && \
+\
+# Setup blackarch repositories
+    curl -fsSL https://raw.githubusercontent.com/pwnpad/blackarch-mirror/master/strap.sh | sh && \
+\
+# Setup base packages
+    pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
 \
 # Setup users
+    sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
     touch /home/$USER/.zshrc && \
 \
