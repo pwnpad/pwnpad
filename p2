@@ -1,15 +1,20 @@
 #!/usr/bin/env bash
 
-VERSION="v1.1.3"
+# Current Version
+declare VERSION="v1.1.3"
 
 # Constant variables
-P2=`basename "$0"`
-MOUNTPOINT="$HOME/.local/share/pwnpad/mounts"
+declare P2
+declare XDG_DATA_HOME="$HOME/.local/share"
+declare MOUNTPOINT="$XDG_DATA_HOME/pwnpad/mounts"
 
-# Print general usage and exits
+P2=$(basename "$0")
+
+# Print general usage
 USAGE() {
-    printf "USAGE:
-  ${P2} <SUBCOMMAND>
+    printf \
+"USAGE:
+  %s <SUBCOMMAND>
 
 SUBCOMMAND:
   help      You're looking at the help page
@@ -23,56 +28,63 @@ SUBCOMMAND:
   version   Show version number of PwnPad
 
 HELP:
-  ${P2} build -h
-  ${P2} attach -h
-  ${P2} ls -h
-  ${P2} rm -h\n"
+  %s build -h
+  %s attach -h
+  %s ls -h
+  %s rm -h
+" "${P2}" "${P2}" "${P2}" "${P2}" "${P2}"
 }
 
 # Build docker image
 BUILD() {
+    # Print build usage
     BUSE() {
-        printf "USAGE:
-  ${P2} build [OPTIONS]
+        printf \
+"USAGE:
+  %s build [OPTIONS]
 OPTIONS:
   -h    You're looking at the help page
   -p    platform
           linux/amd64, linux/arm64
   -i    select image (default: latest)
-          lite, latest, bare\n"
+          lite, latest, bare
+" "${P2}"
     }
 
-    root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+    # Get directory of shell script
+    local root
+    root="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-    platform=""
-    tag="latest"
-    dockerfile="Dockerfile"
+    # Setting of default variables
+    local platform=""
+    local tag="latest"
+    local dockerfile="Dockerfile"
 
+    # Get parameters
     shift
-    while getopts ":i:p:h" options
-    do
+    while getopts ":i:p:h" options; do
         case $options in
-            p) platform="--platform $OPTARG"
-                ;;
-            i) tag="$OPTARG"
-                ;;
-            h)
-                BUSE
-                exit 0
-                ;;
-            *)
-                BUSE
-                exit 1
-                ;;
+        p)
+            # Change the build platform (for use with qemu)
+            platform="--platform ${OPTARG}"
+            ;;
+        i)
+            # Set the tag to build
+            tag="${OPTARG}"
+            ;;
+        h)
+            BUSE
+            exit 0
+            ;;
+        *)
+            BUSE
+            exit 1
+            ;;
         esac
     done
 
-    if [ ${tag} == "lite" ]; then
-        dockerfile="Dockerfile-lite"
-    fi
-
-    if [ ${tag} == "bare" ]; then
-        dockerfile="Dockerfile-bare"
+    if [ -n "${tag}" ]; then
+        dockerfile+="-${tag}"
     fi
 
     if [ ! -d "${root}/docker" ]; then
@@ -80,13 +92,14 @@ OPTIONS:
         exit 1
     fi
 
-    docker image build $platform -f $root/docker/${dockerfile} -t platypew/pwnpad:${tag} $root
+    docker image build "${platform}" -f "$root/docker/${dockerfile}" -t "platypew/pwnpad:${tag}" "${root}"
 }
 
 # Start and attach docker container
 ATTACH() {
     AUSE() {
-        printf "USAGE:
+        printf "%s" \
+"USAGE:
   ${P2} attach [OPTIONS] <BOX>
 OPTIONS:
   -h    You're looking at the help page
@@ -103,107 +116,117 @@ OPTIONS:
   -v    mount volumes
           /foo/bar:/foo/bar
   -i    select image (default: latest)
-          lite, latest\n"
+          lite, latest
+"
     }
 
-    env=""
-    volume=""
-    admin=""
-    priv=""
-    xsupport=""
-    display=""
-    image="latest"
+    local env=""
+    local volume=""
+    local admin=""
+    local priv=""
+    local xsupport=""
+    local display=""
+    local image="latest"
 
-    detach=0
+    local detach=0
 
     shift
-    while getopts ":PSXDe:d:p:v:i:h" options
-    do
+    while getopts ":PSXDe:d:p:v:i:h" options; do
         case $options in
-            P) priv="--privileged"
-                ;;
-            S)
-                if [[ $(uname -m) != "x86_64" ]]; then
-                    admin="--cap-add=SYS_ADMIN"
-                fi
-                ;;
-            X) xsupport="-v /tmp/.X11-unix:/tmp/.X11-unix:rw"
-                ;;
-            D) detach=1
-                ;;
-            d) display="$OPTARG"
-                ;;
-            e) env="${env} -e $OPTARG"
-                ;;
-            p) port="${port} -p $OPTARG"
-                ;;
-            v) volume="${volume} -v $OPTARG"
-                ;;
-            i) image="$OPTARG"
-                ;;
-            h)
-                AUSE
-                exit 0
-                ;;
-            *)
-                AUSE
-                exit 1
-                ;;
+        P)
+            priv="--privileged"
+            ;;
+        S)
+            if [[ $(uname -m) != "x86_64" ]]; then
+                admin="--cap-add=SYS_ADMIN"
+            fi
+            ;;
+        X)
+            xsupport="-v /tmp/.X11-unix:/tmp/.X11-unix:rw"
+            ;;
+        D)
+            detach=1
+            ;;
+        d)
+            display="${OPTARG}"
+            ;;
+        e)
+            env="${env} -e ${OPTARG}"
+            ;;
+        p)
+            port="${port} -p ${OPTARG}"
+            ;;
+        v)
+            volume="${volume} -v ${OPTARG}"
+            ;;
+        i)
+            image="${OPTARG}"
+            ;;
+        h)
+            AUSE
+            exit 0
+            ;;
+        *)
+            AUSE
+            exit 1
+            ;;
         esac
     done
-    shift $(($OPTIND - 1))
+    shift $((OPTIND - 1))
 
-    box_name=${1}
+    local box_name=${1}
 
-    if [ -z ${box_name} ]; then
+    if [ -z "${box_name}" ]; then
         AUSE
         exit 1
     fi
 
-
     # Check if there's display running x11
-    if [[ ! -z $xsupport ]]; then
+    if [[ -n "${xsupport}" ]]; then
         if [[ ! -d "/tmp/.X11-unix" ]]; then
             printf "/tmp/.X11-unix not found\n"
             exit 1
         fi
 
-        if [[ -z $display ]]; then
+        if [[ -z "${display}" ]]; then
             if [[ $OSTYPE == 'darwin'* ]]; then
                 display="host.docker.internal:0"
             else
-                display=$DISPLAY
+                display="${DISPLAY}"
             fi
         fi
 
         xsupport="${xsupport} -e DISPLAY=${display}"
     fi
 
-    tz=""
-    if [[ $OSTYPE == 'darwin'* ]]; then
+    local tz=""
+    if [[ "${OSTYPE}" == 'darwin'* ]]; then
         tz=$(readlink /etc/localtime | sed 's#/var/db/timezone/zoneinfo/##g')
     else
         tz=$(readlink /etc/localtime | sed 's#/usr/share/zoneinfo/##g')
     fi
 
     printf "Making directory...\n"
-    mkdir $MOUNTPOINT/${box_name} 2> /dev/null
-    printf "Directory located at: $MOUNTPOINT/${box_name}\n"
+    mkdir "${MOUNTPOINT}/${box_name}" 2>/dev/null
+    printf "Directory located at: %s\n" "${MOUNTPOINT}/${box_name}"
 
     # Attaches if container exists
-    if [ $(docker container ls -a --filter "name=^/${box_name}$" --format '{{.Names}}') ]; then
+    local exists
+    exists=$(docker container ls -a --filter "name=^/${box_name}$" --format '{{.Names}}')
+    if [ "${exists}" ]; then
         printf "Container exists, reattaching...\n"
-        docker container start ${box_name} > /dev/null
+        docker container start "${box_name}" >/dev/null
     else
         docker container run -it -d \
-            -h ${box_name} \
-            --name ${box_name} \
-            -e TZ=${tz} \
+            -h "${box_name}" \
+            --name "${box_name}" \
+            -e "TZ=${tz}" \
             --cap-add=SYS_PTRACE \
             --cap-add=NET_ADMIN \
-            $admin \
+            ${admin} \
+            ${priv} \
             --security-opt seccomp=unconfined \
-            --mount type=bind,source="$MOUNTPOINT/${box_name}",target=/mnt/shared \
+            --mount type=bind,source="${MOUNTPOINT}/${box_name}",target=/mnt/shared \
             --sysctl net.ipv6.conf.all.disable_ipv6=0 \
             --device /dev/net/tun \
             --cgroupns=host \
@@ -211,9 +234,8 @@ OPTIONS:
             --tmpfs /run \
             --tmpfs /tmp:exec \
             ${xsupport} \
-            ${priv} \
-            $env $port $volume \
-            platypew/pwnpad:${image} sh > /dev/null
+            ${env} ${port} ${volume} \
+            "platypew/pwnpad:${image}" sh > /dev/null
 
         if [ $? -ne 0 ]; then
             printf "An error has occured. Check arguments\n\n"
@@ -222,57 +244,59 @@ OPTIONS:
         fi
     fi
 
-    if [ $detach -eq 0 ]; then
-        docker container exec -it "${box_name}" su pwnpad
+    if [ "${detach}" -eq 0 ]; then
+        docker container exec -u pwnpad -it "${box_name}" zsh
     fi
 }
 
 # Removes pwnpad
 RM() {
     RUSE() {
-        printf "USAGE:
-  ${P2} rm [OPTIONS] <BOX>
+        printf \
+"USAGE:
+  %s rm [OPTIONS] <BOX>
 OPTIONS:
   -h    You're looking at the help page
-  -f    forcefully remove mounted shared directory\n"
+  -f    forcefully remove mounted shared directory
+" "${P2}"
     }
 
-    force=0
+    local force=0
 
     shift
-    while getopts ":fh" options
-    do
+    while getopts ":fh" options; do
         case $options in
-            f) force=1
-                ;;
-            h)
-                RUSE
-                exit 0
-                ;;
-            *)
-                RUSE
-                exit 1
-                ;;
+        f)
+            force=1
+            ;;
+        h)
+            RUSE
+            exit 0
+            ;;
+        *)
+            RUSE
+            exit 1
+            ;;
         esac
     done
-    shift $(($OPTIND - 1))
+    shift $((OPTIND - 1))
 
-    box_name=${1}
+    local box_name=${1}
 
-    if [ -z ${box_name} ]; then
+    if [ -z "${box_name}" ]; then
         RUSE
         exit 1
     fi
 
-    printf "Are you sure you want to remove ${box_name}? This cannot be undone! (y/n) "
-    read confirmation
+    printf "Are you sure you want to remove %s? This cannot be undone! (y/n) " "${box_name}"
+    read -r confirmation
 
-    if [ -z $confirmation ] || [ $confirmation != "y" ]; then
+    if [ -z "${confirmation}" ] || [ "${confirmation}" != "y" ]; then
         exit 0
     fi
 
     printf "Attempting to remove container\n"
-    docker container rm ${box_name} -f &> /dev/null
+    docker container rm "${box_name}" -f &>/dev/null
 
     if [ $? -ne 0 ]; then
         printf "Container does not exist\n\n"
@@ -282,16 +306,16 @@ OPTIONS:
 
     printf "Cleaning directory\n"
     if [ $force -eq 0 ]; then
-        rmdir $MOUNTPOINT/${box_name} 2> /dev/null
+        rmdir "${MOUNTPOINT}/${box_name}" 2>/dev/null
 
         if [ $? -ne 0 ]; then
             printf "Directory not empty, not removing...\n"
         fi
     else
-        if type trash &> /dev/null; then
-            trash -F $MOUNTPOINT/${box_name}
+        if type trash &>/dev/null; then
+            trash -F "${MOUNTPOINT}/${box_name}"
         else
-            rm -rvf $MOUNTPOINT/${box_name}
+            rm -rvf "${MOUNTPOINT:?}/${box_name}"
         fi
     fi
 
@@ -299,20 +323,22 @@ OPTIONS:
 
 KILL() {
     KUSE() {
-        printf "USAGE:
-  ${P2} kill <BOX>\n"
+        printf \
+"USAGE:
+  %s kill <BOX>
+" "${P2}"
     }
-    if [ -z $2 ] ; then
+    if [ -z "${2}" ]; then
         KUSE
         exit 1
     fi
 
-    box_name=${2}
+    local box_name=${2}
 
-    printf "Are you sure you want to kill ${box_name}? This will stop all processes running! (y/n) "
-    read confirmation
+    printf "Are you sure you want to kill %s? This will stop all processes running! (y/n) " "${box_name}"
+    read -r confirmation
 
-    if [ -z $confirmation ] || [ $confirmation != "y" ]; then
+    if [ -z "${confirmation}" ] || [ "${confirmation}" != "y" ]; then
         exit 0
     fi
 
@@ -321,15 +347,20 @@ KILL() {
 
 VOLUME() {
     VUSE() {
-        printf "USAGE:
-  ${P2} volume <BOX>\n"
+        printf \
+"USAGE:
+  %s volume <BOX>
+" "${P2}"
     }
-    if [ -z $2 ]; then
+
+    local box_name=${2}
+
+    if [ -z "${box_name}" ]; then
         VUSE
         exit 1
     fi
 
-    cd "$MOUNTPOINT/$2" 2> /dev/null
+    cd "${MOUNTPOINT}/${box_name}" 2>/dev/null
     exec $SHELL
 
     if [ $? -ne 0 ]; then
@@ -340,30 +371,32 @@ VOLUME() {
 
 LIST() {
     LUSE() {
-        printf "USAGE:
-  ${P2} ls [OPTIONS]
+        printf \
+"USAGE:
+  %s ls [OPTIONS]
 OPTIONS:
   -h    You're looking at the help page
-  -l    list verbosely\n"
+  -l    list verbosely
+" "${P2}"
     }
 
     shift
-    while getopts ":lh" options
-    do
+    while getopts ":lh" options; do
         case $options in
-            l) long=1
-                ;;
-            h)
-                LUSE
-                exit 0
-                ;;
-            *)
-                LUSE
-                exit 1
-                ;;
+        l)
+            long=1
+            ;;
+        h)
+            LUSE
+            exit 0
+            ;;
+        *)
+            LUSE
+            exit 1
+            ;;
         esac
     done
-    shift $(($OPTIND - 1))
+    shift $((OPTIND - 1))
 
     if [[ -z $long ]]; then
         docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:lite" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
@@ -373,40 +406,45 @@ OPTIONS:
 }
 
 UPDATE() {
-    DIR=$(dirname $0)
+    local dir_name
+    dir_name=$(dirname "${0}")
 
-    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) && ${DIR} != "/opt/homebrew"* ]]; then
-        git -C $DIR fetch origin master && git -C $DIR pull origin master --rebase
+    if [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) && ${dir_name} != "/opt/homebrew"* ]]; then
+        git -C "${dir_name}" fetch origin master && git -C "${dir_name}" pull origin master --rebase
     fi
 
-    boxexists=$(docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:lite" --format "table {{.Names}}\t{{.Status}}" | tail -n +2)
-    if [[ ! -z $boxexists ]]; then
+    local box_exists
+    box_exists=$(docker container ls -a --filter "ancestor=platypew/pwnpad:latest" --filter "ancestor=platypew/pwnpad:lite" --format "table {{.Names}}\t{{.Status}}" | tail -n +2)
+
+    if [[ -n "${box_exists}" ]]; then
         printf "You have existing instances running:\n"
-        echo "$boxexists"
+        printf "%s\n" "${box_exists}"
 
         printf "\nUpdating will leave dangling images which may take up space and instances will no longer be tracked\n"
         printf "Updating will NOT delete any instances you have\n"
         printf "Are you sure you want to update? This cannot be undone! (y/n) "
-        read confirmation
+        read -r confirmation
 
-        if [ -z $confirmation ] || [ $confirmation != "y" ]; then
+        if [ -z "${confirmation}" ] || [ "${confirmation}" != "y" ]; then
             exit 0
         fi
     fi
 
+    local before_id
+    local after_id
 
-    beforeid=$(docker image ls platypew/pwnpad:lite | tail -n 1 | awk '{print $3}')
+    before_id=$(docker image ls platypew/pwnpad:lite | tail -n 1 | awk '{print $3}')
     docker image pull platypew/pwnpad:lite
-    afterid=$(docker image ls platypew/pwnpad | grep none | awk '{print $3}')
-    if [[ $beforeid == $afterid ]]; then
-        docker image rm -f $beforeid
+    after_id=$(docker image ls platypew/pwnpad | grep none | awk '{print $3}')
+    if [[ $before_id == "${after_id}" ]]; then
+        docker image rm -f "${before_id}"
     fi
 
-    beforeid=$(docker image ls platypew/pwnpad:latest | tail -n 1 | awk '{print $3}')
+    before_id=$(docker image ls platypew/pwnpad:latest | tail -n 1 | awk '{print $3}')
     docker image pull platypew/pwnpad:latest
-    afterid=$(docker image ls platypew/pwnpad | grep none | awk '{print $3}')
-    if [[ $beforeid == $afterid ]]; then
-        docker image rm -f $beforeid
+    after_id=$(docker image ls platypew/pwnpad | grep none | awk '{print $3}')
+    if [[ $before_id == "${after_id}" ]]; then
+        docker image rm -f "${before_id}"
     fi
 }
 
@@ -417,38 +455,48 @@ if ! docker version >/dev/null 2>&1; then
     exit 1
 fi
 
-if [ -z ${1} ]; then
+if [ -z "${1}" ]; then
     USAGE
     exit 1
 fi
 
-if [ ! -d ${MOUNTPOINT} ]; then
-    mkdir -p ${MOUNTPOINT}
+if [ ! -d "${MOUNTPOINT}" ]; then
+    mkdir -p "${MOUNTPOINT}"
 fi
 
 case ${1} in
-    build) BUILD $@
-        ;;
-    attach) ATTACH $@
-        ;;
-    kill) KILL $@
-        ;;
-    rm) RM $@
-        ;;
-    volume) VOLUME $@
-        ;;
-    ls) LIST $@
-        ;;
-    update) UPDATE
-        ;;
-    version) printf "${VERSION}\n"
-        ;;
-    help)
-        USAGE
-        exit 0
-        ;;
-    *)
-        USAGE
-        exit 1
-        ;;
+build)
+    BUILD "${@}"
+    ;;
+attach)
+    ATTACH "${@}"
+    ;;
+kill)
+    KILL "${@}"
+    ;;
+rm)
+    RM "${@}"
+    ;;
+volume)
+    VOLUME "${@}"
+    ;;
+ls)
+    LIST "${@}"
+    ;;
+update)
+    UPDATE
+    ;;
+version)
+    printf "%s\n" "${VERSION}"
+    ;;
+help)
+    USAGE
+    exit 0
+    ;;
+*)
+    USAGE
+    exit 1
+    ;;
 esac
+
+# vim: ft=bash
