@@ -11,6 +11,7 @@
         commands=(
             'attach:Attach into container'
             'build:Build Docker image'
+            'commit:Commit container to image'
             'rm:Remove container and its volumes'
             'kill:Stop container from running'
             'volume:Enter into container volume'
@@ -51,6 +52,7 @@
                         '(-d)-d[display]' \
                         '(-e)-e[use environmental variables]' \
                         '(-p)-p[port range]' \
+                        '(-t)-t[ssh tunnelling]' \
                         '(-v)-v[mount volumes]' \
                         '(-i)-i[select image]'
                     ;;
@@ -71,7 +73,7 @@
                         '-h[help]' \
                         '-l[verbose]'
                     ;;
-                kill | volume)
+                commit | kill | volume)
                     _getcontainer
                     ;;
             esac

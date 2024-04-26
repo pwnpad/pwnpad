@@ -138,10 +138,11 @@ OPTIONS:
   -S    use sys_admin capability (required for chroot)
   -X    support X11 forwarding
   -D    run as daemon mode
-  -e    use environmental variables
+  -t    ssh tunnelling in daemon (random port assigned 60000-65000)
+  -e    use environmental variables (can declare multiple times)
           FOO=bar
   -d    display (use with -X)
-  -p    port range (default: 22, default port will map to random host port between 40000 and 40999)
+  -p    port range (can declare multiple times or use in range)
           1337:1337
           1337-31337:1337-31337
   -v    mount volumes
@@ -161,8 +162,12 @@ OPTIONS:
 
     local detach=0
 
+    local tunnel=0
+    local tunnel_port=0
+    local tunnel_forward=""
+
     shift
-    while getopts ":PSXDe:d:p:v:i:h" options; do
+    while getopts ":PSXDte:d:p:v:i:h" options; do
         case $options in
         P)
             priv="--privileged"
@@ -177,6 +182,15 @@ OPTIONS:
             ;;
         D)
             detach=1
+            ;;
+        t)
+            if ! type -p sshuttle >/dev/null 2>&1; then
+                printf "Command sshuttle not found. Please install and try again\n"
+                exit 1
+            fi
+
+            tunnel=1
+            tunnel_forward="-p $(( RANDOM % 5000 + 60000 )):22"
             ;;
         d)
             display="${OPTARG}"
@@ -265,15 +279,33 @@ OPTIONS:
             --tmpfs /run \
             --tmpfs /tmp:exec \
             ${xsupport} \
+            ${tunnel_forward} \
             ${env} ${port} ${volume} \
             -u root --entrypoint /docker-entrypoint.sh \
             "platypew/pwnpad:${image}" sh > /dev/null
+
+        if [ "${tunnel}" -eq 1 ]; then
+            docker container exec -u pwnpad -t "${box_name}" \
+                zsh -c "echo '$(cat $HOME/.ssh/id_*.pub)' >> /home/pwnpad/.ssh/authorized_keys"
+        fi
 
         if [ $? -ne 0 ]; then
             printf "An error has occured. Check arguments\n\n"
             AUSE
             exit 1
         fi
+    fi
+
+    if [ "${tunnel}" -eq 1 ]; then
+        docker container exec -u pwnpad -t "${box_name}" \
+            zsh -c "sudo systemctl start sshd"
+
+        local tunnel_port
+        tunnel_port=$(docker container port test | grep 22/tcp | cut -d ':' -f 2)
+
+        sshuttle -D --pidfile="/tmp/sshuttle-${tunnel_port}.pid" --dns -HNr \
+            "pwnpad@localhost:$(docker container port test | grep 22/tcp | cut -d ':' -f 2)" \
+            -e 'ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no"'
     fi
 
     if [ "${detach}" -eq 0 ]; then
