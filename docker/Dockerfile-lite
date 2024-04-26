@@ -8,10 +8,9 @@ ENV USER pwnpad
 RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf && \
     if [ "$(uname -m)" == "x86_64" ]; then \
         sed -i '/#\[multilib\]/{N;s/#//g}' /etc/pacman.conf && \
-        printf '%s\n%s\n%s\n%s\n' \
-               'Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch' \
-               'Server = https://mirrors.acm.wpi.edu/archlinux/$repo/os/$arch' \
-               'Server = https://archlinux.uk.mirror.allworldit.com/archlinux/$repo/os/$arch' \
+        printf '%s\n%s\n%s\n' \
+               'Server = https://download.nus.edu.sg/mirror/archlinux/$repo/os/$arch' \
+               'Server = https://sg.mirrors.cicku.me/archlinux/$repo/os/$arch' \
                'Server = https://mirror.0x.sg/archlinux/$repo/os/$arch' \
                 > /etc/pacman.d/mirrorlist ; \
     else \
@@ -30,11 +29,11 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
            'Server = https://github.com/pwnpad/pwnpad-repo/releases/download/$arch' \
             >> /etc/pacman.conf && \
 \
-# Setup blackarch repositories
-    curl -fsSL https://raw.githubusercontent.com/pwnpad/blackarch-mirror/master/strap.sh | sh && \
-\
 # Setup base packages
     pacman -Syyu --noconfirm && pacman -S --noconfirm systemd-sysvcompat zsh && \
+\
+# Setup blackarch repositories
+    curl -fsSL https://raw.githubusercontent.com/pwnpad/blackarch-mirror/master/strap.sh | sh && \
 \
 # Setup users
     sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
