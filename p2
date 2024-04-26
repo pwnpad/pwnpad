@@ -19,6 +19,7 @@ USAGE() {
 SUBCOMMAND:
   help      You're looking at the help page
   build     Build Docker image
+  commit    Commit container to image
   attach    Attach into container
   rm        Remove container and its volumes
   kill      Stop container from running
@@ -93,6 +94,36 @@ OPTIONS:
     fi
 
     docker image build ${platform} -f "${root}/docker/${dockerfile}" -t "platypew/pwnpad:${tag}" "${root}"
+}
+
+# Commit docker container into image
+COMMIT() {
+    CUSE() {
+        printf "%s" \
+"USAGE:
+  ${P2} commit <BOX> <NEW IMAGE>
+"
+    }
+
+    if [ -z "${2}" ] && [ -z "${3}" ]; then
+        CUSE
+        exit 1
+    fi
+
+    local box_name=${2}
+    local image_name=${3}
+
+    printf "Pausing container and saving it as new image\n"
+    docker container commit "${box_name}" "platypew/pwnpad:${image_name}" 2>/dev/null
+
+    if [ $? -ne 0 ]; then
+        printf "An error has occured. Check arguments\n\n"
+        CUSE
+        exit 1
+    fi
+
+    printf "New image located in platypew/pwnpad:%s\n" "${image_name}"
+    printf "p2 attach -i %s <BOX>\n" "${image_name}"
 }
 
 # Start and attach docker container
@@ -471,6 +502,9 @@ build)
     ;;
 attach)
     ATTACH "${@}"
+    ;;
+commit)
+    COMMIT "${@}"
     ;;
 kill)
     KILL "${@}"
