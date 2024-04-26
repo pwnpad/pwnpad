@@ -92,7 +92,7 @@ OPTIONS:
         exit 1
     fi
 
-    docker image build "${platform}" -f "$root/docker/${dockerfile}" -t "platypew/pwnpad:${tag}" "${root}"
+    docker image build ${platform} -f "${root}/docker/${dockerfile}" -t "platypew/pwnpad:${tag}" "${root}"
 }
 
 # Start and attach docker container
