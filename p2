@@ -235,6 +235,7 @@ OPTIONS:
             --tmpfs /tmp:exec \
             ${xsupport} \
             ${env} ${port} ${volume} \
+            -u root --entrypoint /docker-entrypoint.sh \
             "platypew/pwnpad:${image}" sh > /dev/null
 
         if [ $? -ne 0 ]; then
