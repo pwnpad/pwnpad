@@ -140,3 +140,5 @@ ENV USER pwnpad
 COPY --from=build / /
 USER $USER
 WORKDIR /home/$USER
+
+CMD "/bin/zsh"
