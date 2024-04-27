@@ -301,10 +301,10 @@ OPTIONS:
             zsh -c "sudo systemctl start sshd"
 
         local tunnel_port
-        tunnel_port=$(docker container port test | grep 22/tcp | cut -d ':' -f 2)
+        tunnel_port=$(docker container port "${box_name}" | grep 22/tcp | cut -d ':' -f 2)
 
         sshuttle -D --pidfile="/tmp/sshuttle-${tunnel_port}.pid" --dns -HNr \
-            "pwnpad@localhost:$(docker container port test | grep 22/tcp | cut -d ':' -f 2)" \
+            "pwnpad@localhost:${tunnel_port}" \
             -e 'ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no"'
     fi
 
