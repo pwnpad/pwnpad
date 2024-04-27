@@ -19,6 +19,12 @@ RUN sudo pacman -R --noconfirm gnu-netcat && \
     sudo wget -O /etc/samba/smb.conf \
          "https://raw.githubusercontent.com/samba-team/samba/master/examples/smb.conf.default" && \
 \
+# Fix ldconfig complaining about libwkhtmltox.so not being a symlink
+    if [ "$(uname -m)" == "aarch64" ]; then \
+        sudo ln -sf libwkhtmltox.so /usr/local/lib/libwkhtmltox.so.0 && \
+        sudo ln -sf libwkhtmltox.so /usr/local/lib/libwkhtmltox.so.0.12 && \
+        sudo ln -sf libwkhtmltox.so /usr/local/lib/libwkhtmltox.so.0.12.6 ; \
+    fi && \
 # Reinstall gnu netcat
     yes | sudo pacman -Sdd gnu-netcat && \
 \
