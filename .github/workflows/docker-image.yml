@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "master" ]
     paths:
-      - "docker/Dockerfile"
+      - "docker/Dockerfile-latest"
       - "docker/Dockerfile-lite"
       # - "docker/Dockerfile-bare"
       - "config/**"

@@ -65,7 +65,7 @@ RUN mkdir -p /home/$USER/.local/bin && \
          unrar unzip wget yay && \
     mkdir /home/$USER/.ssh && touch /home/$USER/.ssh/authorized_keys && \
     chmod 600 /home/$USER/.ssh/authorized_keys && \
-    sudo pacman -S --noconfirm aflplusplus binwalk foremost exploitdb gnu-netcat \
+    sudo pacman -S --noconfirm pwnpad/aflplusplus binwalk foremost exploitdb gnu-netcat \
          gobuster hexedit jadx ltrace metasploit nmap perl-image-exiftool python-gmpy2 \
          python-pwntools ropper rsactftool strace xortool z3 && \
     sudo pacman -S --noconfirm pwnpad/ngrok pwnpad/pwndbg pwnpad/rz-ghidra pwnpad/yafu && \
