@@ -86,6 +86,9 @@ RUN mkdir -p /home/$USER/.local/bin && \
            "set context-ghidra if-no-source" \
            "source /usr/share/decomp2dbg/d2d.py/d2d.py" \
         >> /home/$USER/.gdbinit && \
+    printf "%s\n" \
+           "e ghidra.verbose=false" \
+        >> /home/$USER/.rizinrc && \
 # Fix yay libalpm.so
     sudo ln /usr/lib/libalpm.so.14 /usr/lib/libalpm.so.13 && \
 \
