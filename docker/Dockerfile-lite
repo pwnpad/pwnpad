@@ -68,19 +68,22 @@ RUN mkdir -p /home/$USER/.local/bin && \
     sudo pacman -S --noconfirm pwnpad/aflplusplus binwalk foremost exploitdb gnu-netcat \
          gobuster hexedit jadx ltrace metasploit nmap perl-image-exiftool python-gmpy2 \
          python-pwntools ropper rsactftool strace xortool z3 && \
-    sudo pacman -S --noconfirm pwnpad/ngrok pwnpad/pwndbg pwnpad/rz-ghidra pwnpad/yafu && \
+    sudo pacman -S --noconfirm pwnpad/ngrok pwnpad/yafu && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \
     sudo ln -s /usr/bin/yafu /usr/share/rsactftool/attacks/single_key/yafu && \
 \
 # Download gdb multiarch
-    sudo pacman -S --noconfirm pwnpad/gdb-multiarch && \
+    sudo pacman -S --noconfirm pwnpad/gdb-multiarch pwnpad/pwndbg pwnpad/rz-ghidra && \
+    sudo pacman -S --noconfirm python-rzpipe && \
     sudo pip install --break-system-packages decomp2dbg && \
     sudo wget -P /usr/share/decomp2dbg/d2d.py \
                  https://raw.githubusercontent.com/mahaloz/decomp2dbg/main/d2d.py && \
-    printf "%s\n%s\n%s\n" \
+    printf "%s\n%s\n%s\n%s\n%s\n" \
            "set debuginfod enabled on" \
            "source /usr/share/pwndbg/gdbinit.py" \
+           "set r2decompiler rizin" \
+           "set context-ghidra if-no-source" \
            "source /usr/share/decomp2dbg/d2d.py/d2d.py" \
         >> /home/$USER/.gdbinit && \
 # Fix yay libalpm.so
