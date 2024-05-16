@@ -66,7 +66,7 @@ RUN mkdir -p /home/$USER/.local/bin && \
     mkdir /home/$USER/.ssh && touch /home/$USER/.ssh/authorized_keys && \
     chmod 600 /home/$USER/.ssh/authorized_keys && \
     sudo pacman -S --noconfirm pwnpad/aflplusplus binwalk foremost exploitdb gnu-netcat \
-         gobuster hexedit jadx ltrace metasploit nmap perl-image-exiftool python-gmpy2 \
+         gobuster hexedit jadx ltrace metasploit nmap one_gadget perl-image-exiftool python-gmpy2 \
          python-pwntools ropper rsactftool strace xortool z3 && \
     sudo pacman -S --noconfirm pwnpad/ngrok pwnpad/yafu && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
@@ -77,14 +77,19 @@ RUN mkdir -p /home/$USER/.local/bin && \
     sudo pacman -S --noconfirm pwnpad/gdb-multiarch pwnpad/pwndbg pwnpad/rz-ghidra && \
     sudo pacman -S --noconfirm python-rzpipe && \
     sudo pip install --break-system-packages decomp2dbg && \
-    sudo wget -P /usr/share/decomp2dbg/d2d.py \
+    sudo wget -P /usr/share/decomp2dbg \
                  https://raw.githubusercontent.com/mahaloz/decomp2dbg/main/d2d.py && \
-    printf "%s\n%s\n%s\n%s\n%s\n" \
+    sudo pip install --break-system-packages https://github.com/zolutal/pwn_gadget/archive/refs/heads/main.zip && \
+    sudo wget -P /usr/share/pwn_gadget \
+                 https://raw.githubusercontent.com/zolutal/pwn_gadget/main/pwn_gadget.py && \
+
+    printf "%s\n%s\n%s\n%s\n%s\n%s\n" \
            "set debuginfod enabled on" \
            "source /usr/share/pwndbg/gdbinit.py" \
            "set r2decompiler rizin" \
            "set context-ghidra if-no-source" \
-           "source /usr/share/decomp2dbg/d2d.py/d2d.py" \
+           "source /usr/share/decomp2dbg/d2d.py" \
+           "source /usr/share/pwn_gadget/pwn_gadget.py" \
         >> /home/$USER/.gdbinit && \
     printf "%s\n" \
            "e ghidra.verbose=false" \
