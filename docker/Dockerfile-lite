@@ -40,10 +40,6 @@ RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf 
     useradd -m -g users -G wheel -s /usr/bin/zsh $USER && \
     touch /home/$USER/.zshrc && \
 \
-# Upgrade glibc to 2.39 for arm
-    if [ "$(uname -m)" == "aarch64" ]; then \
-        sudo pacman -S --noconfirm pwnpad/glibc ; \
-    fi && \
 # Download i386 and x86_64 glibc
     sudo pacman -S --noconfirm lib32-gcc-libs
 
