@@ -38,8 +38,8 @@
 
 #### Requirements
 
--   Docker installed (Docker Desktop for Windows & Mac)
--   Nerd Fonts installed
+- Docker installed (Docker Desktop for Windows & Mac)
+- Nerd Fonts installed
 
 #### Homebrew (macOS)
 
@@ -170,11 +170,11 @@ You can use ngrok to publish a port to the public.
 
 <details>
 
--   Start: `publish start` (Insert api key if prompted)
--   Stop: `publish stop`
--   Status: `publish status`
--   Set a port to tunnel: `publish set <port>`
--   Delete a tunnelling port: `publish del <port>`
+- Start: `publish start` (Insert api key if prompted)
+- Stop: `publish stop`
+- Status: `publish status`
+- Set a port to tunnel: `publish set <port>`
+- Delete a tunnelling port: `publish del <port>`
 
 </details>
 
@@ -184,8 +184,8 @@ You can turn ASLR on and off.
 
 <details>
 
--   On: `aslr on`
--   Off: `aslr off`
+- On: `aslr on`
+- Off: `aslr off`
 
 </details>
 
@@ -195,8 +195,8 @@ You can turn ASLR on and off.
 
 Enabling VNC (you may need to run your system through a proxy to access the noVNC server).
 
--   Start: `gui start`
--   Stop: `gui stop`
+- Start: `gui start`
+- Stop: `gui stop`
 
 </details>
 
@@ -207,71 +207,71 @@ You can still run intel binaries that uses only glibc within the regular context
 
 <details>
 
--   Use pacman: `intel-pacman`
--   Run command: `intel-run`
+- Use pacman: `intel-pacman`
+- Run command: `intel-run`
 
 </details>
 
 ### Included Infosec Tools
 
-| Tools            | Description                                                                                     |
-| ---------------- | ----------------------------------------------------------------------------------------------- |
-| aflplusplus   | American Fuzzing Lop fuzzer with community patches and additional features                       |
-| arp-scan         | A tool that uses ARP to discover and fingerprint IP hosts on the local network                  |
-| autorecon        | A multi-threaded network reconnaissance tool which performs automated enumeration of services   |
-| binwalk       | Tool for searching a given binary image for embedded files                                       |
-| commix           | Automated All-in-One OS Command Injection and Exploitation Tool                                 |
-| creddump         | A python tool to extract various credentials and secrets from Windows registry hives            |
-| crunch           | A wordlist generator for all combinations/permutations of a given character set                 |
-| dnsenum          | Script that enumerates DNS information from a domain                                            |
-| dnsrecon         | Python script for enumeration of hosts, subdomains and emails from a given domain using google. |
-| enum4linux-ng    | A tool for enumerating information from Windows and Samba systems                               |
-| evil-winrm       | The ultimate WinRM shell for hacking/pentesting                                                 |
-| exiftool      | Meta information reader/writer                                                                   |
-| exploitdb     | The official Exploit Database repository                                                         |
-| foremost      | A console program to recover files based on their headers, footers, and internal data structures |
-| fping            | Utility to ping multiple hosts at once                                                          |
-| gdb-multiarch | The GNU Debugger for all gdb supported architectures (i386/arm/mips...)                          |
-| gobuster      | URI and DNS subdomain bruteforcer                                                                |
-| hashcat-utils    | Set of small utilities that are useful in advanced password cracking                            |
-| hexedit       | Terminal-based hex editor                                                                        |
-| hping            | A command-line oriented TCP/IP packet assembler/analyzer                                        |
-| impacket         | Collection of classes for working with network protocols                                        |
-| jadx          | Java decompiler                                                                                  |
-| john             | John the Ripper password cracker                                                                |
-| lbd              | Load Balancing detector                                                                         |
-| ldapenum         | Enumerate domain controllers using LDAP                                                         |
-| ligolo-ng        | An advanced, yet simple, tunneling tool that uses a TUN interface                               |
-| metasploit    | Platform for developing, testing, and executing exploits                                         |
-| nbtscan          | Scan networks searching for NetBIOS information                                                 |
-| ncrack           | High-speed network authentication cracking tool                                                 |
-| netcat        | Network piping application                                                                       |
-| netexec          | A swiss army knife for pentesting Windows/Active Directory environments                         |
-| ngrok         | Secure introspectable tunnels to localhost webhook development tool and debugging tool           |
-| nikto            | A web server scanner which performs comprehensive tests against web servers                     |
-| nmap          | Utility for network discovery and security auditing                                              |
-| onesixtyone      | An SNMP scanner that sends multiple SNMP requests to multiple IP addresses                      |
-| pwndbg        | Makes debugging with GDB suck less                                                               |
-| pwntools      | Useful CTF utilities.                                                                            |
-| revshellgen      | Simple script to generate commands to achieve reverse shells                                    |
-| rizin         | Open-source tools to disasm, debug, analyze and manipulate binary files (With Ghidra Decompiler) |
-| ropper        | Gadget finder.                                                                                   |
-| rsactftool    | RSA attack tool (mainly for CTFs)                                                                |
-| rustscan         | A modern port scanner                                                                           |
-| scalpel          | A frugal, high performance file carver                                                          |
-| sleuthkit        | File system and media management forensic analysis tools                                        |
-| smbmap           | A handy SMB enumeration tool                                                                    |
-| snmpcheck        | A free open source utility to get information via SNMP protocols                                |
-| sqlmap        | Automatic SQL injection and database takeover tool                                               |
-| swaks            | Swiss Army Knife SMTP; Command line SMTP testing, including TLS and AUTH                        |
-| wafw00f          | Identify and fingerprint Web Application Firewall (WAF) products protecting a website           |
-| wce              | A security tool to list logon sessions and add, change, list and delete associated credentials  |
-| whatweb          | Next generation web scanner that identifies what websites are running                           |
-| whois            | Intelligent WHOIS client                                                                        |
-| windows-binaries | A collection of pentesting Windows binaries                                                     |
-| xortool       | XOR analysis tool.                                                                               |
-| yafu          | Yafu factor input integers in a completely automated way.                                        |
-| z3            | Theorem prover from Microsoft Research.                                                          |
+| Tools            | Description                                                                                      |
+| ---------------- | ------------------------------------------------------------------------------------------------ |
+| aflplusplus      | American Fuzzing Lop fuzzer with community patches and additional features                       |
+| arp-scan         | A tool that uses ARP to discover and fingerprint IP hosts on the local network                   |
+| autorecon        | A multi-threaded network reconnaissance tool which performs automated enumeration of services    |
+| binwalk          | Tool for searching a given binary image for embedded files                                       |
+| commix           | Automated All-in-One OS Command Injection and Exploitation Tool                                  |
+| creddump         | A python tool to extract various credentials and secrets from Windows registry hives             |
+| crunch           | A wordlist generator for all combinations/permutations of a given character set                  |
+| dnsenum          | Script that enumerates DNS information from a domain                                             |
+| dnsrecon         | Python script for enumeration of hosts, subdomains and emails from a given domain using google.  |
+| enum4linux-ng    | A tool for enumerating information from Windows and Samba systems                                |
+| evil-winrm       | The ultimate WinRM shell for hacking/pentesting                                                  |
+| exiftool         | Meta information reader/writer                                                                   |
+| exploitdb        | The official Exploit Database repository                                                         |
+| foremost         | A console program to recover files based on their headers, footers, and internal data structures |
+| fping            | Utility to ping multiple hosts at once                                                           |
+| gdb-multiarch    | The GNU Debugger for all gdb supported architectures (i386/arm/mips...)                          |
+| gobuster         | URI and DNS subdomain bruteforcer                                                                |
+| hashcat-utils    | Set of small utilities that are useful in advanced password cracking                             |
+| hexedit          | Terminal-based hex editor                                                                        |
+| hping            | A command-line oriented TCP/IP packet assembler/analyzer                                         |
+| impacket         | Collection of classes for working with network protocols                                         |
+| jadx             | Java decompiler                                                                                  |
+| john             | John the Ripper password cracker                                                                 |
+| lbd              | Load Balancing detector                                                                          |
+| ldapenum         | Enumerate domain controllers using LDAP                                                          |
+| ligolo-ng        | An advanced, yet simple, tunneling tool that uses a TUN interface                                |
+| metasploit       | Platform for developing, testing, and executing exploits                                         |
+| nbtscan          | Scan networks searching for NetBIOS information                                                  |
+| ncrack           | High-speed network authentication cracking tool                                                  |
+| netcat           | Network piping application                                                                       |
+| netexec          | A swiss army knife for pentesting Windows/Active Directory environments                          |
+| ngrok            | Secure introspectable tunnels to localhost webhook development tool and debugging tool           |
+| nikto            | A web server scanner which performs comprehensive tests against web servers                      |
+| nmap             | Utility for network discovery and security auditing                                              |
+| onesixtyone      | An SNMP scanner that sends multiple SNMP requests to multiple IP addresses                       |
+| pwndbg           | Makes debugging with GDB suck less                                                               |
+| pwntools         | Useful CTF utilities.                                                                            |
+| revshellgen      | Simple script to generate commands to achieve reverse shells                                     |
+| rizin            | Open-source tools to disasm, debug, analyze and manipulate binary files (With Ghidra Decompiler) |
+| ropper           | Gadget finder.                                                                                   |
+| rsactftool       | RSA attack tool (mainly for CTFs)                                                                |
+| rustscan         | A modern port scanner                                                                            |
+| scalpel          | A frugal, high performance file carver                                                           |
+| sleuthkit        | File system and media management forensic analysis tools                                         |
+| smbmap           | A handy SMB enumeration tool                                                                     |
+| snmpcheck        | A free open source utility to get information via SNMP protocols                                 |
+| sqlmap           | Automatic SQL injection and database takeover tool                                               |
+| swaks            | Swiss Army Knife SMTP; Command line SMTP testing, including TLS and AUTH                         |
+| wafw00f          | Identify and fingerprint Web Application Firewall (WAF) products protecting a website            |
+| wce              | A security tool to list logon sessions and add, change, list and delete associated credentials   |
+| whatweb          | Next generation web scanner that identifies what websites are running                            |
+| whois            | Intelligent WHOIS client                                                                         |
+| windows-binaries | A collection of pentesting Windows binaries                                                      |
+| xortool          | XOR analysis tool.                                                                               |
+| yafu             | Yafu factor input integers in a completely automated way.                                        |
+| z3               | Theorem prover from Microsoft Research.                                                          |
 
 <details>
     <summary>Tools available in lite image</summary>
