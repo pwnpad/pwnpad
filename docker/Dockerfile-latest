@@ -1,7 +1,7 @@
 # vim: ft=dockerfile
 FROM platypew/pwnpad:lite
 
-ENV USER pwnpad
+ENV USER=pwnpad
 USER $USER
 
 # Temporarily uninstall gnu netcat

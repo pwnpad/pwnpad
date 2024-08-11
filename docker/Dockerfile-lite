@@ -1,8 +1,8 @@
 # vim: ft=dockerfile
-FROM lopsided/archlinux:devel as build
+FROM lopsided/archlinux:devel AS build
 
 # Define user
-ENV USER pwnpad
+ENV USER=pwnpad
 
 # Setup base pacman repositories
 RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 16/g' /etc/pacman.conf && \
