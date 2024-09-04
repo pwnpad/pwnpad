@@ -13,9 +13,6 @@
     <a href="https://hub.docker.com/r/platypew/pwnpad/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnpad/latest?arch=amd64&label=latest-amd64"></a>
     <a href="https://hub.docker.com/r/platypew/pwnpad/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnpad/latest?arch=arm64&label=latest-arm64"></a>
     <br/>
-    <a href="https://hub.docker.com/r/platypew/pwnpad/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnpad/bare?arch=amd64&label=bare-amd64"></a>
-    <a href="https://hub.docker.com/r/platypew/pwnpad/tags"><img src="https://img.shields.io/docker/image-size/platypew/pwnpad/bare?arch=arm64&label=bare-arm64"></a>
-    <br/>
     <h1>PwnPad</h1>
     <p>Perfect for doing Capture-The-Flag challenges and Pentesting on any platform, without needing a clunky, fat, resource hungry virtual machine. PwnPad provides a wide array of tools at your very own fingertips, powered by Arch Linux!</p>
     <br/>
