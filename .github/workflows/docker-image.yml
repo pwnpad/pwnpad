@@ -1,15 +1,15 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ "master" ]
-    paths:
-      - "docker/Dockerfile-latest"
-      - "docker/Dockerfile-lite"
-      # - "docker/Dockerfile-bare"
-      - "config/**"
-  schedule:
-    - cron: "0 4 * * 3"
+  # push:
+    # branches: [ "master" ]
+    # paths:
+      # - "docker/Dockerfile-latest"
+      # - "docker/Dockerfile-lite"
+      # # - "docker/Dockerfile-bare"
+      # - "config/**"
+  # schedule:
+    # - cron: "0 4 * * 3"
   workflow_dispatch:
 
 jobs:
