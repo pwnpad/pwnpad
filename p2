@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Current Version
-declare VERSION="v1.2.2"
+declare VERSION="v1.3.0"
 
 # Constant variables
 declare P2
