@@ -57,18 +57,19 @@ COPY --chown=$USER:users ./config/i3 /home/$USER/.config/i3
 # Download tools
 RUN mkdir -p /home/$USER/.local/bin && \
     sudo pacman -S --noconfirm bat exa fzf iproute2 iputils less mlocate neovim net-tools nodejs \
-         npm openssh openvpn 7zip pigz procps-ng python-pip python-virtualenv ripgrep rlwrap tmux \
-         unrar unzip wget yay && \
+         npm openssh openvpn 7zip pigz procps-ng python-pip python-pipx python-virtualenv ripgrep \
+         rlwrap tmux unrar unzip wget yay && \
     mkdir /home/$USER/.ssh && touch /home/$USER/.ssh/authorized_keys && \
     chmod 600 /home/$USER/.ssh/authorized_keys && \
     sudo pacman -S --noconfirm pwnpad/aflplusplus binwalk dalfox foremost exploitdb gnu-netcat \
          gobuster hexedit jadx ltrace metasploit nmap one_gadget perl-image-exiftool python-gmpy2 \
-         python-pwntools ropper rsactftool extra/sqlmap strace xortool z3 && \
+         python-pwntools ropper extra/sqlmap strace xortool z3 && \
     sudo pacman -S --noconfirm pwnpad/ngrok pwnpad/yafu && \
     ln -s /usr/bin/vendor_perl/exiftool /home/$USER/.local/bin && \
     sudo setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap && \
-    sudo ln -s /usr/bin/yafu /usr/share/rsactftool/attacks/single_key/yafu && \
 \
+# Download rsactftool
+    pipx install git+https://github.com/RsaCtfTool/RsaCtfTool && \
 # Download gdb multiarch
     sudo pacman -S --noconfirm pwnpad/gdb-multiarch pwnpad/pwndbg pwnpad/rz-ghidra && \
     sudo pacman -S --noconfirm python-rzpipe && \

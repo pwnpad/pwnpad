@@ -215,7 +215,6 @@ You can still run intel binaries that uses only glibc within the regular context
 | ---------------- | ------------------------------------------------------------------------------------------------ |
 | aflplusplus      | American Fuzzing Lop fuzzer with community patches and additional features                       |
 | arp-scan         | A tool that uses ARP to discover and fingerprint IP hosts on the local network                   |
-| autorecon        | A multi-threaded network reconnaissance tool which performs automated enumeration of services    |
 | binwalk          | Tool for searching a given binary image for embedded files                                       |
 | commix           | Automated All-in-One OS Command Injection and Exploitation Tool                                  |
 | creddump         | A python tool to extract various credentials and secrets from Windows registry hives             |
@@ -245,7 +244,6 @@ You can still run intel binaries that uses only glibc within the regular context
 | netcat           | Network piping application                                                                       |
 | netexec          | A swiss army knife for pentesting Windows/Active Directory environments                          |
 | ngrok            | Secure introspectable tunnels to localhost webhook development tool and debugging tool           |
-| nikto            | A web server scanner which performs comprehensive tests against web servers                      |
 | nmap             | Utility for network discovery and security auditing                                              |
 | onesixtyone      | An SNMP scanner that sends multiple SNMP requests to multiple IP addresses                       |
 | pwndbg           | Makes debugging with GDB suck less                                                               |
@@ -258,11 +256,9 @@ You can still run intel binaries that uses only glibc within the regular context
 | scalpel          | A frugal, high performance file carver                                                           |
 | sleuthkit        | File system and media management forensic analysis tools                                         |
 | smbmap           | A handy SMB enumeration tool                                                                     |
-| snmpcheck        | A free open source utility to get information via SNMP protocols                                 |
 | sqlmap           | Automatic SQL injection and database takeover tool                                               |
 | swaks            | Swiss Army Knife SMTP; Command line SMTP testing, including TLS and AUTH                         |
 | wafw00f          | Identify and fingerprint Web Application Firewall (WAF) products protecting a website            |
-| wce              | A security tool to list logon sessions and add, change, list and delete associated credentials   |
 | whatweb          | Next generation web scanner that identifies what websites are running                            |
 | whois            | Intelligent WHOIS client                                                                         |
 | windows-binaries | A collection of pentesting Windows binaries                                                      |

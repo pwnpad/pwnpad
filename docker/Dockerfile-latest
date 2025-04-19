@@ -8,31 +8,39 @@ USER $USER
 RUN sudo pacman -R --noconfirm gnu-netcat && \
 \
 # Install extra software
-    sudo pacman -Syu --noconfirm --overwrite='*' arp-scan autorecon commix creddump pwnpad/netexec \
+    sudo pacman -Syu --noconfirm --overwrite='*' arp-scan commix creddump \
          crunch dnsenum dnsrecon enum4linux-ng evil-winrm fping hashcat-utils hping pwnpad/john lbd \
-         pwnpad/ligolo-ng ldapenum mimikatz nbtscan ncrack netsed netsniff-ng net-snmp ngrep nikto \
-         onesixtyone proxychains-ng rustscan scalpel seclists sleuthkit smbmap snmpcheck socat swaks \
-         tcpreplay traceroute wafw00f wce whatweb whois windows-binaries && \
+         pwnpad/ligolo-ng ldapenum mimikatz nbtscan ncrack netsed netsniff-ng ngrep \
+         onesixtyone rustscan scalpel seclists sleuthkit smbmap socat swaks \
+         tcpreplay traceroute wafw00f whatweb whois windows-binaries && \
 \
 # Fix smbclient
     sudo mkdir /etc/samba && \
     sudo wget -O /etc/samba/smb.conf \
          "https://raw.githubusercontent.com/samba-team/samba/master/examples/smb.conf.default" && \
 \
-# Fix ldconfig complaining about libwkhtmltox.so not being a symlink
-    if [ "$(uname -m)" == "aarch64" ]; then \
-        sudo ln -sf libwkhtmltox.so /usr/local/lib/libwkhtmltox.so.0 && \
-        sudo ln -sf libwkhtmltox.so /usr/local/lib/libwkhtmltox.so.0.12 && \
-        sudo ln -sf libwkhtmltox.so /usr/local/lib/libwkhtmltox.so.0.12.6 ; \
-    fi && \
 # Reinstall gnu netcat
     yes | sudo pacman -Sdd gnu-netcat && \
 \
 # Install responder
     sudo pacman -Sdd --noconfirm responder && \
 \
-# Uninstall old version of impacket
-    sudo pacman -Rdd --noconfirm impacket && \
+# Install netexec
+    sudo pacman -S --noconfirm rust && \
+    pipx install git+https://github.com/Pennyw0rth/NetExec@v1.4.0 && \
+    sudo pacman -Rsc --noconfirm rust && \
+    impacket=("DumpNTLMInfo" "Get-GPPPassword" "GetADComputers" "GetADUsers" "GetLAPSPassword" \
+    "GetNPUsers" "GetUserSPNs" "addcomputer" "atexec" "changepasswd" "dacledit" "dcomexec" \
+    "describeTicket" "dpapi" "esentutl" "exchanger" "findDelegation" "getArch" "getPac" "getST" \
+    "getTGT" "goldenPac" "karmaSMB" "keylistattack" "kintercept" "lookupsid" "machine_role" \
+    "mimikatz" "mqtt_check" "mssqlclient" "mssqlinstance" "net" "netview" "ntfs-read" "ntlmrelayx" \
+    "owneredit" "ping" "ping6" "psexec" "raiseChild" "rbcd" "rdp_check" "reg" "registry-read" \
+    "regsecrets" "rpcdump" "rpcmap" "sambaPipe" "samrdump" "secretsdump" "services" "smbclient" \
+    "smbexec" "smbserver" "sniff" "sniffer" "split" "ticketConverter" "ticketer" "tstool" "wmiexec" \
+    "wmipersist" "wmiquery") && \
+    for value in "${impacket[@]}" ; \
+        do ln -s /usr/sbin/${value}.py "/home/$USER/.local/bin/impacket-${value}" ; \
+    done && \
 \
 # Install reverse shell generator
     git clone --depth=1 https://github.com/pwnpad/revshellgen.git ~/.local/share/revshellgen && \
