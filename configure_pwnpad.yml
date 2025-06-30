@@ -115,3 +115,116 @@
         owner: "{{ pwnpad_vm_user }}"
         group: users
         mode: "064"
+
+- name: Installing tools
+  hosts: lima-pwnpad
+  gather_facts: false
+  tasks:
+    - name: Installing core tools
+      become: true
+      ansible.builtin.pacman:
+        name:
+          - 7zip
+          - bat
+          - exa
+          - fzf
+          - iproute2
+          - iputils
+          - less
+          - mlocate
+          - neovim
+          - net-tools
+          - nodejs
+          - npm
+          - openssh
+          - openvpn
+          - pigz
+          - procps-ng
+          - python-pip
+          - python-pipx
+          - python-virtualenv
+          - ripgrep
+          - rlwrap
+          - tmux
+          - unrar
+          - unzip
+          - wget
+          - yay
+    - name: Install infosec tools
+      block:
+        - name: Install from pacman
+          become: true
+          ansible.builtin.pacman:
+            name:
+              - binwalk
+              - dalfox
+              - exploitdb
+              - extra/sqlmap
+              - foremost
+              - gnu-netcat
+              - gobuster
+              - hexedit
+              - jadx
+              - ltrace
+              - metasploit
+              - nmap
+              - one_gadget
+              - perl-image-exiftool
+              - pwnpad/aflplusplus
+              - pwnpad/ngrok
+              - pwnpad/yafu
+              - python-gmpy2
+              - python-pwntools
+              - ropper
+              - strace
+              - xortool
+              - z3
+        - name: Install from pipx
+          community.general.pipx:
+            name: git+https://github.com/RsaCtfTool/RsaCtfTool
+    - name: Install gdb and its plugins
+      block:
+        - name: Install gdb multiarch pwndbg and rz-ghidra
+          become: true
+          ansible.builtin.pacman:
+            name:
+              - gdb
+              - pwndbg
+              - pwnpad/rz-ghidra
+              - python-rzpipe
+        - name: Install decomp2dbg
+          become: true
+          ansible.builtin.pip:
+            name: decomp2dbg
+            executable: pip3
+            extra_args: --break-system-packages
+        - name: Create /usr/share/decomp2dbg directory
+          become: true
+          ansible.builtin.file:
+            path: /usr/share/decomp2dbg
+            state: directory
+            mode: "0755"
+        - name: Download d2d.py
+          become: true
+          ansible.builtin.get_url:
+            url: https://raw.githubusercontent.com/mahaloz/decomp2dbg/main/d2d.py
+            dest: /usr/share/decomp2dbg/d2d.py
+            mode: "0644"
+        - name: Install pwn_gadget
+          become: true
+          ansible.builtin.pip:
+            name: https://github.com/zolutal/pwn_gadget/archive/refs/heads/main.zip
+            executable: pip3
+            extra_args: --break-system-packages
+        - name: Create /usr/share/pwn_gadget directory
+          become: true
+          ansible.builtin.file:
+            path: /usr/share/pwn_gadget
+            state: directory
+            mode: "0755"
+        - name: Download pwn_gadget.py
+          become: true
+          ansible.builtin.get_url:
+            url: https://raw.githubusercontent.com/zolutal/pwn_gadget/main/pwn_gadget.py
+            dest: /usr/share/pwn_gadget/pwn_gadget.py
+            mode: "0644"

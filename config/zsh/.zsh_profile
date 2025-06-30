@@ -276,7 +276,7 @@ alias vi="nvim"
 alias :q='exit'
 alias cls='clear'
 alias cat='bat'
-alias gdb='gdb-multiarch -q'
+alias gdb='gdb -q'
 alias nmap='nmap --privileged'
 
 alias clip="(base64 | xargs -0 printf '\e]52;c;%s\007')"
