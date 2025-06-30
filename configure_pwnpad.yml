@@ -94,3 +94,24 @@
         group: users
         groups: wheel
         shell: /usr/bin/zsh
+
+- name: Copy configuration files
+  hosts: lima-pwnpad
+  gather_facts: false
+  vars:
+    pwnpad_vm_user: "pwnpad"
+  tasks:
+    - name: Copy zsh configuration
+      ansible.builtin.copy:
+        src: ./config/zsh/
+        dest: /home/{{ pwnpad_vm_user }}
+        owner: "{{ pwnpad_vm_user }}"
+        group: users
+        mode: "0644"
+    - name: Copy tmux configuration
+      ansible.builtin.copy:
+        src: ./config/tmux/
+        dest: /home/{{ pwnpad_vm_user }}
+        owner: "{{ pwnpad_vm_user }}"
+        group: users
+        mode: "064"

@@ -1,0 +1,297 @@
+## Libraries for qemu ######################################
+export LD_LIBRARY_PATH="/lib:/lib64"
+############################################################
+
+## Python3 #################################################
+ve() {
+    if [[ -z ${VIRTUAL_ENV} ]]; then
+        if [[ ! -d venv ]]; then
+            virtualenv venv
+        fi
+        source venv/bin/activate
+        echo "python:  $(which python3)"
+        echo "pip:     $(which pip3)"
+    else
+        echo "You are already in a virtual environment"
+        return 1
+    fi
+}
+alias de='deactivate'
+
+alias python='python3'
+alias pip='pip3'
+############################################################
+
+## FZF functions ###########################################
+f() {
+    MYSEARCH="*"
+    if [ ! -z $1 ]
+    then
+        MYSEARCH="${1}"
+    fi
+
+    locate "${MYSEARCH}" | fzf -m --ansi --preview '[[ $(file --mime {}) =~ binary ]] && echo $(basename {}) is a binary file \($(file --mime-type {} | cut -d ":" -f 2 | cut -c 2-)\) || (bat --plain --color=always --line-range :200 {})'
+}
+
+_ff() {
+    MYPATH=$1
+    FILE=$(rg ${MYPATH} --files --hidden --no-ignore-vcs -g '!.git/*' 2> /dev/null | fzf --ansi --preview '[[ $(file --mime {}) =~ binary ]] && echo $(basename {}) is a binary file \($(file --mime-type {} | cut -d ":" -f 2 | cut -c 2-)\) || (bat --plain --color=always --line-range :200 {})')
+
+    if [ ! -z $FILE ]
+    then
+        echo ${FILE}
+    fi
+}
+
+ff() {
+    _ff ${MYPATH}
+}
+
+ffo() {
+    nvim "$(_ff ${MYPATH})"
+}
+
+fd() {
+    MYPATH="."
+    if [ ! -z $1 ]
+    then
+        MYPATH="${1}"
+    fi
+
+    DIR="$(find ${MYPATH} -type d -name ".git" -prune -o -type d -print 2> /dev/null | fzf --ansi --preview 'eza -T --level 1 --color always {}')"
+
+    if [ ! -z $DIR ]
+    then
+        cd "${DIR}"
+    fi
+}
+
+ft(){
+    if [ -z ${1} ]
+    then
+        echo "Usage: ${0} <search term> [path]"
+        return
+    fi
+
+    MYPATH="."
+    if [ ! -z $2 ]
+    then
+        MYPATH="${2}"
+    fi
+
+    local match=$(
+      rg --hidden --trim --vimgrep --color=never --line-number "$1" ${MYPATH} 2> /dev/null |
+        fzf --no-multi --delimiter : \
+            --preview "bat --color=always --line-range {2}: {1}"
+      )
+    local file=$(echo "$match" | cut -d':' -f1)
+    if [[ -n $file ]]; then
+        nvim $file +$(echo "$match" | cut -d':' -f2)
+    fi
+}
+
+export FZF_DEFAULT_COMMAND='rg $(pwd) --files --hidden --no-ignore-vcs -g "!.git/*" 2> /dev/null'
+export BAT_THEME='Catppuccin-mocha'
+export FZF_DEFAULT_OPTS=" \
+--color=spinner:#f5e0dc,hl:#f38ba8 \
+--color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
+--color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
+############################################################
+
+## Ngrok ###################################################
+# Publish a port online using ngrok
+publish() {
+    local USAGE() {
+        printf "publish <start|status|stop>\n"
+        printf "publish <set|del> [port]\n"
+    }
+
+    if [ -z ${1} ]; then
+        USAGE
+        return 1
+    fi
+
+    if [ ${1} = "start" ]; then
+        if [ ! -f "$HOME/.ngrok2/ngrok.yml" ]; then
+            printf "Enter auth token: "
+            read token
+            ngrok config add-authtoken $token
+        fi
+
+        ngrok start --none --log=stdout > /dev/null &
+        export NGROK_PID=$!
+        sleep 2
+    elif [ ${1} = "stop" ]; then
+        kill $NGROK_PID
+        unset NGROK_PID
+    elif [ ${1} = "status" ]; then
+        if [ -z $NGROK_PID ]; then
+            return 1
+        fi
+
+        printf "Ports forwarding:\n"
+        curl -s http://localhost:4040/api/tunnels | python3 -c "import json;import sys;conns=json.load(sys.stdin)['tunnels'];[print(f\"{c['config']['addr']} -> {c['public_url'][6:]}\") for c in conns]"
+    elif [ ${1} = "set" ]; then
+        if [ -z ${2} ]; then
+            USAGE
+            return 1
+        fi
+
+        PORT=${2}
+        curl -s -X POST http://localhost:4040/api/tunnels -H 'Content-Type: application/json' -d "{\"addr\": \"${PORT}\", \"proto\": \"tcp\", \"name\": \"${PORT}\"}" > /dev/null
+    elif [ ${1} = "del" ]; then
+        if [ -z ${2} ]; then
+            USAGE
+            return 1
+        fi
+
+        PORT=${2}
+
+        curl -s -X DELETE http://localhost:4040/api/tunnels/${PORT}
+    else
+        USAGE
+        return 1
+    fi
+}
+############################################################
+
+### ASLR Toggle ############################################
+aslr() {
+    if [[ ${1} == off && ${ASLR_DISABLE} != 1 ]]; then
+        zsh -c "export ASLR_DISABLE=1; setarch `uname -m` -R /bin/zsh"
+    elif [[ ${1} == on && ${ASLR_DISABLE} == 1 ]]; then
+        exit
+    fi
+}
+############################################################
+
+### GUI Controls ###########################################
+gui () {
+    subcmd=${1}
+    if [[ ! -f "/usr/sbin/Xvfb" ]]; then
+        printf "GUI only available in extra package\n"
+        return 1
+    fi
+    if [[ ${subcmd} == "start" ]]; then
+        tmux new-session -d -s novnc
+        tmux send-keys -t novnc:1 " Xvfb :0 -screen 0 1920x1080x24" Enter
+        tmux new-window -t novnc
+        tmux send-keys -t novnc:2 " x11vnc -display :0" Enter
+        tmux new-window -t novnc
+        tmux send-keys -t novnc:3 " novnc" Enter
+        tmux new-window -t novnc
+        tmux send-keys -t novnc:4 " sleep 3; DISPLAY=:0 i3" Enter
+        export DISPLAY=":0"
+        printf "http://$(hostname):6080/vnc.html?host=$(hostname)&port=6080\n"
+    elif [[ ${subcmd} == "stop" ]]; then
+        pkill Xvfb
+        tmux kill-session -t novnc
+        export DISPLAY=""
+    else
+        printf "gui <start|stop|left|right|full> [process]\n"
+    fi
+}
+############################################################
+
+### Intel Chroot ###########################################
+intel-pacman () {
+    if [[ $(uname -m) != "aarch64" ]]; then
+        printf "Only available on arm64\n"
+        return 1
+    fi
+
+    CHROOT="/intel"
+    if [[ ! -d $CHROOT ]]; then
+        sudo mkdir -p $CHROOT
+        sudo mkdir -p $CHROOT/proc
+        sudo mkdir -p $CHROOT/sys
+        sudo mkdir -p $CHROOT/dev
+
+        sudo mkdir -p $CHROOT/usr/lib/locale
+        sudo cp /usr/lib/locale/locale-archive $CHROOT/usr/lib/locale/locale-archive
+    fi
+
+    findmnt /intel/proc > /dev/null || sudo mount -t proc proc $CHROOT/proc
+    findmnt /intel/sys > /dev/null || sudo mount -t sysfs sys $CHROOT/sys
+    findmnt /intel/dev > /dev/null || sudo mount -o bind /dev $CHROOT/dev
+
+    sudo umount $CHROOT/sys
+
+    if [[ -z $1 ]]; then
+        PACMAN_OPT="-h"
+    else
+        PACMAN_OPT=$1
+    fi
+
+    if [[ ! -z $2 ]]; then
+        shift
+        sudo pacman64 -O "${PACMAN_OPT}" $CHROOT $@
+    else
+        sudo pacman64 -O "${PACMAN_OPT}" $CHROOT
+    fi
+
+    sudo mount -t sysfs sys $CHROOT/sys
+}
+
+intel-run () {
+    if [[ $(uname -m) != "aarch64" ]]; then
+        printf "Only available on arm64\n"
+        return 1
+    fi
+
+    CHROOT="/intel"
+    if [[ ! -d $CHROOT ]]; then
+        sudo mkdir -p $CHROOT
+        sudo mkdir -p $CHROOT/proc
+        sudo mkdir -p $CHROOT/sys
+        sudo mkdir -p $CHROOT/dev
+
+        sudo mkdir -p $CHROOT/usr/lib/locale
+        sudo cp /usr/lib/locale/locale-archive $CHROOT/usr/lib/locale/locale-archive
+    fi
+
+    findmnt /intel/proc > /dev/null || sudo mount -t proc proc $CHROOT/proc
+    findmnt /intel/sys > /dev/null || sudo mount -t sysfs sys $CHROOT/sys
+    findmnt /intel/dev > /dev/null || sudo mount -o bind /dev $CHROOT/dev
+
+    sudo chroot $CHROOT $@
+}
+
+intel-remove () {
+    if [[ $(uname -m) != "aarch64" ]]; then
+        printf "Only available on arm64\n"
+        return 1
+    fi
+
+    CHROOT="/intel"
+    if [[ -d $CHROOT ]]; then
+        sudo umount $CHROOT/sys $CHROOT/dev $CHROOT/proc
+        sudo rm -rf $CHROOT
+    fi
+}
+############################################################
+
+## Aliases #################################################
+alias vi="nvim"
+alias :q='exit'
+alias cls='clear'
+alias cat='bat'
+alias gdb='gdb-multiarch -q'
+alias nmap='nmap --privileged'
+
+alias clip="(base64 | xargs -0 printf '\e]52;c;%s\007')"
+alias ls='eza --git --icons always'
+alias l='eza -lbF --git'
+alias ll='eza -lbGF --git'
+alias llm='eza -lbGF --git --sort=modified'
+alias la='eza -lbhHigUmuSa --time-style=long-iso --git --color-scale'
+alias lx='eza -lbhHigUmuSa@ --time-style=long-iso --git --color-scale'
+alias lS='eza -1'
+alias lt='eza --tree --level=2'
+############################################################
+
+# Set ls colours ###########################################
+export LS_COLORS="*~=0;38;2;88;91;112:bd=0;38;2;116;199;236;48;2;49;50;68:ca=0:cd=0;38;2;245;194;231;48;2;49;50;68:di=0;38;2;137;180;250:do=0;38;2;17;17;27;48;2;245;194;231:ex=1;38;2;243;139;168:fi=0:ln=0;38;2;245;194;231:mh=0:mi=0;38;2;17;17;27;48;2;243;139;168:no=0:or=0;38;2;17;17;27;48;2;243;139;168:ow=0:pi=0;38;2;17;17;27;48;2;137;180;250:rs=0:sg=0:so=0;38;2;17;17;27;48;2;245;194;231:st=0:su=0:tw=0:*.a=1;38;2;243;139;168:*.c=0;38;2;166;227;161:*.d=0;38;2;166;227;161:*.h=0;38;2;166;227;161:*.m=0;38;2;166;227;161:*.o=0;38;2;88;91;112:*.p=0;38;2;166;227;161:*.r=0;38;2;166;227;161:*.t=0;38;2;166;227;161:*.z=4;38;2;116;199;236:*.7z=4;38;2;116;199;236:*.as=0;38;2;166;227;161:*.bc=0;38;2;88;91;112:*.bz=4;38;2;116;199;236:*.cc=0;38;2;166;227;161:*.cp=0;38;2;166;227;161:*.cr=0;38;2;166;227;161:*.cs=0;38;2;166;227;161:*.di=0;38;2;166;227;161:*.el=0;38;2;166;227;161:*.ex=0;38;2;166;227;161:*.fs=0;38;2;166;227;161:*.go=0;38;2;166;227;161:*.gv=0;38;2;166;227;161:*.gz=4;38;2;116;199;236:*.hh=0;38;2;166;227;161:*.hi=0;38;2;88;91;112:*.hs=0;38;2;166;227;161:*.jl=0;38;2;166;227;161:*.js=0;38;2;166;227;161:*.ko=1;38;2;243;139;168:*.kt=0;38;2;166;227;161:*.la=0;38;2;88;91;112:*.ll=0;38;2;166;227;161:*.lo=0;38;2;88;91;112:*.md=0;38;2;249;226;175:*.ml=0;38;2;166;227;161:*.mn=0;38;2;166;227;161:*.nb=0;38;2;166;227;161:*.pl=0;38;2;166;227;161:*.pm=0;38;2;166;227;161:*.pp=0;38;2;166;227;161:*.ps=0;38;2;243;139;168:*.py=0;38;2;166;227;161:*.rb=0;38;2;166;227;161:*.rm=0;38;2;242;205;205:*.rs=0;38;2;166;227;161:*.sh=0;38;2;166;227;161:*.so=1;38;2;243;139;168:*.td=0;38;2;166;227;161:*.ts=0;38;2;166;227;161:*.ui=0;38;2;249;226;175:*.vb=0;38;2;166;227;161:*.wv=0;38;2;242;205;205:*.xz=4;38;2;116;199;236:*.aif=0;38;2;242;205;205:*.ape=0;38;2;242;205;205:*.apk=4;38;2;116;199;236:*.arj=4;38;2;116;199;236:*.asa=0;38;2;166;227;161:*.aux=0;38;2;88;91;112:*.avi=0;38;2;242;205;205:*.awk=0;38;2;166;227;161:*.bag=4;38;2;116;199;236:*.bak=0;38;2;88;91;112:*.bat=1;38;2;243;139;168:*.bbl=0;38;2;88;91;112:*.bcf=0;38;2;88;91;112:*.bib=0;38;2;249;226;175:*.bin=4;38;2;116;199;236:*.blg=0;38;2;88;91;112:*.bmp=0;38;2;242;205;205:*.bsh=0;38;2;166;227;161:*.bst=0;38;2;249;226;175:*.bz2=4;38;2;116;199;236:*.c++=0;38;2;166;227;161:*.cfg=0;38;2;249;226;175:*.cgi=0;38;2;166;227;161:*.clj=0;38;2;166;227;161:*.com=1;38;2;243;139;168:*.cpp=0;38;2;166;227;161:*.css=0;38;2;166;227;161:*.csv=0;38;2;249;226;175:*.csx=0;38;2;166;227;161:*.cxx=0;38;2;166;227;161:*.deb=4;38;2;116;199;236:*.def=0;38;2;166;227;161:*.dll=1;38;2;243;139;168:*.dmg=4;38;2;116;199;236:*.doc=0;38;2;243;139;168:*.dot=0;38;2;166;227;161:*.dox=0;38;2;148;226;213:*.dpr=0;38;2;166;227;161:*.elc=0;38;2;166;227;161:*.elm=0;38;2;166;227;161:*.epp=0;38;2;166;227;161:*.eps=0;38;2;242;205;205:*.erl=0;38;2;166;227;161:*.exe=1;38;2;243;139;168:*.exs=0;38;2;166;227;161:*.fls=0;38;2;88;91;112:*.flv=0;38;2;242;205;205:*.fnt=0;38;2;242;205;205:*.fon=0;38;2;242;205;205:*.fsi=0;38;2;166;227;161:*.fsx=0;38;2;166;227;161:*.gif=0;38;2;242;205;205:*.git=0;38;2;88;91;112:*.gvy=0;38;2;166;227;161:*.h++=0;38;2;166;227;161:*.hpp=0;38;2;166;227;161:*.htc=0;38;2;166;227;161:*.htm=0;38;2;249;226;175:*.hxx=0;38;2;166;227;161:*.ico=0;38;2;242;205;205:*.ics=0;38;2;243;139;168:*.idx=0;38;2;88;91;112:*.ilg=0;38;2;88;91;112:*.img=4;38;2;116;199;236:*.inc=0;38;2;166;227;161:*.ind=0;38;2;88;91;112:*.ini=0;38;2;249;226;175:*.inl=0;38;2;166;227;161:*.ipp=0;38;2;166;227;161:*.iso=4;38;2;116;199;236:*.jar=4;38;2;116;199;236:*.jpg=0;38;2;242;205;205:*.kex=0;38;2;243;139;168:*.kts=0;38;2;166;227;161:*.log=0;38;2;88;91;112:*.ltx=0;38;2;166;227;161:*.lua=0;38;2;166;227;161:*.m3u=0;38;2;242;205;205:*.m4a=0;38;2;242;205;205:*.m4v=0;38;2;242;205;205:*.mid=0;38;2;242;205;205:*.mir=0;38;2;166;227;161:*.mkv=0;38;2;242;205;205:*.mli=0;38;2;166;227;161:*.mov=0;38;2;242;205;205:*.mp3=0;38;2;242;205;205:*.mp4=0;38;2;242;205;205:*.mpg=0;38;2;242;205;205:*.nix=0;38;2;249;226;175:*.odp=0;38;2;243;139;168:*.ods=0;38;2;243;139;168:*.odt=0;38;2;243;139;168:*.ogg=0;38;2;242;205;205:*.org=0;38;2;249;226;175:*.otf=0;38;2;242;205;205:*.out=0;38;2;88;91;112:*.pas=0;38;2;166;227;161:*.pbm=0;38;2;242;205;205:*.pdf=0;38;2;243;139;168:*.pgm=0;38;2;242;205;205:*.php=0;38;2;166;227;161:*.pid=0;38;2;88;91;112:*.pkg=4;38;2;116;199;236:*.png=0;38;2;242;205;205:*.pod=0;38;2;166;227;161:*.ppm=0;38;2;242;205;205:*.pps=0;38;2;243;139;168:*.ppt=0;38;2;243;139;168:*.pro=0;38;2;148;226;213:*.ps1=0;38;2;166;227;161:*.psd=0;38;2;242;205;205:*.pyc=0;38;2;88;91;112:*.pyd=0;38;2;88;91;112:*.pyo=0;38;2;88;91;112:*.rar=4;38;2;116;199;236:*.rpm=4;38;2;116;199;236:*.rst=0;38;2;249;226;175:*.rtf=0;38;2;243;139;168:*.sbt=0;38;2;166;227;161:*.sql=0;38;2;166;227;161:*.sty=0;38;2;88;91;112:*.svg=0;38;2;242;205;205:*.swf=0;38;2;242;205;205:*.swp=0;38;2;88;91;112:*.sxi=0;38;2;243;139;168:*.sxw=0;38;2;243;139;168:*.tar=4;38;2;116;199;236:*.tbz=4;38;2;116;199;236:*.tcl=0;38;2;166;227;161:*.tex=0;38;2;166;227;161:*.tgz=4;38;2;116;199;236:*.tif=0;38;2;242;205;205:*.tml=0;38;2;249;226;175:*.tmp=0;38;2;88;91;112:*.toc=0;38;2;88;91;112:*.tsx=0;38;2;166;227;161:*.ttf=0;38;2;242;205;205:*.txt=0;38;2;249;226;175:*.vcd=4;38;2;116;199;236:*.vim=0;38;2;166;227;161:*.vob=0;38;2;242;205;205:*.wav=0;38;2;242;205;205:*.wma=0;38;2;242;205;205:*.wmv=0;38;2;242;205;205:*.xcf=0;38;2;242;205;205:*.xlr=0;38;2;243;139;168:*.xls=0;38;2;243;139;168:*.xml=0;38;2;249;226;175:*.xmp=0;38;2;249;226;175:*.yml=0;38;2;249;226;175:*.zip=4;38;2;116;199;236:*.zsh=0;38;2;166;227;161:*.zst=4;38;2;116;199;236:*TODO=1:*hgrc=0;38;2;148;226;213:*.bash=0;38;2;166;227;161:*.conf=0;38;2;249;226;175:*.dart=0;38;2;166;227;161:*.diff=0;38;2;166;227;161:*.docx=0;38;2;243;139;168:*.epub=0;38;2;243;139;168:*.fish=0;38;2;166;227;161:*.flac=0;38;2;242;205;205:*.h264=0;38;2;242;205;205:*.hgrc=0;38;2;148;226;213:*.html=0;38;2;249;226;175:*.java=0;38;2;166;227;161:*.jpeg=0;38;2;242;205;205:*.json=0;38;2;249;226;175:*.less=0;38;2;166;227;161:*.lisp=0;38;2;166;227;161:*.lock=0;38;2;88;91;112:*.make=0;38;2;148;226;213:*.mpeg=0;38;2;242;205;205:*.opus=0;38;2;242;205;205:*.orig=0;38;2;88;91;112:*.pptx=0;38;2;243;139;168:*.psd1=0;38;2;166;227;161:*.psm1=0;38;2;166;227;161:*.purs=0;38;2;166;227;161:*.rlib=0;38;2;88;91;112:*.sass=0;38;2;166;227;161:*.scss=0;38;2;166;227;161:*.tbz2=4;38;2;116;199;236:*.tiff=0;38;2;242;205;205:*.toml=0;38;2;249;226;175:*.webm=0;38;2;242;205;205:*.webp=0;38;2;242;205;205:*.woff=0;38;2;242;205;205:*.xbps=4;38;2;116;199;236:*.xlsx=0;38;2;243;139;168:*.yaml=0;38;2;249;226;175:*.cabal=0;38;2;166;227;161:*.cache=0;38;2;88;91;112:*.class=0;38;2;88;91;112:*.cmake=0;38;2;148;226;213:*.dyn_o=0;38;2;88;91;112:*.ipynb=0;38;2;166;227;161:*.mdown=0;38;2;249;226;175:*.patch=0;38;2;166;227;161:*.scala=0;38;2;166;227;161:*.shtml=0;38;2;249;226;175:*.swift=0;38;2;166;227;161:*.toast=4;38;2;116;199;236:*.xhtml=0;38;2;249;226;175:*README=0;38;2;30;30;46;48;2;249;226;175:*passwd=0;38;2;249;226;175:*shadow=0;38;2;249;226;175:*.config=0;38;2;249;226;175:*.dyn_hi=0;38;2;88;91;112:*.flake8=0;38;2;148;226;213:*.gradle=0;38;2;166;227;161:*.groovy=0;38;2;166;227;161:*.ignore=0;38;2;148;226;213:*.matlab=0;38;2;166;227;161:*COPYING=0;38;2;147;153;178:*INSTALL=0;38;2;30;30;46;48;2;249;226;175:*LICENSE=0;38;2;147;153;178:*TODO.md=1:*.desktop=0;38;2;249;226;175:*.gemspec=0;38;2;148;226;213:*Doxyfile=0;38;2;148;226;213:*Makefile=0;38;2;148;226;213:*TODO.txt=1:*setup.py=0;38;2;148;226;213:*.DS_Store=0;38;2;88;91;112:*.cmake.in=0;38;2;148;226;213:*.fdignore=0;38;2;148;226;213:*.kdevelop=0;38;2;148;226;213:*.markdown=0;38;2;249;226;175:*.rgignore=0;38;2;148;226;213:*COPYRIGHT=0;38;2;147;153;178:*README.md=0;38;2;30;30;46;48;2;249;226;175:*configure=0;38;2;148;226;213:*.gitconfig=0;38;2;148;226;213:*.gitignore=0;38;2;148;226;213:*.localized=0;38;2;88;91;112:*.scons_opt=0;38;2;88;91;112:*CODEOWNERS=0;38;2;148;226;213:*Dockerfile=0;38;2;249;226;175:*INSTALL.md=0;38;2;30;30;46;48;2;249;226;175:*README.txt=0;38;2;30;30;46;48;2;249;226;175:*SConscript=0;38;2;148;226;213:*SConstruct=0;38;2;148;226;213:*.gitmodules=0;38;2;148;226;213:*.synctex.gz=0;38;2;88;91;112:*.travis.yml=0;38;2;166;227;161:*INSTALL.txt=0;38;2;30;30;46;48;2;249;226;175:*LICENSE-MIT=0;38;2;147;153;178:*MANIFEST.in=0;38;2;148;226;213:*Makefile.am=0;38;2;148;226;213:*Makefile.in=0;38;2;88;91;112:*.applescript=0;38;2;166;227;161:*.fdb_latexmk=0;38;2;88;91;112:*CONTRIBUTORS=0;38;2;30;30;46;48;2;249;226;175:*appveyor.yml=0;38;2;166;227;161:*configure.ac=0;38;2;148;226;213:*.clang-format=0;38;2;148;226;213:*.gitattributes=0;38;2;148;226;213:*.gitlab-ci.yml=0;38;2;166;227;161:*CMakeCache.txt=0;38;2;88;91;112:*CMakeLists.txt=0;38;2;148;226;213:*LICENSE-APACHE=0;38;2;147;153;178:*CONTRIBUTORS.md=0;38;2;30;30;46;48;2;249;226;175:*.sconsign.dblite=0;38;2;88;91;112:*CONTRIBUTORS.txt=0;38;2;30;30;46;48;2;249;226;175:*requirements.txt=0;38;2;148;226;213:*package-lock.json=0;38;2;88;91;112:*.CFUserTextEncoding=0;38;2;88;91;112"
+############################################################
+
+# vim: ft=bash
