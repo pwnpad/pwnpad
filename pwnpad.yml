@@ -184,7 +184,7 @@ minimumLimaVersion: 1.1.0
 user:
   # User name. An explicitly specified username is not validated by Lima.
   # 🟢 Builtin default: same as the host username, if it is a valid Linux username, otherwise "lima"
-  name: null
+  name: pwnpad
   # Full name or display name of the user.
   # 🟢 Builtin default: user information from the host
   comment: null
@@ -194,7 +194,7 @@ user:
   # Home directory inside the VM, NOT the mounted home directory of the host.
   # It can use the following template variables: {{.Name}}, {{.Hostname}}, {{.UID}}, {{.User}}, and {{.Param.Key}}.
   # 🟢 Builtin default: "/home/{{.User}}.linux"
-  home: null
+  home: "/home/{{.User}}"
   # Shell. Needs to be an absolute path.
   # 🟢 Builtin default: "/bin/bash"
   shell: null

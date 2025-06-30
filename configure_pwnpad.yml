@@ -65,6 +65,7 @@
         name:
           - base-devel
           - zsh
+        update_cache: yes
 
 - name: Setup BlackArch repository via strap.sh
   hosts: lima-pwnpad
@@ -73,5 +74,26 @@
   tasks:
     - name: Execute BlackArch strap.sh script
       ansible.builtin.shell: curl -fsSL https://raw.githubusercontent.com/pwnpad/blackarch-mirror/master/strap.sh | sh
-      args:
-        warn: false
+      changed_when: true
+
+- name: Setup users
+  hosts: lima-pwnpad
+  gather_facts: false
+  become: true
+  vars:
+    pwnpad_vm_user: "pwnpad"
+  tasks:
+    - name: Allow wheel group to have passwordless sudo
+      ansible.builtin.replace:
+        path: /etc/sudoers
+        regexp: '^# %wheel\s+ALL=\(ALL:ALL\)\s+NOPASSWD:\s+ALL'
+        replace: "%wheel ALL=(ALL:ALL) NOPASSWD: ALL"
+
+    - name: Modify {{ pwnpad_vm_user }} user
+      ansible.builtin.user:
+        name: "{{ pwnpad_vm_user }}"
+        state: present
+        create_home: true
+        group: users
+        groups: wheel
+        shell: /usr/bin/zsh
