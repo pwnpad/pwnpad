@@ -36,12 +36,12 @@
       ansible.builtin.debug:
         msg: "Unsupported architecture {{ ansible_architecture }} detected"
 
-- name: Setup pwnpad repositories
+- name: Setup extra repositories
   hosts: lima-pwnpad
   gather_facts: false
   become: true
   tasks:
-    - name: Add pwnpad repositories to pacman.conf
+    - name: Setup pwnpad repositories
       ansible.builtin.blockinfile:
         path: /etc/pacman.conf
         block: |
@@ -54,27 +54,24 @@
           Server = https://github.com/pwnpad/pwnpad-large-repo/releases/download/$arch
         insertafter: EOF
         marker: ""
+    - name: Setup blackarch repository
+      ansible.builtin.shell: curl -fsSL https://raw.githubusercontent.com/pwnpad/blackarch-mirror/master/strap.sh | sh
+      changed_when: true
 
 - name: Setup base packages
   hosts: lima-pwnpad
   gather_facts: false
   become: true
   tasks:
+    - name: Upgrade all packages
+      ansible.builtin.pacman:
+        update_cache: yes
+        upgrade: yes
     - name: Install base packages
       ansible.builtin.pacman:
         name:
           - base-devel
           - zsh
-        update_cache: yes
-
-- name: Setup BlackArch repository via strap.sh
-  hosts: lima-pwnpad
-  gather_facts: false
-  become: true
-  tasks:
-    - name: Execute BlackArch strap.sh script
-      ansible.builtin.shell: curl -fsSL https://raw.githubusercontent.com/pwnpad/blackarch-mirror/master/strap.sh | sh
-      changed_when: true
 
 - name: Setup users
   hosts: lima-pwnpad
