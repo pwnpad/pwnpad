@@ -1,0 +1,4 @@
+all:
+  hosts:
+    lima-pwnpad:
+      ansible_ssh_common_args: "-F {{ lookup('env', 'HOME') }}/.lima/pwnpad/ssh.config"

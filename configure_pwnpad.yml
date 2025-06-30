@@ -1,0 +1,77 @@
+---
+- name: Setup base pacman respositories
+  hosts: lima-pwnpad
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Setup repositories for aarch64 architecture
+      when: ansible_architecture == 'aarch64'
+      ansible.builtin.copy:
+        dest: /etc/pacman.d/mirrorlist
+        content: |
+          Server = http://tw2.mirror.archlinuxarm.org/$arch/$repo
+          Server = https://ca.us.mirror.archlinuxarm.org/$arch/$repo
+        mode: "0644"
+
+    - name: Setup repositories for x86_64 architecture
+      when: ansible_architecture == 'x86_64'
+      block:
+        - name: Uncomment multilib in pacman.conf
+          ansible.builtin.replace:
+            path: /etc/pacman.conf
+            regexp: '(?m)^#\[multilib\]\n#Include = (.+)$'
+            replace: '[multilib]\nInclude = \1'
+
+        - name: Set mirrorlist for x86_64
+          ansible.builtin.copy:
+            dest: /etc/pacman.d/mirrorlist
+            content: |
+              Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
+              Server = https://download.nus.edu.sg/mirror/archlinux/$repo/os/$arch
+              Server = https://mirror.0x.sg/archlinux/$repo/os/$arch
+            mode: "0644"
+
+    - name: Print unknown architecture message
+      when: ansible_architecture != 'aarch64' and ansible_architecture != 'x86_64'
+      ansible.builtin.debug:
+        msg: "Unsupported architecture {{ ansible_architecture }} detected"
+
+- name: Setup pwnpad repositories
+  hosts: lima-pwnpad
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Add pwnpad repositories to pacman.conf
+      ansible.builtin.blockinfile:
+        path: /etc/pacman.conf
+        block: |
+          [pwnpad]
+          SigLevel = Optional TrustedOnly
+          Server = https://raw.githubusercontent.com/pwnpad/pwnpad-repo/master/$arch
+
+          [pwnpad-large]
+          SigLevel = Optional TrustedOnly
+          Server = https://github.com/pwnpad/pwnpad-large-repo/releases/download/$arch
+        insertafter: EOF
+        marker: ""
+
+- name: Setup base packages
+  hosts: lima-pwnpad
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Install base packages
+      ansible.builtin.pacman:
+        name:
+          - base-devel
+          - zsh
+
+- name: Setup BlackArch repository via strap.sh
+  hosts: lima-pwnpad
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Execute BlackArch strap.sh script
+      ansible.builtin.shell: curl -fsSL https://raw.githubusercontent.com/pwnpad/blackarch-mirror/master/strap.sh | sh
+      args:
+        warn: false
