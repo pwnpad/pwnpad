@@ -164,7 +164,7 @@
 
         - name: Install from yay
           become: false
-          ansible.builtin.command: yay --noconfirm --noprogressbar --needed --sync autojump
+          ansible.builtin.command: yay --noconfirm --noprogressbar --needed --sync --refresh autojump
 
     - name: Install infosec tools
       block:
@@ -197,11 +197,6 @@
         - name: Install from pipx
           community.general.pipx:
             name: git+https://github.com/RsaCtfTool/RsaCtfTool
-
-        - name: Install from yay
-          community.general.pacman:
-            executable: yay
-            name: sliver
 
     - name: Install gdb and its plugins
       block:
