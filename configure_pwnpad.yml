@@ -281,6 +281,19 @@
         state: link
         force: true
 
+    - name: Configure yafu
+      block:
+      - name: Get number of CPU threads
+        ansible.builtin.command: nproc --all
+        register: num_threads_output
+        changed_when: false
+
+      - name: Update yafu threads
+        ansible.builtin.replace:
+          path: /etc/yafu/yafu.ini
+          regexp: '^% threads=1'
+          replace: 'threads={{ num_threads_output.stdout }}'
+
     - name: Set nmap capabilities
       ansible.builtin.command: setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap
       changed_when: true
