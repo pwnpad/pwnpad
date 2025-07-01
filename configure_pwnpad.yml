@@ -205,8 +205,8 @@
             name:
               - gdb
               - pwnpad/pwndbg
-              - pwnpad/rz-ghidra
               - python-rzpipe
+              - rz-ghidra
 
         - name: Install decomp2dbg
           ansible.builtin.pip:
