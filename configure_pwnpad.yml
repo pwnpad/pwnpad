@@ -135,6 +135,7 @@
               - 7zip
               - bat
               - exa
+              - fakeroot
               - fzf
               - gcc
               - iproute2
@@ -272,7 +273,6 @@
             mode: "0644"
 
     - name: Link exiftool
-      tags: test
       ansible.builtin.file:
         src: /usr/bin/vendor_perl/exiftool
         dest: /home/{{ pwnpad_vm_user }}/.local/bin/exiftool
@@ -349,3 +349,61 @@
     - name: Run any extra downloads and setups
       ansible.builtin.command: nvim --headless -c "norm i" -c 'execute "sleep 5" | qall' tmp
       changed_when: true
+
+- name: Setup zsh
+  hosts: lima-pwnpad
+  vars:
+    pwnpad_vm_user: "pwnpad"
+  tasks:
+    - name: Create .hushlogin file
+      ansible.builtin.file:
+        path: "/home/{{ pwnpad_vm_user }}/.hushlogin"
+        mode: "0644"
+        state: touch
+        owner: "{{ pwnpad_vm_user }}"
+        group: users
+
+    - name: Clone zgenom repository
+      ansible.builtin.git:
+        repo: "https://github.com/jandamm/zgenom.git"
+        dest: "/home/{{ pwnpad_vm_user }}/.zgenom"
+        depth: 1
+        force: yes
+
+    - name: Run gitstatus install script
+      ansible.builtin.shell: |
+        zsh -c "source /home/{{ pwnpad_vm_user }}/.zshrc && /home/{{ pwnpad_vm_user }}/.zgenom/sources/romkatv/powerlevel10k/___/gitstatus/install"
+
+    - name: Create bat and f-sy-h config directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ pwnpad_vm_user }}"
+        group: users
+        mode: "0755"
+      loop:
+        - "/home/{{ pwnpad_vm_user }}/.config/bat/themes"
+        - "/home/{{ pwnpad_vm_user }}/.config/f-sy-h"
+
+    - name: Download Catppuccin Mocha theme for bat
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Mocha.tmTheme
+        dest: "/home/{{ pwnpad_vm_user }}/.config/bat/themes/Catppuccin-mocha.tmTheme"
+        owner: "{{ pwnpad_vm_user }}"
+        group: users
+        mode: "0644"
+
+    - name: Build bat cache
+      ansible.builtin.command: bat cache --build
+
+    - name: Download catppuccin-mocha.ini for f-sy-h
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-mocha.ini
+        dest: "/home/{{ pwnpad_vm_user }}/.config/f-sy-h/catppuccin-mocha.ini"
+        owner: "{{ pwnpad_vm_user }}"
+        group: users
+        mode: "0644"
+
+    - name: Set fast-theme
+      ansible.builtin.shell: |
+        zsh -c "source /home/{{ pwnpad_vm_user }}/.zshrc && fast-theme CONFIG:catppuccin-mocha"
