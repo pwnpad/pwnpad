@@ -161,11 +161,10 @@
               - unzip
               - wget
               - yay
+
         - name: Install from yay
-          community.general.pacman:
-            executable: yay
-            name:
-              - autojump
+          become: false
+          ansible.builtin.command: yay --noconfirm --noprogressbar --needed --sync autojump
 
     - name: Install infosec tools
       block:
