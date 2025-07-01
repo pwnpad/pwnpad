@@ -134,12 +134,13 @@
             name:
               - 7zip
               - bat
-              - gcc
               - exa
               - fzf
+              - gcc
               - iproute2
               - iputils
               - less
+              - make
               - mlocate
               - neovim
               - net-tools
@@ -313,7 +314,6 @@
 
 - name: Setup tmux
   hosts: lima-pwnpad
-  tags: setup_tmux
   vars:
     pwnpad_vm_user: "pwnpad"
   tasks:
@@ -328,4 +328,24 @@
       ansible.builtin.command: /home/{{ pwnpad_vm_user }}/.tmux/plugins/tpm/scripts/install_plugins.sh
       args:
         chdir: "/home/{{ pwnpad_vm_user }}/.tmux/plugins/tpm"
+      changed_when: true
+
+- name: Setup Neovim
+  hosts: lima-pwnpad
+  vars:
+    pwnpad_vm_user: "pwnpad"
+  tasks:
+    - name: Clone neovim config
+      ansible.builtin.git:
+        repo: "https://github.com/PlatyPew/nvim.git"
+        dest: "/home/{{ pwnpad_vm_user }}/.config/nvim"
+        depth: 1
+        force: yes
+
+    - name: Download all plugins
+      ansible.builtin.command: nvim --headless -c "lua require('lazy').restore({wait = true})" -c "qa"
+      changed_when: true
+
+    - name: Run any extra downloads and setups
+      ansible.builtin.command: nvim --headless -c "norm i" -c 'execute "sleep 5" | qall' tmp
       changed_when: true
