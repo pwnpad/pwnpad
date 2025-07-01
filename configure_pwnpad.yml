@@ -284,8 +284,15 @@
       ansible.builtin.command: setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap
       changed_when: true
 
-    - name: Setup authorized_keys
-      become: false
+    - name: Installing qemu user on arm
+      when: ansible_architecture == 'aarch64'
+      ansible.builtin.pacman:
+        name:
+          - pwnpad/qemu-user-x64
+
+- name: Setup authorized_keys
+  block:
+    - name: Create .ssh directory
       ansible.builtin.file:
         path: "/home/{{ pwnpad_vm_user }}/.ssh"
         state: directory
@@ -294,16 +301,9 @@
         mode: "0700"
 
     - name: Create authorized_keys file
-      become: false
       ansible.builtin.file:
         path: "/home/{{ pwnpad_vm_user }}/.ssh/authorized_keys"
         state: touch
         owner: "{{ pwnpad_vm_user }}"
         group: users
         mode: "0600"
-
-    - name: Installing qemu user on arm
-      when: ansible_architecture == 'aarch64'
-      ansible.builtin.pacman:
-        name:
-          - pwnpad/qemu-user-x64
