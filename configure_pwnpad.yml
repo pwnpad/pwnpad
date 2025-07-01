@@ -265,15 +265,6 @@
               e ghidra.verbose=false
             mode: "0644"
 
-    - name: Link exiftool
-      ansible.builtin.file:
-        src: /usr/bin/vendor_perl/exiftool
-        dest: /home/{{ pwnpad_vm_user }}/.local/bin/exiftool
-        owner: "{{ pwnpad_vm_user }}"
-        group: users
-        state: link
-        force: true
-
     - name: Set nmap capabilities
       ansible.builtin.command: setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap
       changed_when: true
@@ -349,6 +340,7 @@
     pwnpad_vm_user: "pwnpad"
   tasks:
     - name: Create .hushlogin file
+      become: true
       ansible.builtin.file:
         path: "/home/{{ pwnpad_vm_user }}/.hushlogin"
         mode: "0644"
@@ -368,6 +360,7 @@
         zsh -c "source /home/{{ pwnpad_vm_user }}/.zshrc && /home/{{ pwnpad_vm_user }}/.zgenom/sources/romkatv/powerlevel10k/___/gitstatus/install"
 
     - name: Create bat and f-sy-h config directories
+      become: true
       ansible.builtin.file:
         path: "{{ item }}"
         state: directory
@@ -379,6 +372,7 @@
         - "/home/{{ pwnpad_vm_user }}/.config/f-sy-h"
 
     - name: Download Catppuccin Mocha theme for bat
+      become: true
       ansible.builtin.get_url:
         url: https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Mocha.tmTheme
         dest: "/home/{{ pwnpad_vm_user }}/.config/bat/themes/Catppuccin-mocha.tmTheme"
@@ -390,6 +384,7 @@
       ansible.builtin.command: bat cache --build
 
     - name: Download catppuccin-mocha.ini for f-sy-h
+      become: true
       ansible.builtin.get_url:
         url: https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-mocha.ini
         dest: "/home/{{ pwnpad_vm_user }}/.config/f-sy-h/catppuccin-mocha.ini"
