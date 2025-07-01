@@ -204,7 +204,7 @@
           ansible.builtin.pacman:
             name:
               - gdb
-              - pwndbg
+              - pwnpad/pwndbg
               - pwnpad/rz-ghidra
               - python-rzpipe
 
@@ -274,6 +274,29 @@
       ansible.builtin.pacman:
         name:
           - pwnpad/qemu-user-x64
+
+- name: Install gcc and glibc libraries
+  hosts: lima-pwnpad
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Install libraries
+      when: ansible_architecture == 'x86_64'
+      ansible.builtin.pacman:
+        name:
+          - lib32-glibc
+          - lib32-gcc-libs
+          - glibc
+          - gcc-libs
+
+    - name: Install libraries for emulation
+      when: ansible_architecture == 'aarch64'
+      ansible.builtin.pacman:
+        name:
+          - lib32-glibc
+          - lib32-gcc-libs
+          - lib64-glibc
+          - lib64-gcc-libs
 
 - name: Setup authorized_keys
   hosts: lima-pwnpad
