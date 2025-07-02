@@ -1,6 +1,7 @@
 ---
 - name: Setup base pacman respositories
   hosts: lima-pwnpad
+  tags: setup_base_repos
   gather_facts: true
   become: true
   tasks:
@@ -38,6 +39,7 @@
 
 - name: Setup extra repositories
   hosts: lima-pwnpad
+  tags: setup_extra_repos
   gather_facts: false
   become: true
   tasks:
@@ -61,22 +63,24 @@
 
 - name: Setup base packages
   hosts: lima-pwnpad
+  tags: setup_base_packages
   gather_facts: false
   become: true
   tasks:
     - name: Upgrade all packages
-      ansible.builtin.pacman:
+      community.general.pacman:
         update_cache: yes
         upgrade: yes
 
     - name: Install base packages
-      ansible.builtin.pacman:
+      community.general.pacman:
         name:
           - base-devel
           - zsh
 
 - name: Setup users
   hosts: lima-pwnpad
+  tags: setup_users
   gather_facts: false
   become: true
   vars:
@@ -97,31 +101,9 @@
         groups: wheel
         shell: /usr/bin/zsh
 
-- name: Copy configuration files
-  hosts: lima-pwnpad
-  gather_facts: false
-  become: true
-  vars:
-    pwnpad_vm_user: "pwnpad"
-  tasks:
-    - name: Copy zsh configuration
-      ansible.builtin.copy:
-        src: ./config/zsh/
-        dest: /home/{{ pwnpad_vm_user }}
-        owner: "{{ pwnpad_vm_user }}"
-        group: users
-        mode: "0644"
-
-    - name: Copy tmux configuration
-      ansible.builtin.copy:
-        src: ./config/tmux/
-        dest: /home/{{ pwnpad_vm_user }}
-        owner: "{{ pwnpad_vm_user }}"
-        group: users
-        mode: "0644"
-
 - name: Installing tools
   hosts: lima-pwnpad
+  tags: install_tools
   gather_facts: false
   become: true
   vars:
@@ -130,7 +112,7 @@
     - name: Installing core tools
       block:
         - name: Install from pacman
-          ansible.builtin.pacman:
+          community.general.pacman:
             name:
               - 7zip
               - bat
@@ -169,7 +151,7 @@
     - name: Install infosec tools
       block:
         - name: Install from pacman
-          ansible.builtin.pacman:
+          community.general.pacman:
             name:
               - binwalk
               - dalfox
@@ -201,7 +183,7 @@
     - name: Install gdb and its plugins
       block:
         - name: Install gdb multiarch pwndbg and rz-ghidra
-          ansible.builtin.pacman:
+          community.general.pacman:
             name:
               - gdb
               - pwnpad/pwndbg
@@ -271,18 +253,19 @@
 
     - name: Installing qemu user on arm
       when: ansible_architecture == 'aarch64'
-      ansible.builtin.pacman:
+      community.general.pacman:
         name:
           - pwnpad/qemu-user-x64
 
 - name: Install gcc and glibc libraries
   hosts: lima-pwnpad
+  tags: install_gcc_libraries
   gather_facts: true
   become: true
   tasks:
     - name: Install libraries
       when: ansible_architecture == 'x86_64'
-      ansible.builtin.pacman:
+      community.general.pacman:
         name:
           - lib32-glibc
           - lib32-gcc-libs
@@ -291,7 +274,7 @@
 
     - name: Install libraries for emulation
       when: ansible_architecture == 'aarch64'
-      ansible.builtin.pacman:
+      community.general.pacman:
         name:
           - lib32-glibc
           - lib32-gcc-libs
@@ -300,6 +283,7 @@
 
 - name: Setup authorized_keys
   hosts: lima-pwnpad
+  tags: setup_ssh_authorized_keys
   vars:
     pwnpad_vm_user: "pwnpad"
   tasks:
@@ -321,9 +305,18 @@
 
 - name: Setup tmux
   hosts: lima-pwnpad
+  tags: setup_tmux
   vars:
     pwnpad_vm_user: "pwnpad"
   tasks:
+    - name: Copy tmux configuration
+      ansible.builtin.copy:
+        src: ./config/tmux/
+        dest: /home/{{ pwnpad_vm_user }}
+        owner: "{{ pwnpad_vm_user }}"
+        group: users
+        mode: "0644"
+
     - name: Clone tmux plugins
       ansible.builtin.git:
         repo: "https://github.com/tmux-plugins/tpm"
@@ -339,6 +332,7 @@
 
 - name: Setup Neovim
   hosts: lima-pwnpad
+  tags: setup_neovim
   vars:
     pwnpad_vm_user: "pwnpad"
   tasks:
@@ -359,9 +353,18 @@
 
 - name: Setup zsh
   hosts: lima-pwnpad
+  tags: setup_zsh
   vars:
     pwnpad_vm_user: "pwnpad"
   tasks:
+    - name: Copy zsh configuration
+      ansible.builtin.copy:
+        src: ./config/zsh/
+        dest: /home/{{ pwnpad_vm_user }}
+        owner: "{{ pwnpad_vm_user }}"
+        group: users
+        mode: "0644"
+
     - name: Create .hushlogin file
       become: true
       ansible.builtin.file:
