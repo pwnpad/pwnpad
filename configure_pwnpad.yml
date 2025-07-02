@@ -558,3 +558,36 @@
     - name: Set fast-theme
       ansible.builtin.shell: |
         zsh -c "source /home/{{ pwnpad_vm_user }}/.zshrc && fast-theme CONFIG:catppuccin-mocha"
+
+- name: Perform cleanup
+  hosts: lima-pwnpad
+  tags: cleanup
+  gather_facts: false
+  become: true
+  vars:
+    pwnpad_vm_user: "pwnpad"
+  tasks:
+    - name: Clean pacman cache
+      ansible.builtin.command: pacman -Scc --noconfirm
+
+    - name: Remove specific files and directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "/home/{{ pwnpad_vm_user }}/.zshrc.pre-oh-my-zsh"
+        - "/home/{{ pwnpad_vm_user }}/.zsh_history"
+        - "/home/{{ pwnpad_vm_user }}/.bash_profile"
+        - "/home/{{ pwnpad_vm_user }}/.wget-hsts"
+        - "/home/{{ pwnpad_vm_user }}/.bash_logout"
+        - "/home/{{ pwnpad_vm_user }}/.bundle"
+        - "/var/cache"
+        - "/home/{{ pwnpad_vm_user }}/.cache/pip"
+        - "/home/{{ pwnpad_vm_user }}/.cache/yay"
+        - "/home/{{ pwnpad_vm_user }}/.npm"
+        - "/var/log"
+        - "/home/{{ pwnpad_vm_user }}/.zcompdump-buildkitsandbox*"
+
+    - name: Update mlocate database
+      ansible.builtin.command: updatedb
+      changed_when: true
