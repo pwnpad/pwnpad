@@ -310,6 +310,7 @@
     pwnpad_vm_user: "pwnpad"
   tasks:
     - name: Copy tmux configuration
+      become: true
       ansible.builtin.copy:
         src: ./config/tmux/
         dest: /home/{{ pwnpad_vm_user }}
@@ -358,6 +359,7 @@
     pwnpad_vm_user: "pwnpad"
   tasks:
     - name: Copy zsh configuration
+      become: true
       ansible.builtin.copy:
         src: ./config/zsh/
         dest: /home/{{ pwnpad_vm_user }}
