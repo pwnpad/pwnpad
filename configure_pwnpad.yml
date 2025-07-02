@@ -165,32 +165,81 @@
         - name: Install from pacman
           community.general.pacman:
             name:
+              - arp-scan
               - binwalk
+              - commix
+              - creddump
+              - crunch
               - dalfox
+              - dnsenum
+              - dnsrecon
+              - enum4linux-ng
+              - evil-winrm
               - exploitdb
               - extra/sqlmap
               - foremost
+              - fping
               - gnu-netcat
               - gobuster
+              - hashcat-utils
               - hexedit
+              - hping
               - jadx
+              - ldapenum
               - ltrace
               - metasploit
+              - mimikatz
+              - nbtscan
+              - ncrack
+              - netsed
+              - netsniff-ng
+              - ngrep
               - nmap
               - one_gadget
+              - onesixtyone
               - perl-image-exiftool
               - pwnpad/aflplusplus
+              - pwnpad/john
+              - pwnpad/ligolo-ng
               - pwnpad/ngrok
               - python-gmpy2
               - python-pwntools
               - ropper
+              - rustscan
+              - scalpel
+              - seclists
+              - sleuthkit
+              - smbmap
+              - socat
               - strace
+              - swaks
+              - tcpreplay
+              - traceroute
+              - wafw00f
+              - whatweb
+              - whois
+              - windows-binaries
               - xortool
               - z3
 
-        - name: Install from pipx
+        - name: Install rust to compile aardwolf for netexec
+          community.general.pacman:
+            name: rust
+
+        - name: Install rsactftool
+          become: false
           community.general.pipx:
             name: git+https://github.com/RsaCtfTool/RsaCtfTool
+
+        - name: Install netexec
+          become: false
+          community.general.pipx:
+            name: git+https://github.com/Pennyw0rth/NetExec@v1.4.0
+
+        - name: Remove rust to compile aardwolf for netexec
+          community.general.pacman:
+            name: rust
+            state: absent
 
     - name: Install gdb and its plugins
       block:
