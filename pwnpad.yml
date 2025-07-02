@@ -17,7 +17,7 @@ arch: null
 images:
   - location: https://geo.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-cloudimg.qcow2
     arch: x86_64
-  - location: "https://github.com/pwnpad/archlinux-lima/releases/download/20250630-0/Arch-Linux-aarch64-cloudimg-20250629.0.qcow2.xz"
+  - location: "https://github.com/pwnpad/archlinux-lima/releases/download/20250702-0/Arch-Linux-aarch64-cloudimg-20250702.0.qcow2.xz"
     arch: aarch64
 
 # CPUs
