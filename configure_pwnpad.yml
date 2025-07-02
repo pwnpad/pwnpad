@@ -47,7 +47,7 @@
       ansible.builtin.replace:
         path: /etc/pacman.conf
         regexp: '^#IgnorePkg\s*='
-        replace: 'IgnorePkg    = linux linux-headers'
+        replace: "IgnorePkg    = linux linux-headers"
 
 - name: Setup extra repositories
   hosts: lima-pwnpad
@@ -222,14 +222,16 @@
               - xortool
               - z3
 
-        - name: Install rust to compile aardwolf for netexec
-          community.general.pacman:
-            name: rust
-
         - name: Install rsactftool
           become: false
           community.general.pipx:
             name: git+https://github.com/RsaCtfTool/RsaCtfTool
+
+    - name: Install netexec and impacket
+      block:
+        - name: Install rust to compile aardwolf for netexec
+          community.general.pacman:
+            name: rust
 
         - name: Install netexec
           become: false
@@ -240,6 +242,78 @@
           community.general.pacman:
             name: rust
             state: absent
+
+        - name: Create impacket tool symlinks
+          tags: link_impacket_tools
+          ansible.builtin.file:
+            src: "/usr/sbin/{{ item }}.py"
+            dest: "/home/{{ pwnpad_vm_user }}/.local/bin/impacket-{{ item }}"
+            state: link
+            owner: "{{ pwnpad_vm_user }}"
+            group: users
+          loop:
+            - "DumpNTLMInfo"
+            - "Get-GPPPassword"
+            - "GetADComputers"
+            - "GetADUsers"
+            - "GetLAPSPassword"
+            - "GetNPUsers"
+            - "GetUserSPNs"
+            - "addcomputer"
+            - "atexec"
+            - "changepasswd"
+            - "dacledit"
+            - "dcomexec"
+            - "describeTicket"
+            - "dpapi"
+            - "esentutl"
+            - "exchanger"
+            - "findDelegation"
+            - "getArch"
+            - "getPac"
+            - "getST"
+            - "getTGT"
+            - "goldenPac"
+            - "karmaSMB"
+            - "keylistattack"
+            - "kintercept"
+            - "lookupsid"
+            - "machine_role"
+            - "mimikatz"
+            - "mqtt_check"
+            - "mssqlclient"
+            - "mssqlinstance"
+            - "net"
+            - "netview"
+            - "ntfs-read"
+            - "ntlmrelayx"
+            - "owneredit"
+            - "ping"
+            - "ping6"
+            - "psexec"
+            - "raiseChild"
+            - "rbcd"
+            - "rdp_check"
+            - "reg"
+            - "registry-read"
+            - "rpcdump"
+            - "rpcmap"
+            - "sambaPipe"
+            - "samrdump"
+            - "secretsdump"
+            - "services"
+            - "smbclient"
+            - "smbexec"
+            - "smbserver"
+            - "sniff"
+            - "sniffer"
+            - "split"
+            - "ticketConverter"
+            - "ticketer"
+            - "tstool"
+            - "wmiexec"
+            - "wmipersist"
+            - "wmiquery"
 
     - name: Install gdb and its plugins
       block:
