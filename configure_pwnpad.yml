@@ -37,6 +37,18 @@
       ansible.builtin.debug:
         msg: "Unsupported architecture {{ ansible_architecture }} detected"
 
+- name: Ignore linux kernel updates
+  hosts: lima-pwnpad
+  tags: ignore_kernel_updates
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Ensure linux kernel updates are ignored
+      ansible.builtin.replace:
+        path: /etc/pacman.conf
+        regexp: '^#IgnorePkg\s*='
+        replace: 'IgnorePkg    = linux linux-headers'
+
 - name: Setup extra repositories
   hosts: lima-pwnpad
   tags: setup_extra_repos
