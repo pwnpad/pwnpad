@@ -204,6 +204,7 @@
               - pwnpad/ngrok
               - python-gmpy2
               - python-pwntools
+              - responder
               - ropper
               - rustscan
               - scalpel
@@ -391,6 +392,20 @@
       community.general.pacman:
         name:
           - pwnpad/qemu-user-x64
+
+    - name: Setup smbclient
+      block:
+        - name: Create samba directory
+          ansible.builtin.file:
+            path: /etc/samba
+            state: directory
+            mode: "0755"
+
+        - name: Download default smb.conf
+          ansible.builtin.get_url:
+            url: https://raw.githubusercontent.com/samba-team/samba/master/examples/smb.conf.default
+            dest: /etc/samba/smb.conf
+            mode: "0644"
 
 - name: Install gcc and glibc libraries
   hosts: lima-pwnpad
