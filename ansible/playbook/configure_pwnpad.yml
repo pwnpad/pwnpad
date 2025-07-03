@@ -34,11 +34,8 @@
 
     - name: Fail if unsupported architecture is detected
       when: ansible_architecture != 'aarch64' and ansible_architecture != 'x86_64'
-      ansible.builtin.debug:
-        msg: "Unsupported architecture {{ ansible_architecture }} detected. Stopping playbook."
       meta: end_play
 
----
 - name: Disable linux kernel updates
   hosts: lima-pwnpad
   tags: ignore_kernel_updates
@@ -51,7 +48,6 @@
         regexp: '^#IgnorePkg\s*='
         replace: "IgnorePkg    = linux linux-headers"
 
----
 - name: Setup additional repositories
   hosts: lima-pwnpad
   tags: setup_extra_repos
@@ -76,7 +72,6 @@
       ansible.builtin.shell: curl -fsSL https://raw.githubusercontent.com/pwnpad/blackarch-mirror/master/strap.sh | sh
       changed_when: true
 
----
 - name: Setup base packages
   hosts: lima-pwnpad
   tags: setup_base_packages
@@ -94,7 +89,6 @@
           - base-devel
           - zsh
 
----
 - name: Setup users
   hosts: lima-pwnpad
   tags: setup_users
@@ -118,7 +112,6 @@
         groups: wheel
         shell: /usr/bin/zsh
 
----
 - name: Installing tools
   hosts: lima-pwnpad
   tags: install_tools
@@ -413,7 +406,6 @@
             dest: /etc/samba/smb.conf
             mode: "0644"
 
----
 - name: Install gcc and glibc libraries
   hosts: lima-pwnpad
   tags: install_gcc_libraries
@@ -438,7 +430,6 @@
           - lib64-glibc
           - lib64-gcc-libs
 
----
 - name: Setup authorized_keys
   hosts: lima-pwnpad
   tags: setup_ssh_authorized_keys
@@ -461,7 +452,6 @@
         group: users
         mode: "0600"
 
----
 - name: Setup tmux
   hosts: lima-pwnpad
   tags: setup_tmux
@@ -471,7 +461,7 @@
     - name: Copy tmux configuration
       become: true
       ansible.builtin.copy:
-        src: ./config/tmux/
+        src: ../../config/tmux/
         dest: /home/{{ pwnpad_vm_user }}
         owner: "{{ pwnpad_vm_user }}"
         group: users
@@ -490,7 +480,6 @@
         chdir: "/home/{{ pwnpad_vm_user }}/.tmux/plugins/tpm"
       changed_when: true
 
----
 - name: Setup Neovim
   hosts: lima-pwnpad
   tags: setup_neovim
@@ -512,7 +501,6 @@
       ansible.builtin.command: nvim --headless -c "norm i" -c 'execute "sleep 5" | qall' tmp
       changed_when: true
 
----
 - name: Setup zsh
   hosts: lima-pwnpad
   tags: setup_zsh
@@ -522,7 +510,7 @@
     - name: Copy zsh configuration
       become: true
       ansible.builtin.copy:
-        src: ./config/zsh/
+        src: ../../config/zsh/
         dest: /home/{{ pwnpad_vm_user }}
         owner: "{{ pwnpad_vm_user }}"
         group: users
@@ -585,7 +573,6 @@
       ansible.builtin.shell: |
         zsh -c "source /home/{{ pwnpad_vm_user }}/.zshrc && fast-theme CONFIG:catppuccin-mocha"
 
----
 - name: Create link between host and VM
   hosts: lima-pwnpad
   tags: setup_link
@@ -599,7 +586,6 @@
         dest: "/home/{{ pwnpad_vm_user }}/shared"
         state: link
 
----
 - name: Perform cleanup
   hosts: lima-pwnpad
   tags: cleanup
