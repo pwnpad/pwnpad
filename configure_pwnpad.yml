@@ -574,6 +574,19 @@
       ansible.builtin.shell: |
         zsh -c "source /home/{{ pwnpad_vm_user }}/.zshrc && fast-theme CONFIG:catppuccin-mocha"
 
+- name: Setup link
+  hosts: lima-pwnpad
+  tags: setup_link
+  become: false
+  vars:
+    pwnpad_vm_user: "pwnpad"
+  tasks:
+    - name: Create link
+      ansible.builtin.file:
+        src: "/mnt/shared"
+        dest: "/home/{{ pwnpad_vm_user }}/shared"
+        state: link
+
 - name: Perform cleanup
   hosts: lima-pwnpad
   tags: cleanup
