@@ -17,13 +17,13 @@
     - name: Setup repositories for x86_64 architecture
       when: ansible_architecture == 'x86_64'
       block:
-        - name: Uncomment multilib in pacman.conf
+        - name: Enable multilib repository
           ansible.builtin.replace:
             path: /etc/pacman.conf
             regexp: '(?m)^#\[multilib\]\n#Include = (.+)$'
             replace: '[multilib]\nInclude = \1'
 
-        - name: Set mirrorlist for x86_64
+        - name: Set mirrorlist
           ansible.builtin.copy:
             dest: /etc/pacman.d/mirrorlist
             content: |
@@ -32,24 +32,27 @@
               Server = https://mirror.0x.sg/archlinux/$repo/os/$arch
             mode: "0644"
 
-    - name: Print unknown architecture message
+    - name: Fail if unsupported architecture is detected
       when: ansible_architecture != 'aarch64' and ansible_architecture != 'x86_64'
       ansible.builtin.debug:
-        msg: "Unsupported architecture {{ ansible_architecture }} detected"
+        msg: "Unsupported architecture {{ ansible_architecture }} detected. Stopping playbook."
+      meta: end_play
 
-- name: Ignore linux kernel updates
+---
+- name: Disable linux kernel updates
   hosts: lima-pwnpad
   tags: ignore_kernel_updates
   gather_facts: false
   become: true
   tasks:
-    - name: Ensure linux kernel updates are ignored
+    - name: Ignore packages for kernel updates
       ansible.builtin.replace:
         path: /etc/pacman.conf
         regexp: '^#IgnorePkg\s*='
         replace: "IgnorePkg    = linux linux-headers"
 
-- name: Setup extra repositories
+---
+- name: Setup additional repositories
   hosts: lima-pwnpad
   tags: setup_extra_repos
   gather_facts: false
@@ -73,6 +76,7 @@
       ansible.builtin.shell: curl -fsSL https://raw.githubusercontent.com/pwnpad/blackarch-mirror/master/strap.sh | sh
       changed_when: true
 
+---
 - name: Setup base packages
   hosts: lima-pwnpad
   tags: setup_base_packages
@@ -90,6 +94,7 @@
           - base-devel
           - zsh
 
+---
 - name: Setup users
   hosts: lima-pwnpad
   tags: setup_users
@@ -113,6 +118,7 @@
         groups: wheel
         shell: /usr/bin/zsh
 
+---
 - name: Installing tools
   hosts: lima-pwnpad
   tags: install_tools
@@ -123,7 +129,7 @@
   tasks:
     - name: Installing core tools
       block:
-        - name: Install from pacman
+        - name: Install core tools from pacman
           community.general.pacman:
             name:
               - 7zip
@@ -156,13 +162,13 @@
               - wget
               - yay
 
-        - name: Install from yay
+        - name: Install core tools from yay
           become: false
           ansible.builtin.command: yay --noconfirm --noprogressbar --needed --sync --refresh autojump
 
     - name: Install infosec tools
       block:
-        - name: Install from pacman
+        - name: Install infosec tools from pacman
           community.general.pacman:
             name:
               - arp-scan
@@ -318,7 +324,7 @@
 
     - name: Install gdb and its plugins
       block:
-        - name: Install gdb multiarch pwndbg and rz-ghidra
+        - name: Install gdb, pwndbg and rz-ghidra
           community.general.pacman:
             name:
               - gdb
@@ -407,13 +413,14 @@
             dest: /etc/samba/smb.conf
             mode: "0644"
 
+---
 - name: Install gcc and glibc libraries
   hosts: lima-pwnpad
   tags: install_gcc_libraries
   gather_facts: true
   become: true
   tasks:
-    - name: Install libraries
+    - name: Install libraries for x86 and x86_64
       when: ansible_architecture == 'x86_64'
       community.general.pacman:
         name:
@@ -422,7 +429,7 @@
           - glibc
           - gcc-libs
 
-    - name: Install libraries for emulation
+    - name: Install libraries for emulation of x86 and x86_64
       when: ansible_architecture == 'aarch64'
       community.general.pacman:
         name:
@@ -431,6 +438,7 @@
           - lib64-glibc
           - lib64-gcc-libs
 
+---
 - name: Setup authorized_keys
   hosts: lima-pwnpad
   tags: setup_ssh_authorized_keys
@@ -453,6 +461,7 @@
         group: users
         mode: "0600"
 
+---
 - name: Setup tmux
   hosts: lima-pwnpad
   tags: setup_tmux
@@ -481,6 +490,7 @@
         chdir: "/home/{{ pwnpad_vm_user }}/.tmux/plugins/tpm"
       changed_when: true
 
+---
 - name: Setup Neovim
   hosts: lima-pwnpad
   tags: setup_neovim
@@ -494,14 +504,15 @@
         depth: 1
         force: yes
 
-    - name: Download all plugins
+    - name: Install neovim plugins
       ansible.builtin.command: nvim --headless -c "lua require('lazy').restore({wait = true})" -c "qa"
       changed_when: true
 
-    - name: Run any extra downloads and setups
+    - name: Initialise neovim plugins
       ansible.builtin.command: nvim --headless -c "norm i" -c 'execute "sleep 5" | qall' tmp
       changed_when: true
 
+---
 - name: Setup zsh
   hosts: lima-pwnpad
   tags: setup_zsh
@@ -533,11 +544,11 @@
         depth: 1
         force: yes
 
-    - name: Run gitstatus install script
+    - name: Install zsh plugins
       ansible.builtin.shell: |
         zsh -c "source /home/{{ pwnpad_vm_user }}/.zshrc && /home/{{ pwnpad_vm_user }}/.zgenom/sources/romkatv/powerlevel10k/___/gitstatus/install"
 
-    - name: Create bat and f-sy-h config directories
+    - name: Setup highlighting for zsh and bat
       become: true
       ansible.builtin.file:
         path: "{{ item }}"
@@ -561,7 +572,7 @@
     - name: Build bat cache
       ansible.builtin.command: bat cache --build
 
-    - name: Download catppuccin-mocha.ini for f-sy-h
+    - name: Download zsh theme
       become: true
       ansible.builtin.get_url:
         url: https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-mocha.ini
@@ -570,11 +581,12 @@
         group: users
         mode: "0644"
 
-    - name: Set fast-theme
+    - name: Install zsh theme
       ansible.builtin.shell: |
         zsh -c "source /home/{{ pwnpad_vm_user }}/.zshrc && fast-theme CONFIG:catppuccin-mocha"
 
-- name: Setup link
+---
+- name: Create link between host and VM
   hosts: lima-pwnpad
   tags: setup_link
   become: false
@@ -587,6 +599,7 @@
         dest: "/home/{{ pwnpad_vm_user }}/shared"
         state: link
 
+---
 - name: Perform cleanup
   hosts: lima-pwnpad
   tags: cleanup
