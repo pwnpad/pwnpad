@@ -322,7 +322,7 @@
           community.general.pacman:
             name:
               - gdb
-              - pwnpad/pwndbg
+              - extra/pwndbg
               - python-rzpipe
               - rz-ghidra
 
