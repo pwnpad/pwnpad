@@ -64,6 +64,9 @@ mounts:
   - location: "~"
     mountPoint: null
     writable: null
+  - location: "~/.local/share/pwnpad/lima"
+    mountPoint: "/mnt/shared"
+    writable: true
     sshfs:
       followSymlinks: true
 
