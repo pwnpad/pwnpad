@@ -1,0 +1,12 @@
+[Unit]
+Description=VNC Server for X11
+Requires=xvfb.service
+After=openbox.service
+
+[Service]
+ExecStart=/usr/bin/x11vnc -display :0 -forever -loop -noxdamage -localhost
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=NoVNC Web VNC Client
+Requires=x11vnc.service
+After=x11vnc.service
+
+[Service]
+ExecStart=/usr/bin/novnc
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

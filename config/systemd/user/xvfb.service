@@ -1,0 +1,10 @@
+[Unit]
+Description=X Virtual Frame Buffer Service
+
+[Service]
+ExecStart=/usr/bin/Xvfb :0 -screen 0 1920x1080x24
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

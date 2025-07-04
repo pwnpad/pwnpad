@@ -1,0 +1,48 @@
+---
+- name: Install openbox window manager
+  hosts: lima-pwnpad
+  tags: setup_openbox
+  gather_facts: false
+  tasks:
+    - name: Install packages
+      become: true
+      community.general.pacman:
+        name:
+          - gnu-free-fonts
+          - novnc
+          - openbox
+          - x11vnc
+          - xorg-server-xvfb
+        update_cache: yes
+
+    - name: Copy systemd services
+      become: true
+      vars:
+        pwnpad_vm_user: "pwnpad"
+      ansible.builtin.copy:
+        src: ../../config/systemd/
+        dest: /home/{{ pwnpad_vm_user }}/.config/systemd
+        owner: "{{ pwnpad_vm_user }}"
+        group: users
+        mode: "0644"
+
+    - name: Enable linger for user 'pwnpad'
+      become: true
+      command: loginctl enable-linger pwnpad
+
+    - name: Reload systemd daemon for user services
+      ansible.builtin.systemd:
+        daemon_reload: true
+        scope: user
+
+    - name: Enable and start user services
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+        scope: user
+      loop:
+        - xvfb
+        - openbox
+        - x11vnc
+        - novnc
