@@ -115,7 +115,7 @@
 - name: Installing tools
   hosts: lima-pwnpad
   tags: install_tools
-  gather_facts: false
+  gather_facts: true
   become: true
   vars:
     pwnpad_vm_user: "pwnpad"
