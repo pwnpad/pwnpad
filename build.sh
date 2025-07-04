@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CONFIG_DIR="./config"
+CONFIG_DIR="./lima"
 ANSIBLE_INVENTORY_DIR="./ansible/inventory"
 ANSIBLE_PLAYBOOK_DIR="./ansible/playbook"
 
