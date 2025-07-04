@@ -190,7 +190,7 @@ user:
   name: pwnpad
   # Full name or display name of the user.
   # 🟢 Builtin default: user information from the host
-  comment: null
+  comment: Pwnpad User
   # Numeric user id. It is not currently possible to specify a group id.
   # 🟢 Builtin default: same as the host user id of the current user (NOT a lookup of the specified "username").
   uid: null
