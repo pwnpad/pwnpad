@@ -11,4 +11,5 @@ ansible-playbook -i $ANSIBLE_INVENTORY_DIR/inventory.yml $ANSIBLE_PLAYBOOK_DIR/r
 limactl restart pwnpad
 
 ansible-playbook -i $ANSIBLE_INVENTORY_DIR/inventory.yml $ANSIBLE_PLAYBOOK_DIR/configure_pwnpad.yml
+ansible-playbook -i $ANSIBLE_INVENTORY_DIR/inventory.yml $ANSIBLE_PLAYBOOK_DIR/install_gui.yml
 limactl restart pwnpad
