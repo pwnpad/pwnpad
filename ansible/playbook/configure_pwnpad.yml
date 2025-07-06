@@ -161,7 +161,7 @@
 
     - name: Install infosec tools
       block:
-        - name: Install infosec tools from pacman part 1
+        - name: Install infosec tools from pacman
           community.general.pacman:
             name:
               - arp-scan
@@ -186,6 +186,7 @@
               - jadx
               - ldapenum
               - ltrace
+              - metasploit
               - mimikatz
               - nbtscan
               - ncrack
@@ -202,9 +203,11 @@
               - pwnpad/ngrok
               - python-gmpy2
               - python-pwntools
+              - responder
               - ropper
               - rustscan
               - scalpel
+              - seclists
               - sleuthkit
               - smbmap
               - socat
@@ -218,21 +221,6 @@
               - windows-binaries
               - xortool
               - z3
-
-        - name: Install infosec tools from pacman part 2
-          community.general.pacman:
-            name:
-              - metasploit
-
-        - name: Install infosec tools from pacman part 3
-          community.general.pacman:
-            name:
-              - responder
-
-        - name: Install infosec tools from pacman part 4
-          community.general.pacman:
-            name:
-              - seclists
 
         - name: Install rsactftool
           become: false
