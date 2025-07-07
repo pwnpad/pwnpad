@@ -46,7 +46,7 @@
       ansible.builtin.replace:
         path: /etc/pacman.conf
         regexp: '^#IgnorePkg\s*='
-        replace: "IgnorePkg    = linux linux-headers"
+        replace: "IgnorePkg    = linux linux-aarch64"
 
 - name: Setup additional repositories
   hosts: lima-pwnpad
