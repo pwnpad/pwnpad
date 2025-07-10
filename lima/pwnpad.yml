@@ -15,9 +15,7 @@ arch: null
 # Each image has a `location` URL for the disk image, an `arch` setting, and an optional `digest`.
 # 🟢 Builtin default: none (must be specified)
 images:
-  - location: https://geo.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-cloudimg.qcow2
-    arch: x86_64
-  - location: "https://github.com/pwnpad/archlinux-lima/releases/download/20250702-0/Arch-Linux-aarch64-cloudimg-20250702.0.qcow2.xz"
+  - location: "file:///tmp/pwnpad.qcow2"
     arch: aarch64
 
 # CPUs
@@ -30,7 +28,7 @@ memory: null
 
 # Disk size
 # 🟢 Builtin default: "100GiB"
-disk: "40GiB"
+disk: null
 
 # Expose host directories to the guest, the mount point might be accessible from all UIDs in the guest
 # "location" can use these template variables: {{.Home}}, {{.Dir}}, {{.Name}}, {{.UID}}, {{.User}}, {{.Param.Key}},

@@ -1,6 +1,6 @@
 ---
 - name: Setup base pacman respositories
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: setup_base_repos
   gather_facts: true
   become: true
@@ -37,7 +37,7 @@
       meta: end_play
 
 - name: Disable linux kernel updates
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: ignore_kernel_updates
   gather_facts: false
   become: true
@@ -49,7 +49,7 @@
         replace: "IgnorePkg    = linux linux-aarch64"
 
 - name: Setup additional repositories
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: setup_extra_repos
   gather_facts: false
   become: true
@@ -73,7 +73,7 @@
       changed_when: true
 
 - name: Setup base packages
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: setup_base_packages
   gather_facts: false
   become: true
@@ -90,7 +90,7 @@
           - zsh
 
 - name: Setup users
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: setup_users
   gather_facts: false
   become: true
@@ -113,7 +113,7 @@
         shell: /usr/bin/zsh
 
 - name: Installing tools
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: install_tools
   gather_facts: true
   become: true
@@ -407,7 +407,7 @@
             mode: "0644"
 
 - name: Install gcc and glibc libraries
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: install_gcc_libraries
   gather_facts: true
   become: true
@@ -431,7 +431,7 @@
           - lib64-gcc-libs
 
 - name: Setup authorized_keys
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: setup_ssh_authorized_keys
   vars:
     pwnpad_vm_user: "pwnpad"
@@ -453,7 +453,7 @@
         mode: "0600"
 
 - name: Setup tmux
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: setup_tmux
   vars:
     pwnpad_vm_user: "pwnpad"
@@ -481,7 +481,7 @@
       changed_when: true
 
 - name: Setup Neovim
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: setup_neovim
   vars:
     pwnpad_vm_user: "pwnpad"
@@ -502,7 +502,7 @@
       changed_when: true
 
 - name: Setup zsh
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: setup_zsh
   vars:
     pwnpad_vm_user: "pwnpad"
@@ -574,7 +574,7 @@
         zsh -c "source /home/{{ pwnpad_vm_user }}/.zshrc && fast-theme CONFIG:catppuccin-mocha"
 
 - name: Create link between host and VM
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: setup_link
   become: false
   vars:
@@ -585,9 +585,10 @@
         src: "/mnt/shared"
         dest: "/home/{{ pwnpad_vm_user }}/shared"
         state: link
+        force: true
 
 - name: Perform cleanup
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: cleanup
   gather_facts: false
   become: true
@@ -602,18 +603,21 @@
         path: "{{ item }}"
         state: absent
       loop:
-        - "/home/{{ pwnpad_vm_user }}/.zshrc.pre-oh-my-zsh"
-        - "/home/{{ pwnpad_vm_user }}/.zsh_history"
-        - "/home/{{ pwnpad_vm_user }}/.bash_profile"
-        - "/home/{{ pwnpad_vm_user }}/.wget-hsts"
+        - "/home/{{ pwnpad_vm_user }}/.ansible"
         - "/home/{{ pwnpad_vm_user }}/.bash_logout"
+        - "/home/{{ pwnpad_vm_user }}/.bash_profile"
         - "/home/{{ pwnpad_vm_user }}/.bundle"
-        - "/var/cache"
         - "/home/{{ pwnpad_vm_user }}/.cache/pip"
         - "/home/{{ pwnpad_vm_user }}/.cache/yay"
+        - "/home/{{ pwnpad_vm_user }}/.cargo"
         - "/home/{{ pwnpad_vm_user }}/.npm"
-        - "/var/log"
+        - "/home/{{ pwnpad_vm_user }}/.npm"
+        - "/home/{{ pwnpad_vm_user }}/.wget-hsts"
         - "/home/{{ pwnpad_vm_user }}/.zcompdump-buildkitsandbox*"
+        - "/home/{{ pwnpad_vm_user }}/.zsh_history"
+        - "/home/{{ pwnpad_vm_user }}/.zshrc.pre-oh-my-zsh"
+        - "/var/cache"
+        - "/var/log"
 
     - name: Update mlocate database
       ansible.builtin.command: updatedb

@@ -1,6 +1,6 @@
 ---
 - name: Resize /dev/vda2 partition
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   gather_facts: false
   become: true
   tasks:

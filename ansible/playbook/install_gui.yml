@@ -1,6 +1,6 @@
 ---
 - name: Install openbox window manager
-  hosts: lima-pwnpad
+  hosts: lima-pwnpad-builder
   tags: setup_openbox
   gather_facts: false
   tasks:
