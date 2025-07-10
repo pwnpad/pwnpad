@@ -45,3 +45,5 @@ qemu-img convert -f raw -O qcow2 -o backing_file=basedisk,backing_fmt=qcow2 \
 qemu-img convert -p -c -O qcow2 diffdisk-linked.qcow2 pwnpad.qcow2
 
 rm diffdisk-linked.qcow2
+
+mv pwnpad.qcow2 ${OLDPWD}/
