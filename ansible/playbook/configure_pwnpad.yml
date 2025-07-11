@@ -143,7 +143,7 @@
 
         - name: Install core tools from yay
           become: false
-          ansible.builtin.command: yay --noconfirm --noprogressbar --needed --sync --refresh autojump
+          ansible.builtin.command: yay --noconfirm --noprogressbar --needed --sync --refresh autojump-rs-git
 
     - name: Install infosec tools
       block:
@@ -160,7 +160,6 @@
               - exploitdb
               - extra/sqlmap
               - foremost
-              - gnu-netcat
               - gobuster
               - hashcat-utils
               - impacket

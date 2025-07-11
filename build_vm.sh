@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 CONFIG_DIR="./lima"
+VM_NAME="pwnpad-builder"
 
 ANSIBLE_INVENTORY_DIR="./ansible/inventory"
 ANSIBLE_PLAYBOOK_DIR="./ansible/playbook"
@@ -19,9 +20,6 @@ fi
 
 limactl create --yes ${CONFIG_DIR}/${VM_NAME}.yml
 limactl start ${VM_NAME}
-
-ansible-playbook -i ${ANSIBLE_INVENTORY_DIR}/inventory.yml ${ANSIBLE_PLAYBOOK_DIR}/resize_disk.yml
-limactl restart ${VM_NAME}
 
 ansible-playbook -i ${ANSIBLE_INVENTORY_DIR}/inventory.yml ${ANSIBLE_PLAYBOOK_DIR}/configure_pwnpad.yml
 ansible-playbook -i ${ANSIBLE_INVENTORY_DIR}/inventory.yml ${ANSIBLE_PLAYBOOK_DIR}/install_gui.yml
