@@ -133,7 +133,6 @@
               - pigz
               - procps-ng
               - python-pip
-              - python-pipx
               - python-virtualenv
               - ripgrep
               - tmux
@@ -196,11 +195,6 @@
               - whois
               - windows-binaries
               - z3
-
-        - name: Install rsactftool
-          become: false
-          community.general.pipx:
-            name: git+https://github.com/RsaCtfTool/RsaCtfTool
 
     - name: Create impacket tool symlinks
       ansible.builtin.file:
