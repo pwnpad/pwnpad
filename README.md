@@ -12,21 +12,31 @@
 
 Requirements:
 
-- lima
-- ansible-playbook
+- `limactl`
+- `ansible-playbook`
+- `qemu-img`
+- `virt-sparsify`
 
 ```bash
-./build.sh
+./build_vm.sh
 ```
 
 ## Installation
 
 Download the latest release from the [releases page](https://github.com/pwnpad/pwnpad-lima/releases).
 
+Concatenate all the files together to make a qcow2 file.
+
 ```bash
-tar -xJvf pwnpad.tar.xz -C ~/.lima/
+cat pwnpad.qcow2.part_* > pwnpad.qcow2
 ```
 
-Copy the public key from `~/.lima/_config/user.pub` and paste it into the `ssh-authorized-keys` field in `~/.lima/pwnpad/cloud-config.yaml`.
+Edit image location in `lima/pwnpad.yml` to point to the qcow2 file on your system.
+For example, if you store the qcow2 file in `/tmp/pwnpad.qcow2`
 
-If no public and private key exists, go to `~/.lima/_config` and run `ssh-keygen -f user -t ed25519` to generate a new key pair.
+```yaml
+# This is the default
+images:
+  - location: "file:///tmp/pwnpad.qcow2"
+    arch: aarch64
+```
