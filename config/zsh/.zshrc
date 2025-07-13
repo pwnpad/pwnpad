@@ -21,6 +21,10 @@ export LC_ALL=en_US.UTF-8
 export EDITOR=nvim
 ############################################################
 
+# Set display ###############################################
+export DISPLAY=:0
+############################################################
+
 # Use beam shape cursor on startup.
 echo -ne '\e[5 q'
 
