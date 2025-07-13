@@ -345,8 +345,9 @@ networks:
 # You can view the complete list of variables using `limactl list --list-fields` command.
 # It also includes {{.HostOS}} and {{.HostArch}} vars, for the runtime GOOS and GOARCH.
 # 🟢 Builtin default: ""
-# message: |
-#   This will be shown to the user.
+message: |
+  To access the noVNC web interface, open the following URL in your browser:
+  http://localhost:6080/vnc.html?host=localhost&port=6080
 
 # Extra environment variables that will be loaded into the VM at start up.
 # These variables are consumed by internal init scripts, and also added
