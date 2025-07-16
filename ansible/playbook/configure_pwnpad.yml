@@ -134,6 +134,7 @@
               - procps-ng
               - python-pip
               - python-virtualenv
+              - qemu-user
               - ripgrep
               - tmux
               - unrar
@@ -336,12 +337,6 @@
     - name: Set nmap capabilities
       ansible.builtin.command: setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap
       changed_when: true
-
-    - name: Installing qemu user on arm
-      when: ansible_architecture == 'aarch64'
-      community.general.pacman:
-        name:
-          - pwnpad/qemu-user-x64
 
     - name: Setup smbclient
       block:
