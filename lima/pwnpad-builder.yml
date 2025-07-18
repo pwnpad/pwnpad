@@ -1,7 +1,7 @@
 vmType: "vz"
 arch: "aarch64"
 images:
-  - location: "https://github.com/pwnpad/archlinux-arm/releases/download/20250711-1/Arch-Linux-aarch64-cloudimg-20250710.1.qcow2.xz"
+  - location: "https://github.com/pwnpad/archlinux-arm/releases/download/20250718-1/Arch-Linux-aarch64-cloudimg-20250718.1.qcow2.xz"
     arch: aarch64
 disk: "15GiB"
 minimumLimaVersion: 1.1.0
