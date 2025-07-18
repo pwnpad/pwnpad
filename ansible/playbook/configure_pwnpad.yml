@@ -412,6 +412,8 @@
 
 - name: Setup tmux
   hosts: lima-pwnpad-builder
+  environment:
+    TERM: xterm-256color
   tags: setup_tmux
   vars:
     pwnpad_vm_user: "pwnpad"
