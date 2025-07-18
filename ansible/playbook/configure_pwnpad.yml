@@ -36,6 +36,18 @@
       when: ansible_architecture != 'aarch64' and ansible_architecture != 'x86_64'
       meta: end_play
 
+- name: Disable linux kernel updates
+  hosts: lima-pwnpad-builder
+  tags: ignore_kernel_updates
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Ignore packages for kernel updates
+      ansible.builtin.replace:
+        path: /etc/pacman.conf
+        regexp: '^#IgnorePkg\s*='
+        replace: "IgnorePkg    = linux linux-aarch64"
+
 - name: Setup additional repositories
   hosts: lima-pwnpad-builder
   tags: setup_extra_repos
