@@ -48,36 +48,8 @@ If you would like to export the VM to a qcow2 file:
 
 ## Usage
 
-Download the latest release from the [releases page](https://github.com/pwnpad/pwnpad-lima/releases).
-Due to GitHub's file size limit, the qcow2 image is split into multiple parts.
-Ensure all parts are downloaded.
-
-Concatenate all the files together to make a qcow2 file.
-
-```bash
-# aarch64
-cat pwnpad-aarch64.qcow2.part_* > pwnpad-aarch64.qcow2
-
-# x86_64
-cat pwnpad-x86_64.qcow2.part_* > pwnpad-x86_64.qcow2
-```
-
-### Creating the VM
-
-Edit image location in `lima/pwnpad.yml` to point to the qcow2 file on your system.
-For example, if you store the qcow2 file in `/tmp/pwnpad-aarch64.qcow2`:
-
-```yaml
-# This is the default
-images:
-  - location: "file:///tmp/pwnpad-aarch64.qcow2"
-    arch: aarch64
-  - location: "file:///tmp/pwnpad-x86_64.qcow2"
-    arch: x86_64
-```
-
 Create the new VM using the following command:
 
 ```bash
-limactl create --yes lima/pwnpad.yml
+limactl create --yes https://raw.githubusercontent.com/pwnpad/pwnpad-lima/refs/heads/master/lima/pwnpad.yml
 ```
