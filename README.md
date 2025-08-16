@@ -81,21 +81,3 @@ Create the new VM using the following command:
 ```bash
 limactl create --yes lima/pwnpad.yml
 ```
-
-### Issues
-
-For some reason, the VM will not boot properly with Qemu on Linux if you mount a directory.
-You can work around by commenting/deleting the following line in `lima/pwnpad.yml`:
-
-```yaml
-# Comment/delete these lines to fix the issue
-mounts:
-  - location: "~"
-    mountPoint: null
-    writable: null
-  - location: "~/.local/share/pwnpad/lima"
-    mountPoint: "/mnt/shared"
-    writable: true
-    sshfs:
-      followSymlinks: true
-```
