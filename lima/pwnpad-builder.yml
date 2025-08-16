@@ -1,8 +1,12 @@
-vmType: "vz"
-arch: "aarch64"
+vmType: null
+arch: null
 images:
-  - location: "https://github.com/pwnpad/archlinux-arm/releases/download/20250718-1/Arch-Linux-aarch64-cloudimg-20250718.1.qcow2.xz"
+  - location: "https://geo.mirror.pkgbuild.com/images/v20250701.374901/Arch-Linux-x86_64-cloudimg-20250701.374901.qcow2"
+    arch: "x86_64"
+    digest: "sha256:f9a1968e2d3c4808dc52737c9ef04d666c8cf9f66d438e47162d8dac5bcfadb3"
+  - location: "https://github.com/pwnpad/archlinux-arm/releases/download/20250815-1/Arch-Linux-aarch64-cloudimg-20250815.1.qcow2.xz"
     arch: aarch64
+    digest: "sha256:e7f9369ea6973a4ea03fe03f1f8545017c8626b02252aba8997e24923aafbf11"
 disk: "15GiB"
 minimumLimaVersion: 1.1.0
 user:

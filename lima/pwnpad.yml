@@ -15,8 +15,10 @@ arch: null
 # Each image has a `location` URL for the disk image, an `arch` setting, and an optional `digest`.
 # 🟢 Builtin default: none (must be specified)
 images:
-  - location: "file:///tmp/pwnpad.qcow2"
+  - location: "file:///tmp/pwnpad-aarch64.qcow2"
     arch: aarch64
+  - location: "file:///tmp/pwnpad-x86_64.qcow2"
+    arch: x86_64
 
 # CPUs
 # 🟢 Builtin default: min(4, host CPU cores)

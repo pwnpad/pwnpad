@@ -10,6 +10,7 @@
       ansible.builtin.copy:
         dest: /etc/pacman.d/mirrorlist
         content: |
+          Server = http://de4.mirror.archlinuxarm.org/$arch/$repo
           Server = http://tw2.mirror.archlinuxarm.org/$arch/$repo
           Server = https://ca.us.mirror.archlinuxarm.org/$arch/$repo
         mode: "0644"
@@ -27,9 +28,9 @@
           ansible.builtin.copy:
             dest: /etc/pacman.d/mirrorlist
             content: |
-              Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
-              Server = https://download.nus.edu.sg/mirror/archlinux/$repo/os/$arch
-              Server = https://mirror.0x.sg/archlinux/$repo/os/$arch
+              Server = https://mirror.sg.cdn-perfprod.com/archlinux/$repo/os/$arch
+              Server = https://sg.arch.niranjan.co/$repo/os/$arch
+              Server = https://singapore.mirror.pkgbuild.com/$repo/os/$arch
             mode: "0644"
 
     - name: Fail if unsupported architecture is detected
@@ -189,7 +190,6 @@
               - pwnpad/aflplusplus
               - pwnpad/john
               - pwnpad/ligolo-ng
-              - pwnpad/netexec
               - pwnpad/ngrok
               - python-gmpy2
               - python-pwntools
@@ -207,6 +207,18 @@
               - whois
               - windows-binaries
               - z3
+
+        - name: Install netexec for aarch64
+          when: ansible_architecture == 'aarch64'
+          community.general.pacman:
+            name:
+              - pwnpad/netexec
+
+        - name: Install netexec for x86_64
+          when: ansible_architecture == 'x86_64'
+          community.general.pacman:
+            name:
+              - blackarch/netexec
 
     - name: Create impacket tool symlinks
       ansible.builtin.file:

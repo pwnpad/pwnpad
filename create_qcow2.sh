@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 VM_NAME="pwnpad-builder"
+ARCH="$(uname -m)"
 
 if [ -z "${LIMA_HOME}" ]
 then
@@ -22,12 +23,12 @@ fi
 cd ${LIMA_HOME}/${VM_NAME}
 qemu-img convert -f raw -O qcow2 -o backing_file=basedisk,backing_fmt=qcow2 \
     diffdisk diffdisk-linked.qcow2
-qemu-img convert -p -O qcow2 diffdisk-linked.qcow2 pwnpad.qcow2
+qemu-img convert -p -O qcow2 diffdisk-linked.qcow2 pwnpad-${ARCH}.qcow2
 
 rm diffdisk-linked.qcow2
 
-virt-sparsify --compress pwnpad.qcow2 pwnpad-new.qcow2
-mv pwnpad-new.qcow2 pwnpad.qcow2
+virt-sparsify --compress pwnpad-${ARCH}.qcow2 pwnpad-new.qcow2
+mv pwnpad-new.qcow2 pwnpad-${ARCH}.qcow2
 
 # Split the image into two parts for github release
-# split -b 2000M -d -a 2 pwnpad.qcow2 pwnpad.qcow2.part_
+# split -b 2000M -d -a 2 pwnpad-${ARCH}.qcow2 pwnpad-${ARCH}.qcow2.part_
