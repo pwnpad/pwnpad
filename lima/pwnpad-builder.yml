@@ -1,18 +1,20 @@
 vmType: null
 arch: null
 images:
-  - location: "https://geo.mirror.pkgbuild.com/images/v20250815.404997/Arch-Linux-x86_64-cloudimg-20250815.404997.qcow2"
+  - location: "https://download.nus.edu.sg/mirror/archlinux/images/v20250915.421442/Arch-Linux-x86_64-cloudimg-20250915.421442.qcow2"
     arch: "x86_64"
-    digest: "sha256:4ef730840a8820f075ca874c5a38ae0712a1e2607eed6c141fde0467fded9c74"
-  - location: "https://github.com/pwnpad/archlinux-arm/releases/download/20250815-1/Arch-Linux-aarch64-cloudimg-20250815.1.qcow2.xz"
+    digest: "sha256:19b15ec96583b0e7241eb8a453f0f6e007b51bfc07895cb6a5de2e374f695133"
+  - location: "https://github.com/pwnpad/archlinux-arm/releases/download/20251206-1/Arch-Linux-aarch64-cloudimg-20251206.1.qcow2.xz"
     arch: aarch64
-    digest: "sha256:e7f9369ea6973a4ea03fe03f1f8545017c8626b02252aba8997e24923aafbf11"
+    digest: "sha256:f3fe6574c2fff6be07e3bb7e1e03207a1b773b6521e0a1a299aa5d73c3f80093"
 disk: "15GiB"
-minimumLimaVersion: 1.1.0
+minimumLimaVersion: 2.0.0
 user:
   name: pwnpad
   comment: Pwnpad User
   home: "/home/{{.User}}"
-rosetta:
-  enabled: true
-  binfmt: true
+vmOpts:
+  vz:
+    rosetta:
+      enabled: true
+      binfmt: true

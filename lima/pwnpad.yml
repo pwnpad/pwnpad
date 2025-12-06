@@ -218,14 +218,16 @@ cpuType:
 #   riscv64: "max" # (or "host" when running on riscv64 host)
 #   x86_64:  "max" # (or "host" when running on x86_64 host; additional options are appended on Intel Mac)
 
-rosetta:
-  # Enable Rosetta inside the VM; needs `vmType: vz`
-  # Hint: try `softwareupdate --install-rosetta` if Lima gets stuck at `Installing rosetta...`
-  # 🟢 Builtin default: false
-  enabled: true
-  # Register rosetta to /proc/sys/fs/binfmt_misc
-  # 🟢 Builtin default: false
-  binfmt: true
+vmOpts:
+  vz:
+    rosetta:
+      # Enable Rosetta inside the VM; needs `vmType: vz`
+      # Hint: try `softwareupdate --install-rosetta` if Lima gets stuck at `Installing rosetta...`
+      # 🟢 Builtin default: false
+      enabled: true
+      # Register rosetta to /proc/sys/fs/binfmt_misc
+      # 🟢 Builtin default: false
+      binfmt: true
 
 # Specify the timezone name (as used by the zoneinfo database). Specify the empty string
 # to not set a timezone in the instance.

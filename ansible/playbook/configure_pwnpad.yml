@@ -10,6 +10,7 @@
       ansible.builtin.copy:
         dest: /etc/pacman.d/mirrorlist
         content: |
+          Server = https://mirror.sg.gs/archlinuxarm/$arch/$repo
           Server = http://de4.mirror.archlinuxarm.org/$arch/$repo
           Server = http://tw2.mirror.archlinuxarm.org/$arch/$repo
           Server = https://ca.us.mirror.archlinuxarm.org/$arch/$repo
@@ -292,8 +293,10 @@
         - "wmiquery"
 
     - name: Install gdb and its plugins
+      become: false
       block:
         - name: Install gdb, pwndbg and rz-ghidra
+          become: true
           community.general.pacman:
             name:
               - gdb
@@ -305,40 +308,15 @@
           ansible.builtin.pip:
             name: decomp2dbg
             executable: pip3
-            extra_args: --break-system-packages
-
-        - name: Create /usr/share/decomp2dbg directory
-          ansible.builtin.file:
-            path: /usr/share/decomp2dbg
-            state: directory
-            mode: "0755"
-
-        - name: Download d2d.py
-          ansible.builtin.get_url:
-            url: https://raw.githubusercontent.com/mahaloz/decomp2dbg/main/d2d.py
-            dest: /usr/share/decomp2dbg/d2d.py
-            mode: "0644"
+            extra_args: --user --break-system-packages
 
         - name: Install pwn_gadget
           ansible.builtin.pip:
             name: https://github.com/zolutal/pwn_gadget/archive/refs/heads/main.zip
             executable: pip3
-            extra_args: --break-system-packages
-
-        - name: Create /usr/share/pwn_gadget directory
-          ansible.builtin.file:
-            path: /usr/share/pwn_gadget
-            state: directory
-            mode: "0755"
-
-        - name: Download pwn_gadget.py
-          ansible.builtin.get_url:
-            url: https://raw.githubusercontent.com/zolutal/pwn_gadget/main/pwn_gadget.py
-            dest: /usr/share/pwn_gadget/pwn_gadget.py
-            mode: "0644"
+            extra_args: --user --break-system-packages
 
         - name: Setup gdbinit
-          become: false
           ansible.builtin.copy:
             dest: /home/{{ pwnpad_vm_user }}/.gdbinit
             content: |
@@ -346,12 +324,11 @@
               source /usr/share/pwndbg/gdbinit.py
               set r2decompiler rizin
               # set context-ghidra if-no-source
-              source /usr/share/decomp2dbg/d2d.py
-              source /usr/share/pwn_gadget/pwn_gadget.py
+              source /home/pwnpad/.local/lib/python3.13/site-packages/decomp2dbg/d2d.py
+              source /home/pwnpad/.local/lib/python3.13/site-packages/pwn_gadget/pwn_gadget.py
             mode: "0644"
 
         - name: Setup rizin
-          become: false
           ansible.builtin.copy:
             dest: /home/{{ pwnpad_vm_user }}/.rizinrc
             content: |
