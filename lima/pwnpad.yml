@@ -289,18 +289,18 @@ networks:
   # Needs `vmType: vz`
   # - vzNAT: true
 
-  # Port forwarding rules. Forwarding between ports 22 and ssh.localPort cannot be overridden.
-  # Rules are checked sequentially until the first one matches.
-  # portForwards:
+# Port forwarding rules. Forwarding between ports 22 and ssh.localPort cannot be overridden.
+# Rules are checked sequentially until the first one matches.
+portForwards:
+- guestPortRange: [50000, 60000]
+  hostIP:  "0.0.0.0" # overrides the default value "127.0.0.1"
+  # default: hostPortRange: [50000, 60000] (must specify same number of ports as guestPortRange)
+  #
   # - guestPort: 443
   #   hostIP: "0.0.0.0" # overrides the default value "127.0.0.1"; allows privileged port forwarding
   # # default: hostPort: 443 (same as guestPort)
   # # default: guestIP: "127.0.0.1" (also matches bind addresses "0.0.0.0", "::", and "::1")
   # # default: proto: "tcp" (other options: "udp, "any")
-  #
-  # - guestPortRange: [4000, 4999]
-  #   hostIP:  "0.0.0.0" # overrides the default value "127.0.0.1"
-  # # default: hostPortRange: [4000, 4999] (must specify same number of ports as guestPortRange)
   #
   # - guestPort: 80
   #   hostPort: 8080 # overrides the default value 80
@@ -352,6 +352,9 @@ networks:
 # It also includes {{.HostOS}} and {{.HostArch}} vars, for the runtime GOOS and GOARCH.
 # 🟢 Builtin default: ""
 message: |
+  Ports 50000-60000 bind to 0.0.0.0.
+  The remaining ports bind to 127.0.0.1.
+
   To access the noVNC web interface, open the following URL in your browser:
   http://localhost:6080/vnc.html?host=localhost&port=6080
 
