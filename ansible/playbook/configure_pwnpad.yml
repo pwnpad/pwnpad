@@ -324,8 +324,8 @@
               source /usr/share/pwndbg/gdbinit.py
               set r2decompiler rizin
               # set context-ghidra if-no-source
-              source /home/pwnpad/.local/lib/python3.13/site-packages/decomp2dbg/d2d.py
-              source /home/pwnpad/.local/lib/python3.13/site-packages/pwn_gadget/pwn_gadget.py
+              source /home/pwnpad/.local/lib/python3.14/site-packages/decomp2dbg/d2d.py
+              source /home/pwnpad/.local/lib/python3.14/site-packages/pwn_gadget/main.py
             mode: "0644"
 
         - name: Setup rizin
