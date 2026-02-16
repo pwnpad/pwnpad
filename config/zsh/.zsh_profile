@@ -6,7 +6,7 @@ export LD_LIBRARY_PATH="/lib:/lib64"
 ve() {
     if [[ -z ${VIRTUAL_ENV} ]]; then
         if [[ ! -d venv ]]; then
-            virtualenv venv
+            python3 -m venv venv
         fi
         source venv/bin/activate
         echo "python:  $(which python3)"
@@ -112,7 +112,7 @@ publish() {
     fi
 
     if [ ${1} = "start" ]; then
-        if [ ! -f "$HOME/.ngrok2/ngrok.yml" ]; then
+        if [ ! -f "$HOME/.config/ngrok/ngrok.yml" ]; then
             printf "Enter auth token: "
             read token
             ngrok config add-authtoken $token
