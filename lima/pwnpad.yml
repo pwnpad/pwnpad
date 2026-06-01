@@ -429,3 +429,8 @@ guestInstallPrefix: null
 # - Only supported on Apple M3 or later with `vmType: vz`.
 # 🟢 Builtin default: false
 nestedVirtualization: null
+
+# When the "usb" feature is enabled:
+# - Allows USB devices to be passed through to the guest VM.
+# 🟢 Builtin default: false
+usb: true
