@@ -21,6 +21,6 @@ fi
 limactl create --yes ${CONFIG_DIR}/${VM_NAME}.yml
 limactl start ${VM_NAME}
 
-ansible-playbook -i ${ANSIBLE_INVENTORY_DIR}/inventory.yml ${ANSIBLE_PLAYBOOK_DIR}/configure_pwnpad.yml
-ansible-playbook -i ${ANSIBLE_INVENTORY_DIR}/inventory.yml ${ANSIBLE_PLAYBOOK_DIR}/install_gui.yml
+ansible-playbook -v -i ${ANSIBLE_INVENTORY_DIR}/inventory.yml ${ANSIBLE_PLAYBOOK_DIR}/configure_pwnpad.yml
+ansible-playbook -v -i ${ANSIBLE_INVENTORY_DIR}/inventory.yml ${ANSIBLE_PLAYBOOK_DIR}/install_gui.yml
 limactl stop ${VM_NAME}
