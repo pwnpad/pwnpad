@@ -6,7 +6,7 @@
   become: true
   tasks:
     - name: Setup repositories for aarch64 architecture
-      when: ansible_architecture == 'aarch64'
+      when: ansible_facts['architecture'] == 'aarch64'
       ansible.builtin.copy:
         dest: /etc/pacman.d/mirrorlist
         content: |
@@ -17,7 +17,7 @@
         mode: "0644"
 
     - name: Setup repositories for x86_64 architecture
-      when: ansible_architecture == 'x86_64'
+      when: ansible_facts['architecture'] == 'x86_64'
       block:
         - name: Enable multilib repository
           ansible.builtin.replace:
@@ -35,7 +35,7 @@
             mode: "0644"
 
     - name: Fail if unsupported architecture is detected
-      when: ansible_architecture != 'aarch64' and ansible_architecture != 'x86_64'
+      when: ansible_facts['architecture'] != 'aarch64' and ansible_facts['architecture'] != 'x86_64'
       meta: end_play
 
 - name: Disable linux kernel updates
@@ -210,13 +210,13 @@
               - z3
 
         - name: Install netexec for aarch64
-          when: ansible_architecture == 'aarch64'
+          when: ansible_facts['architecture'] == 'aarch64'
           community.general.pacman:
             name:
               - pwnpad/netexec
 
         - name: Install netexec for x86_64
-          when: ansible_architecture == 'x86_64'
+          when: ansible_facts['architecture'] == 'x86_64'
           community.general.pacman:
             name:
               - blackarch/netexec
@@ -360,7 +360,7 @@
   become: true
   tasks:
     - name: Install libraries for x86 and x86_64
-      when: ansible_architecture == 'x86_64'
+      when: ansible_facts['architecture'] == 'x86_64'
       community.general.pacman:
         name:
           - lib32-glibc
@@ -369,7 +369,7 @@
           - gcc-libs
 
     - name: Install libraries for emulation of x86 and x86_64
-      when: ansible_architecture == 'aarch64'
+      when: ansible_facts['architecture'] == 'aarch64'
       community.general.pacman:
         name:
           - lib32-glibc
