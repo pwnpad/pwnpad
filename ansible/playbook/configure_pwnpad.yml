@@ -38,18 +38,6 @@
       when: ansible_facts['architecture'] != 'aarch64' and ansible_facts['architecture'] != 'x86_64'
       meta: end_play
 
-- name: Disable linux kernel updates
-  hosts: lima-pwnpad-builder
-  tags: ignore_kernel_updates
-  gather_facts: false
-  become: true
-  tasks:
-    - name: Ignore packages for kernel updates
-      ansible.builtin.replace:
-        path: /etc/pacman.conf
-        regexp: '^#IgnorePkg\s*='
-        replace: "IgnorePkg    = linux linux-aarch64"
-
 - name: Setup additional repositories
   hosts: lima-pwnpad-builder
   tags: setup_extra_repos
@@ -192,6 +180,7 @@
               - pwnpad/john
               - pwnpad/ligolo-ng
               - pwnpad/ngrok
+              - pwnpad/pwndbg
               - python-gmpy2
               - python-pwntools
               - responder
@@ -291,49 +280,6 @@
         - "wmiexec"
         - "wmipersist"
         - "wmiquery"
-
-    - name: Install gdb and its plugins
-      become: false
-      block:
-        - name: Install gdb, pwndbg and rz-ghidra
-          become: true
-          community.general.pacman:
-            name:
-              - gdb
-              - extra/pwndbg
-              - python-rzpipe
-              - rz-ghidra
-
-        - name: Install decomp2dbg
-          ansible.builtin.pip:
-            name: decomp2dbg
-            executable: pip3
-            extra_args: --user --break-system-packages
-
-        - name: Install pwn_gadget
-          ansible.builtin.pip:
-            name: https://github.com/zolutal/pwn_gadget/archive/refs/heads/main.zip
-            executable: pip3
-            extra_args: --user --break-system-packages
-
-        - name: Setup gdbinit
-          ansible.builtin.copy:
-            dest: /home/{{ pwnpad_vm_user }}/.gdbinit
-            content: |
-              set debuginfod enabled on
-              source /usr/share/pwndbg/gdbinit.py
-              set r2decompiler rizin
-              # set context-ghidra if-no-source
-              source /home/pwnpad/.local/lib/python3.14/site-packages/decomp2dbg/d2d.py
-              source /home/pwnpad/.local/lib/python3.14/site-packages/pwn_gadget/main.py
-            mode: "0644"
-
-        - name: Setup rizin
-          ansible.builtin.copy:
-            dest: /home/{{ pwnpad_vm_user }}/.rizinrc
-            content: |
-              e ghidra.verbose=false
-            mode: "0644"
 
     - name: Set nmap capabilities
       ansible.builtin.command: setcap cap_net_raw,cap_net_admin,cap_net_bind_service+eip /usr/sbin/nmap

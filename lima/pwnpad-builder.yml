@@ -4,9 +4,9 @@ images:
   - location: "https://download.nus.edu.sg/mirror/archlinux/images/v20250915.421442/Arch-Linux-x86_64-cloudimg-20250915.421442.qcow2"
     arch: "x86_64"
     digest: "sha256:19b15ec96583b0e7241eb8a453f0f6e007b51bfc07895cb6a5de2e374f695133"
-  - location: "https://github.com/pwnpad/archlinux-arm/releases/download/20251206-1/Arch-Linux-aarch64-cloudimg-20251206.1.qcow2.xz"
+  - location: "https://github.com/pwnpad/archlinux-arm/releases/download/20260601-1/Arch-Linux-aarch64-cloudimg-20260601.1.qcow2.xz"
     arch: aarch64
-    digest: "sha256:f3fe6574c2fff6be07e3bb7e1e03207a1b773b6521e0a1a299aa5d73c3f80093"
+    digest: "sha256:c918cc830b45674a3e842deb0b13ee49dfcdf9279c83d4c8078db64b393e0b69"
 disk: "15GiB"
 minimumLimaVersion: 2.0.0
 user:
