@@ -197,6 +197,7 @@
               - whois
               - windows-binaries
               - z3
+            extra_args: '--overwrite "*"'
 
         - name: Install netexec for aarch64
           when: ansible_facts['architecture'] == 'aarch64'
