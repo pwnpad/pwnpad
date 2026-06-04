@@ -4,7 +4,7 @@ Requires=xvfb.service
 After=openbox.service
 
 [Service]
-ExecStart=/usr/bin/x11vnc -display :0 -forever -loop -noxdamage -localhost
+ExecStart=/usr/bin/x11vnc -display :0 -forever -loop -noxdamage -localhost -xrandr
 Restart=on-failure
 RestartSec=5
 
