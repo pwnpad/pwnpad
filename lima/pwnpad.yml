@@ -63,14 +63,20 @@ mounts:
   #    # SFTP driver, "builtin" or "openssh-sftp-server". "openssh-sftp-server" is recommended.
   #    # 🟢 Builtin default: "openssh-sftp-server" if OpenSSH SFTP Server binary is found, otherwise "builtin"
   #    sftpDriver: null
-  - location: "~"
+  - location: "~/Desktop"
     mountPoint: null
-    writable: null
+    writable: false
+  - location: "~/Documents"
+    mountPoint: null
+    writable: false
+  - location: "~/Downloads"
+    mountPoint: null
+    writable: false
   - location: "~/.local/share/pwnpad/lima"
     mountPoint: "/mnt/shared"
     writable: true
     sshfs:
-      followSymlinks: true
+      followSymlinks: false
 
 # Mount type for above mounts, such as "reverse-sshfs" (from sshocker), "9p" (QEMU’s virtio-9p-pci, aka virtfs),
 # or "virtiofs" (experimental on Linux; needs `vmType: vz` on macOS).
