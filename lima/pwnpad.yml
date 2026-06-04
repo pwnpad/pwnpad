@@ -356,7 +356,7 @@ message: |
   The remaining ports bind to 127.0.0.1.
 
   To access the noVNC web interface, open the following URL in your browser:
-  http://localhost:6080/vnc.html?host=localhost&port=6080
+  http://localhost:6080/vnc.html?host=localhost&port=6080&resize=scale&autoconnect=1&reconnect=1&reconnect_delay=5000
 
 # Extra environment variables that will be loaded into the VM at start up.
 # These variables are consumed by internal init scripts, and also added
