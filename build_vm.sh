@@ -23,4 +23,5 @@ limactl start ${VM_NAME}
 
 ansible-playbook -v -i ${ANSIBLE_INVENTORY_DIR}/inventory.yml ${ANSIBLE_PLAYBOOK_DIR}/configure_pwnpad.yml
 ansible-playbook -v -i ${ANSIBLE_INVENTORY_DIR}/inventory.yml ${ANSIBLE_PLAYBOOK_DIR}/install_gui.yml
+ansible-playbook -v -i ${ANSIBLE_INVENTORY_DIR}/inventory.yml ${ANSIBLE_PLAYBOOK_DIR}/cleanup_space.yml
 limactl stop ${VM_NAME}
