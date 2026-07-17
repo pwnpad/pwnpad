@@ -17,7 +17,7 @@ fi
 cd ${LIMA_HOME}/${VM_NAME}
 
 if [[ ${ARCH} == "aarch64" || ${ARCH} == "arm64" ]]; then
-    qemu-img convert -c -o compression_type=zstd -f raw -O qcow2 disk pwnpad-${ARCH}.qcow2
+    qemu-img convert -c -o compression_type=zstd -W -m 16 -f raw -O qcow2 disk pwnpad-${ARCH}.qcow2
 elif [[ ${ARCH} == "x86_64" ]]; then
     qemu-img convert -c -p -O qcow2 diffdisk pwnpad-${ARCH}.qcow2
 fi

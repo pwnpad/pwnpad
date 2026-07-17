@@ -1,0 +1,8 @@
+---
+- name: Free unused blocks
+  hosts: lima-pwnpad-builder
+  gather_facts: false
+  tasks:
+    - name: Run fstrim
+      become: true
+      command: fstrim -av
