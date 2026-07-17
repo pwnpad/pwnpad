@@ -15,9 +15,9 @@ arch: null
 # Each image has a `location` URL for the disk image, an `arch` setting, and an optional `digest`.
 # 🟢 Builtin default: none (must be specified)
 images:
-  - location: "https://gitlab.com/pwnpad/pwnpad/-/package_files/306221923/download"
+  - location: "https://gitlab.com/pwnpad/pwnpad/-/package_files/323230821/download"
     arch: aarch64
-    digest: "sha256:3935bfd40d6d6e713b00d7e39174909707ce3ab8748621a0064d0c5831a78b51"
+    digest: "sha256:3b1f35084d8b7b40ba78ec703fb64a426fefe83f3ff91117d1c282a8b77de8e4"
   - location: "https://gitlab.com/pwnpad/pwnpad/-/package_files/220806446/download"
     arch: x86_64
     digest: "sha256:abb9833a0a1178e18080648c15511a6bdf8127e6fd49584be0805c9fd7a7f45d"
