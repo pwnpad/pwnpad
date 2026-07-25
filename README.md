@@ -14,22 +14,21 @@ If you are building this yourself, you will need the following tools installed:
 
 ### MacOS
 
+- `lima` (special version required)
 - `ansible` (not required if not building)
-- `lima`
 - `qemu` (not required if not building)
 
+You will need a special version of [lima](https://github.com/pwnpad/lima) that supports USB passthrough.
+For example, you can download `lima-2.1.4-usbpass1-Darwin-arm64.tar.gz` and extract it to `/usr/local/`.
+
 ```bash
-brew install ansible lima qemu
+tar -xzvf lima-2.1.4-usbpass1-Darwin-arm64.tar.gz -C /usr/local/
 ```
 
-### Linux (Arch-based)
-
-- `ansible` (not required if not building)
-- `lima-bin`
-- `qemu-full`
+You may skip this step if you are using the pre-built VM.
 
 ```bash
-yay -S ansible lima-bin qemu-full
+brew install ansible qemu
 ```
 
 ## Building
@@ -45,6 +44,8 @@ If you would like to export the VM to a qcow2 file:
 ```bash
 ./create_qcow2.sh
 ```
+
+The file will be created in `~/.lima/pwnpad-builder/pwnpad-arm64.qcow2`
 
 ## Usage
 
