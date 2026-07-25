@@ -249,7 +249,7 @@ audio:
   # As of QEMU v6.2 the default is to create a disconnected sound device
   # that is still visible in the guest but not connected to the host.
   # 🟢 Builtin default: ""
-  device: null
+  device: "vz"
 
 video:
   # QEMU display, e.g., "none", "cocoa", "sdl", "gtk", "vnc", "default".
@@ -298,59 +298,59 @@ networks:
 # Port forwarding rules. Forwarding between ports 22 and ssh.localPort cannot be overridden.
 # Rules are checked sequentially until the first one matches.
 portForwards:
-- guestPortRange: [50000, 60000]
-  hostIP:  "0.0.0.0" # overrides the default value "127.0.0.1"
-  # default: hostPortRange: [50000, 60000] (must specify same number of ports as guestPortRange)
-  #
-  # - guestPort: 443
-  #   hostIP: "0.0.0.0" # overrides the default value "127.0.0.1"; allows privileged port forwarding
-  # # default: hostPort: 443 (same as guestPort)
-  # # default: guestIP: "127.0.0.1" (also matches bind addresses "0.0.0.0", "::", and "::1")
-  # # default: proto: "tcp" (other options: "udp, "any")
-  #
-  # - guestPort: 80
-  #   hostPort: 8080 # overrides the default value 80
-  #
-  # - guestIP: "127.0.0.2" # overrides the default value "127.0.0.1"
-  #   hostIP: "127.0.0.2" # overrides the default value "127.0.0.1"
-  # # default: guestPortRange: [1, 65535]
-  # # default: hostPortRange: [1, 65535]
-  #
-  # - guestIP: 0.0.0.0 # otherwise defaults to 127.0.0.1
-  #   proto: any       # tcp and udp
-  #   ignore: true     # don't forward these ports (guestPortRange, in this case 1-65535)
-  #
-  # - guestPort: 7443
-  #   guestIP: "0.0.0.0"       # Will match *any* interface
-  #   guestIPMustBeZero: true  # Restrict matching to 0.0.0.0 binds only
-  #   hostIP: "0.0.0.0"        # Forwards to 0.0.0.0, exposing it externally
-  #
-  # - guestSocket: "/run/user/{{.UID}}/my.sock"
-  #   hostSocket: mysocket
-  # # default: reverse: false
-  # # "guestSocket" can include these template variables: {{.Home}}, {{.Name}}, {{.Hostname}}, {{.UID}}, {{.User}}, and {{.Param.Key}}.
-  # # "hostSocket" can include {{.Home}}, {{.Dir}}, {{.Name}}, {{.UID}}, {{.User}}, and {{.Param.Key}}.
-  # # "reverse" can only be used for unix sockets right now, not for tcp sockets.
-  # # Put sockets into "{{.Dir}}/sock" to avoid collision with Lima internal sockets!
-  # # Sockets can also be forwarded to ports and vice versa, but not to/from a range of ports.
-  # # Forwarding requires the lima user to have rw access to the "guestsocket",
-  # # and the local user rwx access to the directory of the "hostsocket".
-  #
-  # # Lima internally appends this fallback rule at the end:
-  # - guestIP: "127.0.0.1"
-  #   guestPortRange: [1, 65535]
-  #   hostIP: "127.0.0.1"
-  #   hostPortRange: [1, 65535]
-  # # Any port still not matched by a rule will not be forwarded (ignored)
+  - guestPortRange: [50000, 60000]
+    hostIP: "0.0.0.0" # overrides the default value "127.0.0.1"
+    # default: hostPortRange: [50000, 60000] (must specify same number of ports as guestPortRange)
+    #
+    # - guestPort: 443
+    #   hostIP: "0.0.0.0" # overrides the default value "127.0.0.1"; allows privileged port forwarding
+    # # default: hostPort: 443 (same as guestPort)
+    # # default: guestIP: "127.0.0.1" (also matches bind addresses "0.0.0.0", "::", and "::1")
+    # # default: proto: "tcp" (other options: "udp, "any")
+    #
+    # - guestPort: 80
+    #   hostPort: 8080 # overrides the default value 80
+    #
+    # - guestIP: "127.0.0.2" # overrides the default value "127.0.0.1"
+    #   hostIP: "127.0.0.2" # overrides the default value "127.0.0.1"
+    # # default: guestPortRange: [1, 65535]
+    # # default: hostPortRange: [1, 65535]
+    #
+    # - guestIP: 0.0.0.0 # otherwise defaults to 127.0.0.1
+    #   proto: any       # tcp and udp
+    #   ignore: true     # don't forward these ports (guestPortRange, in this case 1-65535)
+    #
+    # - guestPort: 7443
+    #   guestIP: "0.0.0.0"       # Will match *any* interface
+    #   guestIPMustBeZero: true  # Restrict matching to 0.0.0.0 binds only
+    #   hostIP: "0.0.0.0"        # Forwards to 0.0.0.0, exposing it externally
+    #
+    # - guestSocket: "/run/user/{{.UID}}/my.sock"
+    #   hostSocket: mysocket
+    # # default: reverse: false
+    # # "guestSocket" can include these template variables: {{.Home}}, {{.Name}}, {{.Hostname}}, {{.UID}}, {{.User}}, and {{.Param.Key}}.
+    # # "hostSocket" can include {{.Home}}, {{.Dir}}, {{.Name}}, {{.UID}}, {{.User}}, and {{.Param.Key}}.
+    # # "reverse" can only be used for unix sockets right now, not for tcp sockets.
+    # # Put sockets into "{{.Dir}}/sock" to avoid collision with Lima internal sockets!
+    # # Sockets can also be forwarded to ports and vice versa, but not to/from a range of ports.
+    # # Forwarding requires the lima user to have rw access to the "guestsocket",
+    # # and the local user rwx access to the directory of the "hostsocket".
+    #
+    # # Lima internally appends this fallback rule at the end:
+    # - guestIP: "127.0.0.1"
+    #   guestPortRange: [1, 65535]
+    #   hostIP: "127.0.0.1"
+    #   hostPortRange: [1, 65535]
+    # # Any port still not matched by a rule will not be forwarded (ignored)
 
-  # Copy files from the guest to the host. Copied after provisioning scripts have been completed.
-  # copyToHost:
-  # - guest: "/etc/myconfig.cfg"
-  #   host: "{{.Dir}}/copied-from-guest/myconfig"
-  # # deleteOnStop: false
-  # # "guest" can include these template variables: {{.Home}}, {{.Name}}, {{.Hostname}}, {{.UID}}, {{.User}}, and {{.Param.Key}}.
-  # # "host" can include {{.Home}}, {{.Dir}}, {{.Name}}, {{.UID}}, {{.User}}, and {{.Param.Key}}.
-  # # "deleteOnStop" will delete the file from the host when the instance is stopped.
+    # Copy files from the guest to the host. Copied after provisioning scripts have been completed.
+    # copyToHost:
+    # - guest: "/etc/myconfig.cfg"
+    #   host: "{{.Dir}}/copied-from-guest/myconfig"
+    # # deleteOnStop: false
+    # # "guest" can include these template variables: {{.Home}}, {{.Name}}, {{.Hostname}}, {{.UID}}, {{.User}}, and {{.Param.Key}}.
+    # # "host" can include {{.Home}}, {{.Dir}}, {{.Name}}, {{.UID}}, {{.User}}, and {{.Param.Key}}.
+    # # "deleteOnStop" will delete the file from the host when the instance is stopped.
 
 # Message. Information to be shown to the user, given as a Go template for the instance.
 # The same template variables as for listing instances can be used, for example {{.Dir}}.
