@@ -68,89 +68,39 @@
         - x11vnc
         - novnc
 
-- name: Build virtio_snd kernel module
+- name: Build virtio_snd kernel module via DKMS
   hosts: lima-pwnpad-builder
   tags: setup_virtio_snd
   gather_facts: true
   tasks:
-    - name: Check if virtio_snd is already available
-      ansible.builtin.shell: |
-        modinfo virtio_snd 2>/dev/null && echo "exists" || echo "missing"
-      register: virtio_snd_check
-      changed_when: false
-
     - name: Install kernel headers
-      when: virtio_snd_check.stdout != "exists"
       become: true
       ansible.builtin.package:
         name: "{{ 'linux-aarch64-headers' if ansible_facts['architecture'] == 'aarch64' else 'linux-headers' }}"
         state: present
 
-    - name: Find kernel version with available headers
-      when: virtio_snd_check.stdout != "exists"
+    - name: Install DKMS
+      become: true
+      community.general.pacman:
+        name: dkms
+        state: present
+
+    - name: Copy virtio_snd source for DKMS
+      become: true
+      ansible.builtin.copy:
+        src: ../../config/dkms/virtio_snd/
+        dest: /usr/src/virtio_snd-1.0/
+        mode: "0644"
+
+    - name: Register and install with DKMS
       become: true
       ansible.builtin.shell: |
-        set -e
-        for kv in /lib/modules/*/build; do
-          echo "${kv%/*}"
-        done | sort -V | tail -1 | xargs basename
-      register: target_kernel
+        dkms remove virtio_snd/1.0 --all 2>/dev/null || true
+        dkms add virtio_snd/1.0
+        dkms install virtio_snd/1.0
 
-    - name: Fail if no kernel headers found
-      when:
-        - virtio_snd_check.stdout != "exists"
-        - target_kernel.stdout is not defined or target_kernel.stdout == ""
-      fail:
-        msg: "No kernel build directories found in /lib/modules/"
-
-    - name: Build and install virtio_snd module
-      when:
-        - virtio_snd_check.stdout != "exists"
-        - target_kernel.stdout is defined
+    - name: Load module on boot
       become: true
-      block:
-        - name: Get upstream kernel version
-          ansible.builtin.shell:
-            cmd: echo "{{ target_kernel.stdout }}" | sed 's/-.*//'
-          register: upstream_ver
-
-        - name: Download kernel source
-          ansible.builtin.get_url:
-            url: "https://cdn.kernel.org/pub/linux/kernel/v{{ upstream_ver.stdout | regex_replace('^(\\d+).*', '\\1') }}.x/linux-{{ upstream_ver.stdout }}.tar.xz"
-            dest: "/tmp/linux-{{ upstream_ver.stdout }}.tar.xz"
-            timeout: 120
-
-        - name: Extract virtio sound driver source
-          ansible.builtin.unarchive:
-            src: "/tmp/linux-{{ upstream_ver.stdout }}.tar.xz"
-            dest: /tmp
-            extra_opts:
-              - "linux-{{ upstream_ver.stdout }}/sound/virtio"
-            remote_src: yes
-
-        - name: Create Kbuild file
-          ansible.builtin.copy:
-            dest: "/tmp/linux-{{ upstream_ver.stdout }}/sound/virtio/Kbuild"
-            content: |
-              obj-m += virtio_snd.o
-              virtio_snd-y := virtio_card.o virtio_chmap.o virtio_ctl_msg.o virtio_jack.o virtio_kctl.o virtio_pcm.o virtio_pcm_msg.o virtio_pcm_ops.o
-
-        - name: Build the module
-          ansible.builtin.shell: |
-            make -C "/lib/modules/{{ target_kernel.stdout }}/build" \
-                 M="/tmp/linux-{{ upstream_ver.stdout }}/sound/virtio" \
-                 modules
-
-        - name: Install the module
-          ansible.builtin.shell: |
-            KERNEL="{{ target_kernel.stdout }}"
-            UPSTREAM="{{ upstream_ver.stdout }}"
-            mkdir -p "/lib/modules/$KERNEL/kernel/sound/virtio"
-            cp "/tmp/linux-$UPSTREAM/sound/virtio/virtio_snd.ko" "/lib/modules/$KERNEL/kernel/sound/virtio/"
-            depmod -a "$KERNEL"
-
-        - name: Load module on boot
-          ansible.builtin.copy:
-            dest: /etc/modules-load.d/virtio_snd.conf
-            content: |
-              virtio_snd
+      ansible.builtin.copy:
+        dest: /etc/modules-load.d/virtio_snd.conf
+        content: virtio_snd
