@@ -85,11 +85,58 @@
         name: dkms
         state: present
 
-    - name: Copy virtio_snd source for DKMS
+    - name: Get upstream kernel version
+      become: false
+      ansible.builtin.shell: uname -r | cut -d. -f1,2
+      register: upstream_ver
+      changed_when: false
+
+    - name: Create DKMS source directory
+      become: true
+      ansible.builtin.file:
+        path: /usr/src/virtio_snd-1.0
+        state: directory
+        mode: "0755"
+
+    - name: Download virtio_snd source files
+      become: true
+      ansible.builtin.get_url:
+        url: "https://raw.githubusercontent.com/torvalds/linux/refs/tags/v{{ upstream_ver.stdout }}/sound/virtio/{{ item }}"
+        dest: "/usr/src/virtio_snd-1.0/{{ item }}"
+        mode: "0644"
+      loop:
+        - virtio_card.c
+        - virtio_card.h
+        - virtio_chmap.c
+        - virtio_ctl_msg.c
+        - virtio_ctl_msg.h
+        - virtio_jack.c
+        - virtio_kctl.c
+        - virtio_pcm.c
+        - virtio_pcm.h
+        - virtio_pcm_msg.c
+        - virtio_pcm_ops.c
+
+    - name: Generate Kbuild
       become: true
       ansible.builtin.copy:
-        src: ../../config/dkms/virtio_snd/
-        dest: /usr/src/virtio_snd-1.0/
+        dest: /usr/src/virtio_snd-1.0/Kbuild
+        content: |
+          obj-m += virtio_snd.o
+          virtio_snd-y := virtio_card.o virtio_chmap.o virtio_ctl_msg.o virtio_jack.o virtio_kctl.o virtio_pcm.o virtio_pcm_msg.o virtio_pcm_ops.o
+        mode: "0644"
+
+    - name: Generate dkms.conf
+      become: true
+      ansible.builtin.copy:
+        dest: /usr/src/virtio_snd-1.0/dkms.conf
+        content: |
+          PACKAGE_NAME="virtio_snd"
+          PACKAGE_VERSION="1.0"
+          BUILT_MODULE_NAME[0]="virtio_snd"
+          DEST_MODULE_LOCATION[0]="/kernel/sound/virtio"
+          MAKE[0]="make -C /lib/modules/${kernelver}/build M=${dkms_tree}/${PACKAGE_NAME}/${PACKAGE_VERSION}/build modules"
+          AUTOINSTALL="yes"
         mode: "0644"
 
     - name: Register and install with DKMS
