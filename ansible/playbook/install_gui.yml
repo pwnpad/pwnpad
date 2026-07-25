@@ -34,7 +34,7 @@
       become: true
       ansible.builtin.copy:
         src: ../../config/wireplumber/
-        dest: /etc/wireplumber/main.lua.d/
+        dest: /etc/wireplumber/wireplumber.conf.d/
         mode: "0644"
 
     - name: Add user to audio group
