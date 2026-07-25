@@ -30,6 +30,13 @@
         group: users
         mode: "0644"
 
+    - name: Set default PipeWire volume to 100%
+      become: true
+      ansible.builtin.copy:
+        src: ../../config/wireplumber/
+        dest: /etc/wireplumber/main.lua.d/
+        mode: "0644"
+
     - name: Add user to audio group
       become: true
       ansible.builtin.user:
