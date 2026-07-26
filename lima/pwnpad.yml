@@ -188,8 +188,7 @@ ssh:
 # A template should specify the minimum Lima version required to parse this template correctly.
 # It should not be set if the minimum version is less than 1.0.0
 # 🟢 Builtin default: not set
-# 🔵 This file: "1.1.0" to use the `base` templating mechanism
-minimumLimaVersion: 1.1.0
+minimumLimaVersion: 2.0.0
 
 # User to be used inside the VM
 user:
@@ -208,7 +207,7 @@ user:
   home: "/home/{{.User}}"
   # Shell. Needs to be an absolute path.
   # 🟢 Builtin default: "/bin/bash"
-  shell: null
+  shell: "/bin/zsh"
 
 # OS: "Linux".
 # 🟢 Builtin default: "Linux"
