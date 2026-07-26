@@ -2,9 +2,6 @@
 # BASIC CONFIGURATION
 # ===================================================================== #
 
-# Default values in this YAML file are specified by `null` instead of Lima's "builtin default" values,
-# so they can be overridden by the $LIMA_HOME/_config/default.yaml mechanism documented at the end of this file.
-
 # VM type: "qemu", "vz" (on macOS 13 and later), or "default".
 # The vmType can be specified only on creating the instance.
 # The vmType of existing instances cannot be changed.
@@ -127,7 +124,7 @@ mountTypesUnsupported: null
 # Mount type for above mounts, such as "reverse-sshfs" (from sshocker), "9p" (QEMU’s virtio-9p-pci, aka virtfs),
 # or "virtiofs" (experimental on Linux; needs `vmType: vz` on macOS).
 # 🟢 Builtin default: "default" (resolved to be "9p" for QEMU since Lima v1.0 on non-Windows, "virtiofs" for vz)
-mountType: "virtiofs"
+mountType: null
 
 # Enable inotify support for mounted directories (EXPERIMENTAL)
 # 🟢 Builtin default: Disabled by default
@@ -674,53 +671,3 @@ usb: true
 #   name: "USB WiFi Adapter"
 #   # Optional bus address to disambiguate between identical devices, e.g. "20-3"
 #   busAddr: "20-3"
-
-# ===================================================================== #
-# GLOBAL DEFAULTS AND OVERRIDES
-# ===================================================================== #
-
-# The builtin defaults can be changed globally by creating a $LIMA_HOME/_config/default.yaml
-# file. It will be used by ALL instances under the same $LIMA_HOME, and it
-# will be applied on each `limactl start`, so can affect instance restarts.
-
-# A similar mechanism is $LIMA_HOME/_config/override.yaml, which will take
-# precedence even over the settings in an instances lima.yaml file.
-# It also applies to ALL instances under the same $LIMA_HOME, and is applied
-# on each restart. It can be used to globally override settings, e.g. make
-# the mount of the home directory writable.
-
-# EXPERIMENTAL
-# A third mechanism is $LIMA_HOME/_config/base.yaml. It is similar to
-# `default.yaml` but will be merged during the `base` template embedding
-# when the instance is created, and not on every start. It becomes part
-# of the lima.yaml file.
-
-# On each instance start the config settings are determined: If a value is
-# not set in `lima.yaml`, then the `default.yaml` is used. If that file
-# doesn't exist, or the value is not defined in the file, then the builtin
-# default is used. If `override.yaml` exists and defines the value, then
-# it overrides whatever has been chosen so far.
-
-# For slices (e.g. `mounts`, `provision`) and maps (`env`) the entries are
-# combined instead of replacing each other. Slices are produced from override
-# settings, followed by lima.yaml, followed by default.yaml (but NOT from
-# builtin defaults). Maps are produced starting with default.yaml values,
-# overwriting with lima.yaml ones, overwriting with override.yaml.
-
-# Exceptions:
-# - `dns` will use the list from the highest priority file; they are not
-#   combined. If override.yaml defines a list of `dns` entries, then the
-#   settings in default.yaml and lima.yaml are ignored.
-#
-# - `mounts` will update the `writable` setting when 2 entries have the
-#   same `location` value. For this reason they are processed in the opposite
-#   order: starting with default, followed by lima, and then override.
-#
-# -`networks` will replace lower priority entries with the same `interface`
-#   name with higher priority definitions. This does not apply if the
-#  `interface` field is empty. `networks` are therefore also processed
-#  in lowest to highest priority order.
-
-# ===================================================================== #
-# END OF TEMPLATE
-# ===================================================================== #
