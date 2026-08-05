@@ -1,4 +1,40 @@
 ---
+- name: Perform cleanup
+  hosts: lima-pwnpad-builder
+  tags: cleanup
+  gather_facts: false
+  become: true
+  vars:
+    pwnpad_vm_user: "pwnpad"
+  tasks:
+    - name: Clean pacman cache
+      ansible.builtin.command: pacman -Scc --noconfirm
+
+    - name: Remove specific files and directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "/home/{{ pwnpad_vm_user }}/.ansible"
+        - "/home/{{ pwnpad_vm_user }}/.bash_logout"
+        - "/home/{{ pwnpad_vm_user }}/.bash_profile"
+        - "/home/{{ pwnpad_vm_user }}/.bundle"
+        - "/home/{{ pwnpad_vm_user }}/.cache/pip"
+        - "/home/{{ pwnpad_vm_user }}/.cache/yay"
+        - "/home/{{ pwnpad_vm_user }}/.cargo"
+        - "/home/{{ pwnpad_vm_user }}/.npm"
+        - "/home/{{ pwnpad_vm_user }}/.wget-hsts"
+        - "/home/{{ pwnpad_vm_user }}/.zcompdump-buildkitsandbox*"
+        - "/home/{{ pwnpad_vm_user }}/.zcompdump-lima-pwnpad-builder-*.zwc"
+        - "/home/{{ pwnpad_vm_user }}/.zsh_history"
+        - "/home/{{ pwnpad_vm_user }}/.zshrc.pre-oh-my-zsh"
+        - "/var/cache"
+        - "/var/log"
+
+    - name: Update mlocate database
+      ansible.builtin.command: updatedb
+      changed_when: true
+
 - name: Free unused blocks
   hosts: lima-pwnpad-builder
   gather_facts: false
