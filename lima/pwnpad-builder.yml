@@ -7,7 +7,7 @@ images:
   - location: "https://github.com/pwnpad/archlinux-arm/releases/download/20260805-1/Arch-Linux-aarch64-cloudimg-latest.qcow2.xz"
     arch: aarch64
     digest: "sha256:d66d6cf00978c42a13cbdd7618984e82a344ec097278a7841c0a17344c412aa8"
-disk: "12GiB"
+disk: "15GiB"
 minimumLimaVersion: 2.0.0
 user:
   name: pwnpad
