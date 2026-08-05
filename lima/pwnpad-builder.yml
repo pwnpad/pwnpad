@@ -1,9 +1,9 @@
 vmType: null
 arch: null
 images:
-  - location: "https://download.nus.edu.sg/mirror/archlinux/images/v20250915.421442/Arch-Linux-x86_64-cloudimg-20250915.421442.qcow2"
+  - location: "https://fastly.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-cloudimg.qcow2"
     arch: "x86_64"
-    digest: "sha256:19b15ec96583b0e7241eb8a453f0f6e007b51bfc07895cb6a5de2e374f695133"
+    digest: "sha256:9ca8d4b0a60e53b8aa1ac2317166ecffc4e9eae8d0b28b7ca0e3d333578f9a07"
   - location: "https://github.com/pwnpad/archlinux-arm/releases/download/20260805-1/Arch-Linux-aarch64-cloudimg-latest.qcow2.xz"
     arch: aarch64
     digest: "sha256:d66d6cf00978c42a13cbdd7618984e82a344ec097278a7841c0a17344c412aa8"

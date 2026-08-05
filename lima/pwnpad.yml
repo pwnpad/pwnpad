@@ -34,9 +34,9 @@ images:
   - location: "https://gitlab.com/pwnpad/pwnpad/-/package_files/330601392/download"
     arch: aarch64
     digest: "sha256:8c7daceb9a14d3ea16292fd194096c7ebd8b13f442e21a8f1060468bef1e23fb"
-  - location: "https://gitlab.com/pwnpad/pwnpad/-/package_files/220806446/download"
+  - location: "https://gitlab.com/pwnpad/pwnpad/-/package_files/330764582/download"
     arch: x86_64
-    digest: "sha256:abb9833a0a1178e18080648c15511a6bdf8127e6fd49584be0805c9fd7a7f45d"
+    digest: "sha256:c1c78ece13342e1922fbf213f8ae6308383dfe40b0965d75367d7f8bd78cee64"
 
 # CPUs
 # 🟢 Builtin default: min(4, host CPU cores)
