@@ -35,10 +35,10 @@
       ansible.builtin.command: updatedb
       changed_when: true
 
-- name: Free unused blocks
-  hosts: lima-pwnpad-builder
-  gather_facts: false
-  tasks:
-    - name: Run fstrim
-      become: true
-      command: fstrim -av
+    - name: Free unused blocks
+      hosts: lima-pwnpad-builder
+      gather_facts: false
+      tasks:
+        - name: Run fstrim
+          become: true
+          command: fstrim -av
