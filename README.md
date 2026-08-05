@@ -18,11 +18,11 @@ If you are building this yourself, you will need the following tools installed:
 - `ansible` (not required if not building)
 - `qemu` (not required if not building)
 
-You will need a special version of [lima](https://github.com/pwnpad/lima) that supports USB passthrough.
-For example, you can download `lima-2.1.4-usbpass1-Darwin-arm64.tar.gz` and extract it to `/usr/local/`.
+To get the full experience, you will need a special version of [lima](https://github.com/pwnpad/lima/releases) that supports USB passthrough.
+To install, download the latest Darwin ARM64 build and extract it to `/usr/local/`:
 
 ```bash
-tar -xzvf lima-2.1.4-usbpass1-Darwin-arm64.tar.gz -C /usr/local/
+tar -xzvf lima-*-Darwin-arm64.tar.gz -C /usr/local/
 ```
 
 You may skip this step if you are using the pre-built VM.
