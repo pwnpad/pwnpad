@@ -31,9 +31,9 @@ arch: null
 # 🟢 Builtin default: none (must be specified)
 # 🔵 This file: Ubuntu images (inherited via the `base` mechanism later in this file)
 images:
-  - location: "https://gitlab.com/pwnpad/pwnpad/-/package_files/332132658/download"
+  - location: "https://gitlab.com/pwnpad/pwnpad/-/package_files/332342050/download"
     arch: aarch64
-    digest: "sha256:190c52c9ce6c2fcd6b54270b7f1f36e94e17c28f7aa32b063a3087f626977ec9"
+    digest: "sha256:208391e6bde90ffd4ec33480845a976a1235dc86d4dd957cbc19298af93d71ee"
   - location: "https://gitlab.com/pwnpad/pwnpad/-/package_files/330764582/download"
     arch: x86_64
     digest: "sha256:c1c78ece13342e1922fbf213f8ae6308383dfe40b0965d75367d7f8bd78cee64"
