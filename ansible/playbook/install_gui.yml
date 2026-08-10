@@ -79,6 +79,23 @@
         name: "{{ 'linux-aarch64-headers' if ansible_facts['architecture'] == 'aarch64' else 'linux-headers' }}"
         state: present
 
+    - name: Get running kernel version
+      ansible.builtin.command: uname -r
+      register: running_kernel
+      changed_when: false
+
+    - name: Check for headers matching the running kernel
+      ansible.builtin.stat:
+        path: "/usr/lib/modules/{{ running_kernel.stdout }}/build"
+      register: running_kernel_headers
+
+    - name: Reboot to boot the kernel matching the installed headers
+      become: true
+      ansible.builtin.reboot:
+        reboot_timeout: 300
+        post_reboot_delay: 10
+      when: not running_kernel_headers.stat.exists
+
     - name: Install DKMS
       become: true
       community.general.pacman:
