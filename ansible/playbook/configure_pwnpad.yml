@@ -394,7 +394,10 @@
       changed_when: true
 
     - name: Initialise neovim plugins
-      ansible.builtin.command: nvim --headless -c "norm i" -c 'execute "sleep 5" | qall' tmp
+      vars:
+        # Longer when emulated
+        nvim_init_seconds: "{{ lookup('env', 'NVIM_INIT_SECONDS') | default('5', true) }}"
+      ansible.builtin.command: nvim --headless -c "norm i" -c 'execute "sleep {{ nvim_init_seconds }}" | qall' tmp
       changed_when: true
 
 - name: Setup zsh

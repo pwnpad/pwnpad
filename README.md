@@ -47,6 +47,19 @@ If you would like to export the VM to a qcow2 file:
 
 The file will be created in `~/.lima/pwnpad-builder/pwnpad-arm64.qcow2`
 
+### GitHub Actions
+
+The [Build images](.github/workflows/build.yml) workflow builds both `x86_64` and `arm64` images. It runs when `dev` or a version tag is pushed, or manually from the Actions tab.
+
+The images are uploaded as artifacts, since release files are limited to 2GB. You need to be logged in to GitHub to download them, and they expire after 90 days. Download them from the run's page, or with `gh`:
+
+```bash
+ID=$(gh api "repos/pwnpad/pwnpad/actions/runs/<run id>/artifacts" --jq '.artifacts[] | select(.name == "pwnpad-arm64.qcow2").id')
+gh api "repos/pwnpad/pwnpad/actions/artifacts/${ID}/zip" > pwnpad-arm64.qcow2
+```
+
+The file is not zipped, so `gh run download` will not work. The SHA256 is in the run's summary.
+
 ## Usage
 
 Create the new VM using the following command:

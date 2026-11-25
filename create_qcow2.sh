@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 VM_NAME="pwnpad-builder"
 ARCH="$(uname -m)"
 
-if [ -z "${LIMA_HOME}" ]
+# Match macOS naming
+if [ "${ARCH}" = "aarch64" ]
+then
+    ARCH="arm64"
+fi
+
+if [ -z "${LIMA_HOME:-}" ]
 then
     LIMA_HOME=~/.lima
 fi
@@ -14,6 +22,7 @@ then
     exit 1
 fi
 
-cd ${LIMA_HOME}/${VM_NAME}
+cd "${LIMA_HOME}/${VM_NAME}"
 
-qemu-img convert -c -o compression_type=zstd -W -m 16 -f raw -O qcow2 disk pwnpad-${ARCH}.qcow2
+# No -f: raw on vz, qcow2 on qemu
+qemu-img convert -c -o compression_type=zstd -W -m 16 -O qcow2 disk "pwnpad-${ARCH}.qcow2"

@@ -92,7 +92,7 @@
     - name: Reboot to boot the kernel matching the installed headers
       become: true
       ansible.builtin.reboot:
-        reboot_timeout: 300
+        reboot_timeout: 1200
         post_reboot_delay: 10
       when: not running_kernel_headers.stat.exists
 

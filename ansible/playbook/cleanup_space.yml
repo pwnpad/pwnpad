@@ -28,6 +28,8 @@
         - "/home/{{ pwnpad_vm_user }}/.zcompdump-lima-pwnpad-builder-*"
         - "/home/{{ pwnpad_vm_user }}/.zsh_history"
         - "/home/{{ pwnpad_vm_user }}/.zshrc.pre-oh-my-zsh"
+        # Else VMs from this image share SSH host keys
+        - "/etc/cloud/cloud.cfg.d/99_lima_ssh_keep_host_keys.cfg"
         - "/var/cache"
         - "/var/log"
 

@@ -1,0 +1,192 @@
+name: Build images
+
+on:
+  workflow_dispatch:
+    inputs:
+      arch:
+        description: Architecture to build
+        type: choice
+        default: all
+        options:
+          - all
+          - x86_64
+          - arm64
+  push:
+    branches:
+      - dev
+    tags:
+      - "[0-9]+.[0-9]+"
+      - "[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  LIMA_VERSION: 2.3.0
+
+jobs:
+  build:
+    name: ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: ${{ fromJSON((inputs.arch == 'x86_64' && '["x86_64"]') || (inputs.arch == 'arm64' && '["arm64"]') || '["x86_64", "arm64"]') }}
+    # macOS arm64 runners lack nested virtualization
+    runs-on: ${{ matrix.arch == 'arm64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check disk space
+        run: |
+          available() { df --output=avail -BG / | tail -n 1 | tr -dc '0-9'; }
+
+          # x86_64 runner only
+          if [ "$(available)" -lt 40 ]; then
+            sudo rm -rf /usr/local/lib/android /usr/share/dotnet /usr/local/.ghcup /usr/share/swift /opt/hostedtoolcache/CodeQL
+          fi
+
+          df -h /
+          if [ "$(available)" -lt 25 ]; then
+            echo "::error::Less than 25GB of disk space available"
+            exit 1
+          fi
+
+      - name: Install QEMU
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          if [ "${ARCH}" = "arm64" ]; then
+            PACKAGES=(qemu-system-arm qemu-efi-aarch64 ipxe-qemu)
+          else
+            PACKAGES=(qemu-system-x86 ovmf)
+          fi
+
+          sudo apt-get update -qq
+          sudo apt-get install -qqy --no-install-recommends qemu-utils "${PACKAGES[@]}"
+
+      - name: Install Lima
+        env:
+          SHA256: ${{ matrix.arch == 'arm64' && '7e295d243d9b9439fa05628500daff4371a6861cc7e995ac4af4a0781f736cc6' || 'cc8ba97f1c801b899f7c9eda9919dfc4ce4fa2c140c53e5add15aa2d0a1936f9' }}
+        run: |
+          FILE="lima-${LIMA_VERSION}-Linux-$(uname -m).tar.gz"
+          curl -fsSL --retry 5 -o "${RUNNER_TEMP}/${FILE}" "https://github.com/lima-vm/lima/releases/download/v${LIMA_VERSION}/${FILE}"
+          echo "${SHA256}  ${RUNNER_TEMP}/${FILE}" | sha256sum --check
+          sudo tar -xzf "${RUNNER_TEMP}/${FILE}" -C /usr/local
+          limactl --version
+
+      - name: Check Ansible
+        run: |
+          ansible-playbook --version
+          ansible-galaxy collection list community.general
+
+      - name: Enable KVM
+        if: matrix.arch == 'x86_64'
+        run: |
+          sudo chmod 666 /dev/kvm
+          ls -l /dev/kvm
+
+      # UID is baked into image: 501 = first macOS user, 1000 = first Linux user
+      # arm64 has no KVM; default CPU (max) is slow to emulate
+      - name: Configure Lima
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          mkdir -p ~/.lima/_config
+          if [ "${ARCH}" = "arm64" ]; then
+            cat > ~/.lima/_config/override.yaml <<'EOF'
+          memory: 8GiB
+          user:
+            uid: 501
+          vmOpts:
+            qemu:
+              cpuType:
+                aarch64: cortex-a76
+          EOF
+          else
+            cat > ~/.lima/_config/override.yaml <<'EOF'
+          memory: 8GiB
+          user:
+            uid: 1000
+          EOF
+          fi
+          cat ~/.lima/_config/override.yaml
+
+      - name: Build VM
+        # Leave time for export or logs
+        timeout-minutes: 330
+        env:
+          ANSIBLE_FORCE_COLOR: "1"
+          ANSIBLE_TIMEOUT: "60"
+          LIMA_START_TIMEOUT: ${{ matrix.arch == 'arm64' && '60m' || '15m' }}
+          NVIM_INIT_SECONDS: ${{ matrix.arch == 'arm64' && '300' || '30' }}
+        run: |
+          ./build_vm.sh
+          df -h /
+
+          # limactl stop can exit 0 after a forced kill
+          if grep -q 'forcibly killing QEMU' ~/.lima/pwnpad-builder/ha.stderr.log; then
+            echo "::error::The VM did not shut down cleanly"
+            exit 1
+          fi
+
+      - name: Create qcow2
+        run: |
+          ./create_qcow2.sh
+          df -h /
+
+      - name: Check qcow2
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          IMAGE="${HOME}/.lima/pwnpad-builder/pwnpad-${ARCH}.qcow2"
+          qemu-img info "${IMAGE}"
+          qemu-img check "${IMAGE}"
+
+          # Catch nested qcow2
+          qemu-img dd -f qcow2 -O raw bs=512 count=2 if="${IMAGE}" of="${RUNNER_TEMP}/head"
+          if [ "$(dd if="${RUNNER_TEMP}/head" bs=1 skip=512 count=8 status=none | tr -d '\0')" != "EFI PART" ]; then
+            echo "::error::The image does not contain a GPT disk"
+            exit 1
+          fi
+
+          cd "$(dirname "${IMAGE}")"
+          {
+            echo '```'
+            sha256sum "pwnpad-${ARCH}.qcow2"
+            echo '```'
+          } | tee -a "${GITHUB_STEP_SUMMARY}"
+
+      - name: Upload qcow2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          path: ~/.lima/pwnpad-builder/pwnpad-${{ matrix.arch }}.qcow2
+          archive: false
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Collect logs
+        if: failure() || cancelled()
+        run: |
+          mkdir -p "${RUNNER_TEMP}/logs"
+          cp ~/.lima/pwnpad-builder/*.log "${RUNNER_TEMP}/logs/" || true
+
+      - name: Upload logs
+        if: failure() || cancelled()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: logs-${{ matrix.arch }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/logs/
+          if-no-files-found: ignore
+          retention-days: 7
